@@ -1,0 +1,26 @@
+[
+  {
+    "category": "⭐ よく使う",
+    "name": "Google",
+    "url": "https://www.google.com/",
+    "icon": "🔍"
+  },
+  {
+    "category": "⭐ よく使う",
+    "name": "Gmail",
+    "url": "https://mail.google.com/",
+    "icon": "✉️"
+  },
+  {
+    "category": "⭐ よく使う",
+    "name": "Google Drive",
+    "url": "https://drive.google.com/",
+    "icon": "📁"
+  },
+  {
+    "category": "⭐ よく使う",
+    "name": "YouTube",
+    "url": "https://www.youtube.com/",
+    "icon": "▶️"
+  }
+]
