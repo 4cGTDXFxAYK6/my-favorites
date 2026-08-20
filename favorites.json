@@ -3,24 +3,28 @@
     "category": "⭐ よく使う",
     "name": "Google",
     "url": "https://www.google.com/",
-    "icon": "🔍"
+    "icon": "🔍",
+    "order": 1
   },
   {
     "category": "⭐ よく使う",
     "name": "Gmail",
     "url": "https://mail.google.com/",
-    "icon": "✉️"
+    "icon": "✉️",
+    "order": 2
   },
   {
     "category": "⭐ よく使う",
     "name": "Google Drive",
     "url": "https://drive.google.com/",
-    "icon": "📁"
+    "icon": "📁",
+    "order": 3
   },
   {
     "category": "⭐ よく使う",
     "name": "YouTube",
     "url": "https://www.youtube.com/",
-    "icon": "▶️"
+    "icon": "▶️",
+    "order": 4
   }
 ]
