@@ -4,7 +4,7 @@
     "name": "Google",
     "url": "https://www.google.com/",
     "icon": "🔍",
-    "order": 1
+    "order": 2
   },
   {
     "category": "⭐ よく使う",
@@ -25,6 +25,6 @@
     "name": "YouTube",
     "url": "https://www.youtube.com/",
     "icon": "▶️",
-    "order": 4
+    "order": 1
   }
 ]
