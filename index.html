@@ -206,14 +206,16 @@
 
       const categories = {};
 
-      filtered.forEach(item => {
+filtered
+  .sort((a, b) => (a.order || 9999) - (b.order || 9999))
+  .forEach(item => {
 
-        if (!categories[item.category]) {
-          categories[item.category] = [];
-        }
+    if (!categories[item.category]) {
+      categories[item.category] = [];
+    }
 
-        categories[item.category].push(item);
-      });
+    categories[item.category].push(item);
+  });
 
       container.innerHTML = "";
 
