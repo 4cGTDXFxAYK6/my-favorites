@@ -48,16 +48,6 @@
       background: white;
     }
 
-    .category {
-      margin-bottom: 30px;
-    }
-
-    .category-title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
     .tiles {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -65,12 +55,14 @@
     }
 
     .tile {
+      position: relative;
+
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
-      min-height: 110px;
+      min-height: 120px;
       padding: 15px;
 
       background: white;
@@ -89,8 +81,22 @@
     }
 
     .icon {
-      font-size: 34px;
-      margin-bottom: 8px;
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 30px;
+    }
+
+    .icon img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      border-radius: 6px;
     }
 
     .name {
@@ -145,134 +151,269 @@
   </div>
 
   <script>
+
     let favorites = [];
 
-    async function loadFavorites() {
-      try {
-        const response = await fetch("favorites.json");
+    /*
+     * --------------------------------
+     * お気に入りデータを保存
+     * --------------------------------
+     */
+    function saveFavorites() {
 
-        if (!response.ok) {
-          throw new Error("favorites.jsonを読み込めませんでした");
+      localStorage.setItem(
+        "myFavorites",
+        JSON.stringify(favorites)
+      );
+
+    }
+
+
+    /*
+     * --------------------------------
+     * お気に入りデータを読み込む
+     * --------------------------------
+     */
+    async function loadFavorites() {
+
+      const saved =
+        localStorage.getItem("myFavorites");
+
+      /*
+       * すでにブラウザに保存されている場合
+       */
+      if (saved) {
+
+        try {
+
+          favorites =
+            JSON.parse(saved);
+
+          displayFavorites();
+
+          return;
+
+        } catch (error) {
+
+          console.error(
+            "保存されたお気に入りデータを読み込めませんでした。",
+            error
+          );
+
         }
 
-        favorites = await response.json();
+      }
+
+
+      /*
+       * 初回だけ favorites.json を読み込む
+       */
+      try {
+
+        const response =
+          await fetch(
+            "favorites.json?v=" + Date.now()
+          );
+
+        if (!response.ok) {
+
+          throw new Error(
+            "favorites.jsonを読み込めませんでした"
+          );
+
+        }
+
+        favorites =
+          await response.json();
+
+        saveFavorites();
 
         displayFavorites();
 
       } catch (error) {
 
-        document.getElementById("favorites").innerHTML = `
+        document.getElementById(
+          "favorites"
+        ).innerHTML = `
           <div class="error">
             お気に入りデータを読み込めませんでした。
           </div>
         `;
 
         console.error(error);
+
       }
+
     }
 
+
+    /*
+     * --------------------------------
+     * お気に入りを表示
+     * --------------------------------
+     */
     function displayFavorites() {
 
       const keyword =
-        document.getElementById("search").value
+        document
+          .getElementById("search")
+          .value
           .toLowerCase()
           .trim();
 
-      const filtered = favorites.filter(item => {
 
-        const name =
-          (item.name || "").toLowerCase();
+      /*
+       * 検索
+       */
+      const filtered =
+        favorites
+          .filter(item => {
 
-        const category =
-          (item.category || "").toLowerCase();
+            const name =
+              (item.name || "")
+                .toLowerCase();
 
-        return (
-          name.includes(keyword) ||
-          category.includes(keyword)
-        );
-      });
+            return name.includes(keyword);
+
+          })
+          .sort(
+            (a, b) =>
+              (a.order || 9999) -
+              (b.order || 9999)
+          );
+
 
       const container =
-        document.getElementById("favorites");
+        document.getElementById(
+          "favorites"
+        );
 
+
+      /*
+       * 該当なし
+       */
       if (filtered.length === 0) {
+
         container.innerHTML = `
           <div class="loading">
             該当するお気に入りがありません。
           </div>
         `;
+
         return;
+
       }
 
-      const categories = {};
 
-filtered
-  .sort((a, b) => (a.order || 9999) - (b.order || 9999))
-  .forEach(item => {
-
-    if (!categories[item.category]) {
-      categories[item.category] = [];
-    }
-
-    categories[item.category].push(item);
-  });
-
+      /*
+       * タイルを作成
+       */
       container.innerHTML = "";
 
-      Object.keys(categories).forEach(category => {
+      const tiles =
+        document.createElement("div");
 
-        const section =
-          document.createElement("section");
+      tiles.className = "tiles";
 
-        section.className = "category";
 
-        const title =
+      filtered.forEach(item => {
+
+        const link =
+          document.createElement("a");
+
+        link.className = "tile";
+
+        link.href = item.url;
+
+        link.target = "_blank";
+
+        link.rel =
+          "noopener noreferrer";
+
+
+        /*
+         * アイコン
+         */
+        const icon =
           document.createElement("div");
 
-        title.className = "category-title";
-        title.textContent = category;
+        icon.className = "icon";
 
-        const tiles =
+
+        /*
+         * ファビコンが指定されている場合
+         */
+        if (item.favicon) {
+
+          const img =
+            document.createElement("img");
+
+          img.src = item.favicon;
+
+          img.alt = "";
+
+          img.onerror = function() {
+
+            icon.innerHTML = "🌐";
+
+          };
+
+          icon.appendChild(img);
+
+        } else {
+
+          icon.textContent =
+            item.icon || "🔗";
+
+        }
+
+
+        /*
+         * サイト名
+         */
+        const name =
           document.createElement("div");
 
-        tiles.className = "tiles";
+        name.className = "name";
 
-        categories[category].forEach(item => {
+        name.textContent =
+          item.name;
 
-          const link =
-            document.createElement("a");
 
-          link.className = "tile";
+        link.appendChild(icon);
 
-          link.href = item.url;
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
+        link.appendChild(name);
 
-          link.innerHTML = `
-            <div class="icon">
-              ${item.icon || "🔗"}
-            </div>
+        tiles.appendChild(link);
 
-            <div class="name">
-              ${item.name}
-            </div>
-          `;
-
-          tiles.appendChild(link);
-        });
-
-        section.appendChild(title);
-        section.appendChild(tiles);
-
-        container.appendChild(section);
       });
+
+
+      container.appendChild(tiles);
+
     }
 
+
+    /*
+     * --------------------------------
+     * 検索
+     * --------------------------------
+     */
     document
       .getElementById("search")
-      .addEventListener("input", displayFavorites);
+      .addEventListener(
+        "input",
+        displayFavorites
+      );
 
+
+    /*
+     * --------------------------------
+     * 起動
+     * --------------------------------
+     */
     loadFavorites();
+
   </script>
 
 </body>
