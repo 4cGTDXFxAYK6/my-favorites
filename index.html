@@ -13,7 +13,7 @@
 
     body {
       margin: 0;
-      padding: 20px;
+      padding: 0;
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -23,29 +23,52 @@
       color: #333;
     }
 
+    /* ==============================
+       ヘッダー
+       ============================== */
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      max-width: 900px;
+      margin: 0 auto;
+
+      padding: 16px 20px 12px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .menu-button {
+      width: 44px;
+      height: 44px;
+
+      border: none;
+      border-radius: 12px;
+
+      background: white;
+
+      font-size: 25px;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ==============================
+       メイン
+       ============================== */
+
     .container {
       max-width: 900px;
       margin: 0 auto;
-    }
-
-    h1 {
-      text-align: center;
-      margin: 10px 0 24px;
-      font-size: 28px;
-    }
-
-    .search-box {
-      margin-bottom: 30px;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 14px 18px;
-      border: 1px solid #ddd;
-      border-radius: 14px;
-      font-size: 16px;
-      outline: none;
-      background: white;
+      padding: 8px 20px 30px;
     }
 
     .tiles {
@@ -71,7 +94,8 @@
       text-decoration: none;
       color: #333;
 
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
 
       transition: transform 0.1s ease;
     }
@@ -81,43 +105,287 @@
     }
 
     .icon {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 10px;
+      width: 44px;
+      height: 44px;
+
+      margin-bottom: 9px;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      font-size: 30px;
+      font-size: 32px;
     }
 
     .icon img {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
+
       object-fit: contain;
-      border-radius: 6px;
+
+      border-radius: 7px;
     }
 
     .name {
       font-size: 15px;
       font-weight: 600;
+
       text-align: center;
+
       word-break: break-word;
     }
 
     .loading {
       text-align: center;
-      padding: 30px;
+      padding: 40px 20px;
       color: #777;
     }
 
-    .error {
-      padding: 20px;
-      background: white;
-      border-radius: 12px;
-      color: #c00;
+    .empty {
       text-align: center;
+      padding: 50px 20px;
+      color: #777;
+    }
+
+    /* ==============================
+       メニュー
+       ============================== */
+
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+
+      background: rgba(0, 0, 0, 0.25);
+
+      display: none;
+
+      z-index: 1000;
+    }
+
+    .menu-overlay.open {
+      display: block;
+    }
+
+    .menu-panel {
+      position: absolute;
+
+      top: 0;
+      right: 0;
+
+      width: min(330px, 88vw);
+      height: 100%;
+
+      padding: 24px 20px;
+
+      background: white;
+
+      box-shadow:
+        -4px 0 18px rgba(0, 0, 0, 0.15);
+
+      overflow-y: auto;
+    }
+
+    .menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 22px;
+    }
+
+    .menu-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .close-button {
+      width: 42px;
+      height: 42px;
+
+      border: none;
+      border-radius: 10px;
+
+      background: #f2f2f2;
+
+      font-size: 22px;
+
+      cursor: pointer;
+    }
+
+    .menu-item {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+
+      padding: 15px 12px;
+
+      border: none;
+      border-radius: 10px;
+
+      background: transparent;
+
+      font-size: 16px;
+      text-align: left;
+
+      cursor: pointer;
+    }
+
+    .menu-item:active {
+      background: #f0f0f0;
+    }
+
+    .menu-section {
+      margin-top: 22px;
+      padding-top: 18px;
+
+      border-top: 1px solid #eee;
+    }
+
+    .menu-section-title {
+      margin: 0 0 8px 12px;
+
+      font-size: 13px;
+      color: #777;
+    }
+
+    /* ==============================
+       ダイアログ
+       ============================== */
+
+    .dialog-overlay {
+      position: fixed;
+      inset: 0;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      background: rgba(0, 0, 0, 0.35);
+
+      z-index: 2000;
+    }
+
+    .dialog-overlay.open {
+      display: flex;
+    }
+
+    .dialog {
+      width: min(450px, 100%);
+
+      padding: 24px;
+
+      background: white;
+
+      border-radius: 18px;
+
+      box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .dialog h2 {
+      margin: 0 0 20px;
+
+      font-size: 21px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+
+      padding: 12px 13px;
+
+      border: 1px solid #ddd;
+      border-radius: 10px;
+
+      font-size: 16px;
+
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: #888;
+    }
+
+    .dialog-buttons {
+      display: flex;
+      gap: 10px;
+
+      margin-top: 22px;
+    }
+
+    .dialog-button {
+      flex: 1;
+
+      padding: 13px;
+
+      border: none;
+      border-radius: 10px;
+
+      font-size: 15px;
+      font-weight: 600;
+
+      cursor: pointer;
+    }
+
+    .cancel-button {
+      background: #eee;
+    }
+
+    .register-button {
+      background: #333;
+      color: white;
+    }
+
+    /* ==============================
+       並び順選択
+       ============================== */
+
+    .sort-option {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+
+      padding: 12px;
+
+      border: none;
+      border-radius: 10px;
+
+      background: transparent;
+
+      font-size: 15px;
+
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .sort-option:active {
+      background: #f0f0f0;
+    }
+
+    .sort-option.active {
+      font-weight: 700;
+      background: #f2f2f2;
+    }
+
+    .sort-mark {
+      width: 25px;
+      margin-right: 5px;
     }
 
     @media (min-width: 700px) {
@@ -130,35 +398,276 @@
 
 <body>
 
-  <div class="container">
+  <!-- ==============================
+       ヘッダー
+       ============================== -->
 
-    <h1>⭐ お気に入り</h1>
+  <header class="header">
 
-    <div class="search-box">
-      <input
-        type="search"
-        id="search"
-        placeholder="🔍 お気に入りを検索"
-      >
-    </div>
+    <h1 class="title">
+      ⭐ お気に入り
+    </h1>
+
+    <button
+      class="menu-button"
+      id="menuButton"
+      aria-label="メニュー"
+    >
+      ☰
+    </button>
+
+  </header>
+
+
+  <!-- ==============================
+       メイン
+       ============================== -->
+
+  <main class="container">
 
     <div id="favorites">
+
       <div class="loading">
         読み込み中...
       </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- ==============================
+       バーガーメニュー
+       ============================== -->
+
+  <div
+    class="menu-overlay"
+    id="menuOverlay"
+  >
+
+    <div
+      class="menu-panel"
+      id="menuPanel"
+    >
+
+      <div class="menu-header">
+
+        <div class="menu-title">
+          メニュー
+        </div>
+
+        <button
+          class="close-button"
+          id="closeMenuButton"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <!-- 登録 -->
+
+      <button
+        class="menu-item"
+        id="openRegisterButton"
+      >
+        ＋　お気に入りを登録
+      </button>
+
+
+      <!-- 検索 -->
+
+      <button
+        class="menu-item"
+        id="openSearchButton"
+      >
+        🔍　お気に入りを検索
+      </button>
+
+
+      <!-- 並び順 -->
+
+      <div class="menu-section">
+
+        <div class="menu-section-title">
+          並び順
+        </div>
+
+
+        <button
+          class="sort-option"
+          data-sort="recent"
+        >
+          <span class="sort-mark"></span>
+          クリックした順（新しい順）
+        </button>
+
+
+        <button
+          class="sort-option"
+          data-sort="oldest"
+        >
+          <span class="sort-mark"></span>
+          クリックした順（古い順）
+        </button>
+
+
+        <button
+          class="sort-option"
+          data-sort="registered"
+        >
+          <span class="sort-mark"></span>
+          登録した順
+        </button>
+
+
+        <button
+          class="sort-option"
+          data-sort="name"
+        >
+          <span class="sort-mark"></span>
+          五十音順
+        </button>
+
+      </div>
+
     </div>
 
   </div>
 
+
+  <!-- ==============================
+       登録ダイアログ
+       ============================== -->
+
+  <div
+    class="dialog-overlay"
+    id="registerDialog"
+  >
+
+    <div class="dialog">
+
+      <h2>
+        お気に入りを登録
+      </h2>
+
+
+      <div class="form-group">
+
+        <label for="nameInput">
+          サイト名
+        </label>
+
+        <input
+          type="text"
+          id="nameInput"
+          placeholder="例：Google"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="urlInput">
+          URL
+        </label>
+
+        <input
+          type="url"
+          id="urlInput"
+          placeholder="https://example.com/"
+        >
+
+      </div>
+
+
+      <div class="dialog-buttons">
+
+        <button
+          class="dialog-button cancel-button"
+          id="cancelRegisterButton"
+        >
+          キャンセル
+        </button>
+
+        <button
+          class="dialog-button register-button"
+          id="registerButton"
+        >
+          登録
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==============================
+       検索ダイアログ
+       ============================== -->
+
+  <div
+    class="dialog-overlay"
+    id="searchDialog"
+  >
+
+    <div class="dialog">
+
+      <h2>
+        お気に入りを検索
+      </h2>
+
+      <div class="form-group">
+
+        <label for="searchInput">
+          キーワード
+        </label>
+
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="サイト名を入力"
+        >
+
+      </div>
+
+      <div class="dialog-buttons">
+
+        <button
+          class="dialog-button cancel-button"
+          id="closeSearchButton"
+        >
+          閉じる
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
   <script>
+
+    /* =================================
+       基本設定
+       ================================= */
 
     let favorites = [];
 
-    /*
-     * --------------------------------
-     * お気に入りデータを保存
-     * --------------------------------
-     */
+    let currentSort =
+      localStorage.getItem("favoriteSort")
+      || "recent";
+
+
+    /* =================================
+       データ保存
+       ================================= */
+
     function saveFavorites() {
 
       localStorage.setItem(
@@ -169,19 +678,16 @@
     }
 
 
-    /*
-     * --------------------------------
-     * お気に入りデータを読み込む
-     * --------------------------------
-     */
+    /* =================================
+       データ読み込み
+       ================================= */
+
     async function loadFavorites() {
 
       const saved =
         localStorage.getItem("myFavorites");
 
-      /*
-       * すでにブラウザに保存されている場合
-       */
+
       if (saved) {
 
         try {
@@ -196,7 +702,7 @@
         } catch (error) {
 
           console.error(
-            "保存されたお気に入りデータを読み込めませんでした。",
+            "保存データの読み込みに失敗しました。",
             error
           );
 
@@ -205,15 +711,13 @@
       }
 
 
-      /*
-       * 初回だけ favorites.json を読み込む
-       */
       try {
 
         const response =
           await fetch(
             "favorites.json?v=" + Date.now()
           );
+
 
         if (!response.ok) {
 
@@ -223,20 +727,54 @@
 
         }
 
+
         favorites =
           await response.json();
+
+
+        /*
+         * 既存データに必要な情報を追加
+         */
+
+        const now =
+          Date.now();
+
+
+        favorites =
+          favorites.map(
+            (item, index) => {
+
+              return {
+
+                ...item,
+
+                registeredAt:
+                  item.registeredAt
+                  || (now + index),
+
+                lastClicked:
+                  item.lastClicked
+                  || 0
+
+              };
+
+            }
+          );
+
 
         saveFavorites();
 
         displayFavorites();
+
 
       } catch (error) {
 
         document.getElementById(
           "favorites"
         ).innerHTML = `
-          <div class="error">
-            お気に入りデータを読み込めませんでした。
+          <div class="empty">
+            お気に入りデータを
+            読み込めませんでした。
           </div>
         `;
 
@@ -247,41 +785,75 @@
     }
 
 
-    /*
-     * --------------------------------
-     * お気に入りを表示
-     * --------------------------------
-     */
-    function displayFavorites() {
+    /* =================================
+       並び替え
+       ================================= */
 
-      const keyword =
-        document
-          .getElementById("search")
-          .value
-          .toLowerCase()
-          .trim();
+    function sortFavorites(items) {
+
+      const sorted =
+        [...items];
 
 
-      /*
-       * 検索
-       */
-      const filtered =
-        favorites
-          .filter(item => {
+      if (currentSort === "recent") {
 
-            const name =
-              (item.name || "")
-                .toLowerCase();
+        sorted.sort(
+          (a, b) =>
+            (b.lastClicked || 0) -
+            (a.lastClicked || 0)
+        );
 
-            return name.includes(keyword);
+      }
 
-          })
-          .sort(
-            (a, b) =>
-              (a.order || 9999) -
-              (b.order || 9999)
-          );
 
+      else if (currentSort === "oldest") {
+
+        sorted.sort(
+          (a, b) =>
+            (a.lastClicked || 0) -
+            (b.lastClicked || 0)
+        );
+
+      }
+
+
+      else if (currentSort === "registered") {
+
+        sorted.sort(
+          (a, b) =>
+            (a.registeredAt || 0) -
+            (b.registeredAt || 0)
+        );
+
+      }
+
+
+      else if (currentSort === "name") {
+
+        sorted.sort(
+          (a, b) =>
+            (a.name || "")
+              .localeCompare(
+                b.name || "",
+                "ja"
+              )
+        );
+
+      }
+
+
+      return sorted;
+
+    }
+
+
+    /* =================================
+       お気に入り表示
+       ================================= */
+
+    function displayFavorites(
+      searchKeyword = ""
+    ) {
 
       const container =
         document.getElementById(
@@ -289,14 +861,27 @@
         );
 
 
-      /*
-       * 該当なし
-       */
-      if (filtered.length === 0) {
+      let items =
+        favorites.filter(
+          item =>
+            (item.name || "")
+              .toLowerCase()
+              .includes(
+                searchKeyword
+                  .toLowerCase()
+              )
+        );
+
+
+      items =
+        sortFavorites(items);
+
+
+      if (items.length === 0) {
 
         container.innerHTML = `
-          <div class="loading">
-            該当するお気に入りがありません。
+          <div class="empty">
+            お気に入りがありません。
           </div>
         `;
 
@@ -305,76 +890,79 @@
       }
 
 
-      /*
-       * タイルを作成
-       */
-      container.innerHTML = "";
-
       const tiles =
         document.createElement("div");
 
       tiles.className = "tiles";
 
 
-      filtered.forEach(item => {
+      items.forEach(item => {
 
         const link =
           document.createElement("a");
 
+
         link.className = "tile";
 
-        link.href = item.url;
+        link.href =
+          item.url;
 
-        link.target = "_blank";
+        link.target =
+          "_blank";
 
         link.rel =
           "noopener noreferrer";
 
 
-        /*
-         * アイコン
-         */
+        /* アイコン */
+
         const icon =
           document.createElement("div");
 
-        icon.className = "icon";
+        icon.className =
+          "icon";
 
 
-        /*
-         * ファビコンが指定されている場合
-         */
         if (item.favicon) {
 
           const img =
             document.createElement("img");
 
-          img.src = item.favicon;
+          img.src =
+            item.favicon;
 
-          img.alt = "";
+          img.alt =
+            "";
 
-          img.onerror = function() {
 
-            icon.innerHTML = "🌐";
+          img.onerror =
+            function() {
 
-          };
+              icon.innerHTML =
+                item.icon || "🌐";
+
+            };
+
 
           icon.appendChild(img);
 
-        } else {
+        }
+
+        else {
 
           icon.textContent =
-            item.icon || "🔗";
+            item.icon || "🌐";
 
         }
 
 
-        /*
-         * サイト名
-         */
+        /* サイト名 */
+
         const name =
           document.createElement("div");
 
-        name.className = "name";
+        name.className =
+          "name";
 
         name.textContent =
           item.name;
@@ -384,34 +972,457 @@
 
         link.appendChild(name);
 
+
+        /* クリック記録 */
+
+        link.addEventListener(
+          "click",
+          function() {
+
+            item.lastClicked =
+              Date.now();
+
+            saveFavorites();
+
+          }
+        );
+
+
         tiles.appendChild(link);
 
       });
 
 
-      container.appendChild(tiles);
+      container.innerHTML = "";
+
+      container.appendChild(
+        tiles
+      );
 
     }
 
 
-    /*
-     * --------------------------------
-     * 検索
-     * --------------------------------
-     */
-    document
-      .getElementById("search")
-      .addEventListener(
-        "input",
-        displayFavorites
+    /* =================================
+       メニュー
+       ================================= */
+
+    const menuButton =
+      document.getElementById(
+        "menuButton"
+      );
+
+    const menuOverlay =
+      document.getElementById(
+        "menuOverlay"
+      );
+
+    const closeMenuButton =
+      document.getElementById(
+        "closeMenuButton"
       );
 
 
-    /*
-     * --------------------------------
-     * 起動
-     * --------------------------------
-     */
+    function openMenu() {
+
+      menuOverlay.classList.add(
+        "open"
+      );
+
+      updateSortButtons();
+
+    }
+
+
+    function closeMenu() {
+
+      menuOverlay.classList.remove(
+        "open"
+      );
+
+    }
+
+
+    menuButton.addEventListener(
+      "click",
+      openMenu
+    );
+
+
+    closeMenuButton.addEventListener(
+      "click",
+      closeMenu
+    );
+
+
+    menuOverlay.addEventListener(
+      "click",
+      function(event) {
+
+        if (
+          event.target ===
+          menuOverlay
+        ) {
+
+          closeMenu();
+
+        }
+
+      }
+    );
+
+
+    /* =================================
+       並び順ボタン
+       ================================= */
+
+    const sortButtons =
+      document.querySelectorAll(
+        ".sort-option"
+      );
+
+
+    sortButtons.forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          function() {
+
+            currentSort =
+              this.dataset.sort;
+
+
+            localStorage.setItem(
+              "favoriteSort",
+              currentSort
+            );
+
+
+            updateSortButtons();
+
+            displayFavorites();
+
+          }
+        );
+
+      }
+    );
+
+
+    function updateSortButtons() {
+
+      sortButtons.forEach(
+        button => {
+
+          const mark =
+            button.querySelector(
+              ".sort-mark"
+            );
+
+
+          if (
+            button.dataset.sort ===
+            currentSort
+          ) {
+
+            mark.textContent =
+              "●";
+
+            button.classList.add(
+              "active"
+            );
+
+          }
+
+          else {
+
+            mark.textContent =
+              "○";
+
+            button.classList.remove(
+              "active"
+            );
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* =================================
+       登録画面
+       ================================= */
+
+    const registerDialog =
+      document.getElementById(
+        "registerDialog"
+      );
+
+    const nameInput =
+      document.getElementById(
+        "nameInput"
+      );
+
+    const urlInput =
+      document.getElementById(
+        "urlInput"
+      );
+
+
+    document
+      .getElementById(
+        "openRegisterButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          closeMenu();
+
+          nameInput.value =
+            "";
+
+          urlInput.value =
+            "";
+
+          registerDialog.classList.add(
+            "open"
+          );
+
+          setTimeout(
+            () =>
+              nameInput.focus(),
+            100
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "cancelRegisterButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          registerDialog.classList.remove(
+            "open"
+          );
+
+        }
+      );
+
+
+    /* =================================
+       登録処理
+       ================================= */
+
+    document
+      .getElementById(
+        "registerButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          const name =
+            nameInput.value.trim();
+
+          let url =
+            urlInput.value.trim();
+
+
+          if (!name) {
+
+            alert(
+              "サイト名を入力してください。"
+            );
+
+            return;
+
+          }
+
+
+          if (!url) {
+
+            alert(
+              "URLを入力してください。"
+            );
+
+            return;
+
+          }
+
+
+          if (
+            !url.startsWith(
+              "http://"
+            ) &&
+            !url.startsWith(
+              "https://"
+            )
+          ) {
+
+            url =
+              "https://" + url;
+
+          }
+
+
+          const now =
+            Date.now();
+
+
+          const newFavorite = {
+
+            name: name,
+
+            url: url,
+
+            icon: "🌐",
+
+            favicon:
+              getFaviconUrl(url),
+
+            order:
+              favorites.length + 1,
+
+            registeredAt:
+              now,
+
+            lastClicked:
+              now
+
+          };
+
+
+          favorites.push(
+            newFavorite
+          );
+
+
+          saveFavorites();
+
+
+          registerDialog.classList.remove(
+            "open"
+          );
+
+
+          displayFavorites();
+
+        }
+      );
+
+
+    /* =================================
+       ファビコンURL
+       ================================= */
+
+    function getFaviconUrl(url) {
+
+      try {
+
+        const parsed =
+          new URL(url);
+
+
+        return (
+          parsed.origin +
+          "/favicon.ico"
+        );
+
+      }
+
+      catch {
+
+        return "";
+
+      }
+
+    }
+
+
+    /* =================================
+       検索
+       ================================= */
+
+    const searchDialog =
+      document.getElementById(
+        "searchDialog"
+      );
+
+    const searchInput =
+      document.getElementById(
+        "searchInput"
+      );
+
+
+    document
+      .getElementById(
+        "openSearchButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          closeMenu();
+
+          searchInput.value =
+            "";
+
+          searchDialog.classList.add(
+            "open"
+          );
+
+          setTimeout(
+            () =>
+              searchInput.focus(),
+            100
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "closeSearchButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          searchDialog.classList.remove(
+            "open"
+          );
+
+          displayFavorites();
+
+        }
+      );
+
+
+    searchInput.addEventListener(
+      "input",
+      function() {
+
+        displayFavorites(
+          this.value
+        );
+
+      }
+    );
+
+
+    /* =================================
+       起動
+       ================================= */
+
     loadFavorites();
 
   </script>
