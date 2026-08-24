@@ -249,6 +249,39 @@
       color: #777;
     }
 
+    .sort-option {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+
+      padding: 12px;
+
+      border: none;
+      border-radius: 10px;
+
+      background: transparent;
+
+      font-size: 15px;
+
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .sort-option:active {
+      background: #f0f0f0;
+    }
+
+    .sort-option.active {
+      font-weight: 700;
+      background: #f2f2f2;
+    }
+
+    .sort-mark {
+      width: 25px;
+      margin-right: 5px;
+    }
+
     /* ==============================
        ダイアログ
        ============================== */
@@ -351,58 +384,141 @@
       color: white;
     }
 
-    /* ==============================
-       並び順選択
-       ============================== */
+    .delete-button {
+      position: absolute;
 
-    .sort-option {
-      width: 100%;
+      top: 8px;
+      right: 8px;
+
+      width: 34px;
+      height: 34px;
 
       display: flex;
       align-items: center;
+      justify-content: center;
 
-      padding: 12px;
+      border: none;
+      border-radius: 50%;
+
+      background: #eee;
+
+      font-size: 17px;
+
+      cursor: pointer;
+
+      z-index: 5;
+    }
+
+    .delete-button:active {
+      transform: scale(0.9);
+    }
+
+    /* ==============================
+       編集モード
+       ============================== */
+
+    .edit-header {
+      display: none;
+
+      align-items: center;
+      justify-content: space-between;
+
+      max-width: 900px;
+      margin: 0 auto;
+
+      padding: 16px 20px 12px;
+    }
+
+    .edit-header.open {
+      display: flex;
+    }
+
+    .edit-title {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .done-button {
+      padding: 10px 15px;
 
       border: none;
       border-radius: 10px;
 
-      background: transparent;
+      background: #333;
+      color: white;
 
       font-size: 15px;
+      font-weight: 600;
 
       cursor: pointer;
-      text-align: left;
     }
 
-    .sort-option:active {
-      background: #f0f0f0;
+    .edit-search {
+      display: none;
+
+      max-width: 900px;
+      margin: 0 auto;
+
+      padding: 4px 20px 16px;
     }
 
-    .sort-option.active {
-      font-weight: 700;
-      background: #f2f2f2;
+    .edit-search.open {
+      display: block;
     }
 
-    .sort-mark {
-      width: 25px;
-      margin-right: 5px;
+    .edit-search input {
+      width: 100%;
+
+      padding: 12px 15px;
+
+      border: 1px solid #ddd;
+      border-radius: 12px;
+
+      background: white;
+
+      font-size: 16px;
+
+      outline: none;
     }
+
+    /* ==============================
+       通常ヘッダーの表示制御
+       ============================== */
+
+    .normal-header.hidden {
+      display: none;
+    }
+
+    .main.editing {
+      padding-top: 0;
+    }
+
+    /* ==============================
+       PC
+       ============================== */
 
     @media (min-width: 700px) {
+
       .tiles {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns:
+          repeat(4, 1fr);
       }
+
     }
   </style>
 </head>
 
 <body>
 
-  <!-- ==============================
-       ヘッダー
-       ============================== -->
 
-  <header class="header">
+  <!-- ==================================
+       通常ヘッダー
+       ================================== -->
+
+  <header
+    class="header normal-header"
+    id="normalHeader"
+  >
 
     <h1 class="title">
       ⭐ お気に入り
@@ -419,11 +535,55 @@
   </header>
 
 
-  <!-- ==============================
-       メイン
-       ============================== -->
+  <!-- ==================================
+       編集ヘッダー
+       ================================== -->
 
-  <main class="container">
+  <header
+    class="edit-header"
+    id="editHeader"
+  >
+
+    <div class="edit-title">
+      ✏️ お気に入りを編集
+    </div>
+
+    <button
+      class="done-button"
+      id="doneButton"
+    >
+      ✓ 完了
+    </button>
+
+  </header>
+
+
+  <!-- ==================================
+       編集モード検索
+       ================================== -->
+
+  <div
+    class="edit-search"
+    id="editSearch"
+  >
+
+    <input
+      type="search"
+      id="editSearchInput"
+      placeholder="🔍 編集するお気に入りを検索"
+    >
+
+  </div>
+
+
+  <!-- ==================================
+       メイン
+       ================================== -->
+
+  <main
+    class="container main"
+    id="main"
+  >
 
     <div id="favorites">
 
@@ -436,19 +596,16 @@
   </main>
 
 
-  <!-- ==============================
+  <!-- ==================================
        バーガーメニュー
-       ============================== -->
+       ================================== -->
 
   <div
     class="menu-overlay"
     id="menuOverlay"
   >
 
-    <div
-      class="menu-panel"
-      id="menuPanel"
-    >
+    <div class="menu-panel">
 
       <div class="menu-header">
 
@@ -466,8 +623,6 @@
       </div>
 
 
-      <!-- 登録 -->
-
       <button
         class="menu-item"
         id="openRegisterButton"
@@ -475,8 +630,6 @@
         ＋　お気に入りを登録
       </button>
 
-
-      <!-- 検索 -->
 
       <button
         class="menu-item"
@@ -486,7 +639,13 @@
       </button>
 
 
-      <!-- 並び順 -->
+      <button
+        class="menu-item"
+        id="openEditButton"
+      >
+        ✏️　編集モード
+      </button>
+
 
       <div class="menu-section">
 
@@ -537,9 +696,9 @@
   </div>
 
 
-  <!-- ==============================
+  <!-- ==================================
        登録ダイアログ
-       ============================== -->
+       ================================== -->
 
   <div
     class="dialog-overlay"
@@ -606,9 +765,9 @@
   </div>
 
 
-  <!-- ==============================
+  <!-- ==================================
        検索ダイアログ
-       ============================== -->
+       ================================== -->
 
   <div
     class="dialog-overlay"
@@ -620,6 +779,7 @@
       <h2>
         お気に入りを検索
       </h2>
+
 
       <div class="form-group">
 
@@ -634,6 +794,7 @@
         >
 
       </div>
+
 
       <div class="dialog-buttons">
 
@@ -653,9 +814,9 @@
 
   <script>
 
-    /* =================================
+    /* ==================================
        基本設定
-       ================================= */
+       ================================== */
 
     let favorites = [];
 
@@ -663,10 +824,12 @@
       localStorage.getItem("favoriteSort")
       || "recent";
 
+    let editMode = false;
 
-    /* =================================
-       データ保存
-       ================================= */
+
+    /* ==================================
+       保存
+       ================================== */
 
     function saveFavorites() {
 
@@ -678,9 +841,9 @@
     }
 
 
-    /* =================================
-       データ読み込み
-       ================================= */
+    /* ==================================
+       読み込み
+       ================================== */
 
     async function loadFavorites() {
 
@@ -715,7 +878,8 @@
 
         const response =
           await fetch(
-            "favorites.json?v=" + Date.now()
+            "favorites.json?v=" +
+            Date.now()
           );
 
 
@@ -731,10 +895,6 @@
         favorites =
           await response.json();
 
-
-        /*
-         * 既存データに必要な情報を追加
-         */
 
         const now =
           Date.now();
@@ -785,9 +945,9 @@
     }
 
 
-    /* =================================
+    /* ==================================
        並び替え
-       ================================= */
+       ================================== */
 
     function sortFavorites(items) {
 
@@ -795,7 +955,9 @@
         [...items];
 
 
-      if (currentSort === "recent") {
+      if (
+        currentSort === "recent"
+      ) {
 
         sorted.sort(
           (a, b) =>
@@ -806,7 +968,9 @@
       }
 
 
-      else if (currentSort === "oldest") {
+      else if (
+        currentSort === "oldest"
+      ) {
 
         sorted.sort(
           (a, b) =>
@@ -817,7 +981,9 @@
       }
 
 
-      else if (currentSort === "registered") {
+      else if (
+        currentSort === "registered"
+      ) {
 
         sorted.sort(
           (a, b) =>
@@ -828,7 +994,9 @@
       }
 
 
-      else if (currentSort === "name") {
+      else if (
+        currentSort === "name"
+      ) {
 
         sorted.sort(
           (a, b) =>
@@ -847,9 +1015,9 @@
     }
 
 
-    /* =================================
-       お気に入り表示
-       ================================= */
+    /* ==================================
+       表示
+       ================================== */
 
     function displayFavorites(
       searchKeyword = ""
@@ -877,7 +1045,9 @@
         sortFavorites(items);
 
 
-      if (items.length === 0) {
+      if (
+        items.length === 0
+      ) {
 
         container.innerHTML = `
           <div class="empty">
@@ -891,109 +1061,186 @@
 
 
       const tiles =
-        document.createElement("div");
-
-      tiles.className = "tiles";
-
-
-      items.forEach(item => {
-
-        const link =
-          document.createElement("a");
-
-
-        link.className = "tile";
-
-        link.href =
-          item.url;
-
-        link.target =
-          "_blank";
-
-        link.rel =
-          "noopener noreferrer";
-
-
-        /* アイコン */
-
-        const icon =
-          document.createElement("div");
-
-        icon.className =
-          "icon";
-
-
-        if (item.favicon) {
-
-          const img =
-            document.createElement("img");
-
-          img.src =
-            item.favicon;
-
-          img.alt =
-            "";
-
-
-          img.onerror =
-            function() {
-
-              icon.innerHTML =
-                item.icon || "🌐";
-
-            };
-
-
-          icon.appendChild(img);
-
-        }
-
-        else {
-
-          icon.textContent =
-            item.icon || "🌐";
-
-        }
-
-
-        /* サイト名 */
-
-        const name =
-          document.createElement("div");
-
-        name.className =
-          "name";
-
-        name.textContent =
-          item.name;
-
-
-        link.appendChild(icon);
-
-        link.appendChild(name);
-
-
-        /* クリック記録 */
-
-        link.addEventListener(
-          "click",
-          function() {
-
-            item.lastClicked =
-              Date.now();
-
-            saveFavorites();
-
-          }
+        document.createElement(
+          "div"
         );
 
-
-        tiles.appendChild(link);
-
-      });
+      tiles.className =
+        "tiles";
 
 
-      container.innerHTML = "";
+      items.forEach(
+        item => {
+
+          const tile =
+            document.createElement(
+              "div"
+            );
+
+          tile.className =
+            "tile";
+
+
+          /*
+           * 編集モードでは
+           * タイルをリンクにしない
+           */
+
+          if (!editMode) {
+
+            tile.style.cursor =
+              "pointer";
+
+
+            tile.addEventListener(
+              "click",
+              function() {
+
+                item.lastClicked =
+                  Date.now();
+
+                saveFavorites();
+
+
+                window.open(
+                  item.url,
+                  "_blank",
+                  "noopener,noreferrer"
+                );
+
+              }
+            );
+
+          }
+
+
+          /*
+           * アイコン
+           */
+
+          const icon =
+            document.createElement(
+              "div"
+            );
+
+          icon.className =
+            "icon";
+
+
+          if (item.favicon) {
+
+            const img =
+              document.createElement(
+                "img"
+              );
+
+            img.src =
+              item.favicon;
+
+            img.alt =
+              "";
+
+
+            img.onerror =
+              function() {
+
+                icon.innerHTML =
+                  item.icon || "🌐";
+
+              };
+
+
+            icon.appendChild(
+              img
+            );
+
+          }
+
+          else {
+
+            icon.textContent =
+              item.icon || "🌐";
+
+          }
+
+
+          /*
+           * 名前
+           */
+
+          const name =
+            document.createElement(
+              "div"
+            );
+
+          name.className =
+            "name";
+
+          name.textContent =
+            item.name;
+
+
+          tile.appendChild(
+            icon
+          );
+
+          tile.appendChild(
+            name
+          );
+
+
+          /*
+           * 編集モード
+           */
+
+          if (editMode) {
+
+            const deleteButton =
+              document.createElement(
+                "button"
+              );
+
+            deleteButton.className =
+              "delete-button";
+
+            deleteButton.textContent =
+              "×";
+
+            deleteButton.title =
+              "削除";
+
+
+            deleteButton.addEventListener(
+              "click",
+              function(event) {
+
+                event.stopPropagation();
+
+                confirmDelete(
+                  item
+                );
+
+              }
+            );
+
+
+            tile.appendChild(
+              deleteButton
+            );
+
+          }
+
+
+          tiles.appendChild(
+            tile
+          );
+
+        }
+      );
+
+
+      container.innerHTML =
+        "";
 
       container.appendChild(
         tiles
@@ -1002,9 +1249,9 @@
     }
 
 
-    /* =================================
+    /* ==================================
        メニュー
-       ================================= */
+       ================================== */
 
     const menuButton =
       document.getElementById(
@@ -1071,9 +1318,9 @@
     );
 
 
-    /* =================================
-       並び順ボタン
-       ================================= */
+    /* ==================================
+       並び順
+       ================================== */
 
     const sortButtons =
       document.querySelectorAll(
@@ -1151,9 +1398,9 @@
     }
 
 
-    /* =================================
-       登録画面
-       ================================= */
+    /* ==================================
+       登録
+       ================================== */
 
     const registerDialog =
       document.getElementById(
@@ -1216,10 +1463,6 @@
         }
       );
 
-
-    /* =================================
-       登録処理
-       ================================= */
 
     document
       .getElementById(
@@ -1319,9 +1562,9 @@
       );
 
 
-    /* =================================
-       ファビコンURL
-       ================================= */
+    /* ==================================
+       ファビコン
+       ================================== */
 
     function getFaviconUrl(url) {
 
@@ -1347,9 +1590,9 @@
     }
 
 
-    /* =================================
+    /* ==================================
        検索
-       ================================= */
+       ================================== */
 
     const searchDialog =
       document.getElementById(
@@ -1419,9 +1662,158 @@
     );
 
 
-    /* =================================
+    /* ==================================
+       編集モード
+       ================================== */
+
+    const normalHeader =
+      document.getElementById(
+        "normalHeader"
+      );
+
+    const editHeader =
+      document.getElementById(
+        "editHeader"
+      );
+
+    const editSearch =
+      document.getElementById(
+        "editSearch"
+      );
+
+    const editSearchInput =
+      document.getElementById(
+        "editSearchInput"
+      );
+
+
+    document
+      .getElementById(
+        "openEditButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          closeMenu();
+
+          editMode =
+            true;
+
+
+          normalHeader.classList.add(
+            "hidden"
+          );
+
+          editHeader.classList.add(
+            "open"
+          );
+
+          editSearch.classList.add(
+            "open"
+          );
+
+
+          editSearchInput.value =
+            "";
+
+
+          displayFavorites();
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "doneButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          editMode =
+            false;
+
+
+          normalHeader.classList.remove(
+            "hidden"
+          );
+
+          editHeader.classList.remove(
+            "open"
+          );
+
+          editSearch.classList.remove(
+            "open"
+          );
+
+
+          editSearchInput.value =
+            "";
+
+
+          displayFavorites();
+
+        }
+      );
+
+
+    editSearchInput.addEventListener(
+      "input",
+      function() {
+
+        displayFavorites(
+          this.value
+        );
+
+      }
+    );
+
+
+    /* ==================================
+       削除確認
+       ================================== */
+
+    function confirmDelete(
+      item
+    ) {
+
+      const result =
+        confirm(
+          "「" +
+          item.name +
+          "」を削除しますか？"
+        );
+
+
+      if (!result) {
+
+        return;
+
+      }
+
+
+      favorites =
+        favorites.filter(
+          favorite =>
+            favorite !== item
+        );
+
+
+      saveFavorites();
+
+
+      displayFavorites(
+        editSearchInput.value
+      );
+
+    }
+
+
+    /* ==================================
        起動
-       ================================= */
+       ================================== */
 
     loadFavorites();
 
