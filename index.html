@@ -384,6 +384,10 @@
       color: white;
     }
 
+    /* ==============================
+       編集モード
+       ============================== */
+
     .delete-button {
       position: absolute;
 
@@ -412,10 +416,6 @@
     .delete-button:active {
       transform: scale(0.9);
     }
-
-    /* ==============================
-       編集モード
-       ============================== */
 
     .edit-header {
       display: none;
@@ -481,21 +481,48 @@
       outline: none;
     }
 
-    /* ==============================
-       通常ヘッダーの表示制御
-       ============================== */
-
     .normal-header.hidden {
       display: none;
     }
 
-    .main.editing {
-      padding-top: 0;
+    /* ==============================
+       バックアップ
+       ============================== */
+
+    .backup-info {
+      padding: 14px;
+
+      background: #f7f7f7;
+
+      border-radius: 12px;
+
+      font-size: 14px;
+      line-height: 1.6;
     }
 
-    /* ==============================
-       PC
-       ============================== */
+    .backup-count {
+      font-weight: 700;
+    }
+
+    .file-input {
+      width: 100%;
+
+      padding: 10px 0;
+
+      font-size: 15px;
+    }
+
+    .restore-warning {
+      margin-top: 12px;
+      padding: 12px;
+
+      background: #fff8e1;
+
+      border-radius: 10px;
+
+      font-size: 13px;
+      line-height: 1.6;
+    }
 
     @media (min-width: 700px) {
 
@@ -559,7 +586,7 @@
 
 
   <!-- ==================================
-       編集モード検索
+       編集検索
        ================================== -->
 
   <div
@@ -580,10 +607,7 @@
        メイン
        ================================== -->
 
-  <main
-    class="container main"
-    id="main"
-  >
+  <main class="container">
 
     <div id="favorites">
 
@@ -597,7 +621,7 @@
 
 
   <!-- ==================================
-       バーガーメニュー
+       メニュー
        ================================== -->
 
   <div
@@ -687,6 +711,35 @@
         >
           <span class="sort-mark"></span>
           五十音順
+        </button>
+
+      </div>
+
+
+      <!-- ==============================
+           バックアップ
+           ============================== -->
+
+      <div class="menu-section">
+
+        <div class="menu-section-title">
+          データ管理
+        </div>
+
+
+        <button
+          class="menu-item"
+          id="backupButton"
+        >
+          💾　バックアップ
+        </button>
+
+
+        <button
+          class="menu-item"
+          id="restoreButton"
+        >
+          📂　バックアップから復元
         </button>
 
       </div>
@@ -812,6 +865,148 @@
   </div>
 
 
+  <!-- ==================================
+       バックアップダイアログ
+       ================================== -->
+
+  <div
+    class="dialog-overlay"
+    id="backupDialog"
+  >
+
+    <div class="dialog">
+
+      <h2>
+        💾 バックアップ
+      </h2>
+
+
+      <div class="backup-info">
+
+        現在登録されているお気に入り：
+
+        <span
+          class="backup-count"
+          id="backupCount"
+        >
+          0
+        </span>
+
+        件
+
+      </div>
+
+
+      <div class="restore-warning">
+
+        バックアップファイルには、
+        お気に入りの名前・URL・並び順などが
+        保存されます。
+
+      </div>
+
+
+      <div class="dialog-buttons">
+
+        <button
+          class="dialog-button cancel-button"
+          id="closeBackupButton"
+        >
+          閉じる
+        </button>
+
+        <button
+          class="dialog-button register-button"
+          id="createBackupButton"
+        >
+          ファイルを作成
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ==================================
+       復元ダイアログ
+       ================================== -->
+
+  <div
+    class="dialog-overlay"
+    id="restoreDialog"
+  >
+
+    <div class="dialog">
+
+      <h2>
+        📂 バックアップから復元
+      </h2>
+
+
+      <div class="form-group">
+
+        <label for="backupFile">
+          バックアップファイル
+        </label>
+
+        <input
+          type="file"
+          id="backupFile"
+          class="file-input"
+          accept=".json,application/json"
+        >
+
+      </div>
+
+
+      <div
+        class="backup-info"
+        id="restoreInfo"
+      >
+        バックアップファイルを
+        選択してください。
+      </div>
+
+
+      <div class="restore-warning">
+
+        ⚠️ 復元すると、現在のお気に入りが
+        バックアップの内容に置き換わります。
+
+        <br><br>
+
+        復元前に、現在のデータを
+        バックアップしておくことをおすすめします。
+
+      </div>
+
+
+      <div class="dialog-buttons">
+
+        <button
+          class="dialog-button cancel-button"
+          id="closeRestoreButton"
+        >
+          キャンセル
+        </button>
+
+        <button
+          class="dialog-button register-button"
+          id="restoreConfirmButton"
+          disabled
+        >
+          復元する
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
   <script>
 
     /* ==================================
@@ -821,10 +1016,13 @@
     let favorites = [];
 
     let currentSort =
-      localStorage.getItem("favoriteSort")
-      || "recent";
+      localStorage.getItem(
+        "favoriteSort"
+      ) || "recent";
 
     let editMode = false;
+
+    let restoreData = null;
 
 
     /* ==================================
@@ -835,7 +1033,9 @@
 
       localStorage.setItem(
         "myFavorites",
-        JSON.stringify(favorites)
+        JSON.stringify(
+          favorites
+        )
       );
 
     }
@@ -848,7 +1048,9 @@
     async function loadFavorites() {
 
       const saved =
-        localStorage.getItem("myFavorites");
+        localStorage.getItem(
+          "myFavorites"
+        );
 
 
       if (saved) {
@@ -856,13 +1058,17 @@
         try {
 
           favorites =
-            JSON.parse(saved);
+            JSON.parse(
+              saved
+            );
 
           displayFavorites();
 
           return;
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
           console.error(
             "保存データの読み込みに失敗しました。",
@@ -926,8 +1132,10 @@
 
         displayFavorites();
 
+      }
 
-      } catch (error) {
+
+      catch (error) {
 
         document.getElementById(
           "favorites"
@@ -938,7 +1146,9 @@
           </div>
         `;
 
-        console.error(error);
+        console.error(
+          error
+        );
 
       }
 
@@ -949,14 +1159,17 @@
        並び替え
        ================================== */
 
-    function sortFavorites(items) {
+    function sortFavorites(
+      items
+    ) {
 
       const sorted =
         [...items];
 
 
       if (
-        currentSort === "recent"
+        currentSort ===
+        "recent"
       ) {
 
         sorted.sort(
@@ -969,7 +1182,8 @@
 
 
       else if (
-        currentSort === "oldest"
+        currentSort ===
+        "oldest"
       ) {
 
         sorted.sort(
@@ -982,7 +1196,8 @@
 
 
       else if (
-        currentSort === "registered"
+        currentSort ===
+        "registered"
       ) {
 
         sorted.sort(
@@ -995,7 +1210,8 @@
 
 
       else if (
-        currentSort === "name"
+        currentSort ===
+        "name"
       ) {
 
         sorted.sort(
@@ -1042,7 +1258,9 @@
 
 
       items =
-        sortFavorites(items);
+        sortFavorites(
+          items
+        );
 
 
       if (
@@ -1081,11 +1299,6 @@
             "tile";
 
 
-          /*
-           * 編集モードでは
-           * タイルをリンクにしない
-           */
-
           if (!editMode) {
 
             tile.style.cursor =
@@ -1114,9 +1327,7 @@
           }
 
 
-          /*
-           * アイコン
-           */
+          /* アイコン */
 
           const icon =
             document.createElement(
@@ -1127,7 +1338,9 @@
             "icon";
 
 
-          if (item.favicon) {
+          if (
+            item.favicon
+          ) {
 
             const img =
               document.createElement(
@@ -1145,7 +1358,8 @@
               function() {
 
                 icon.innerHTML =
-                  item.icon || "🌐";
+                  item.icon ||
+                  "🌐";
 
               };
 
@@ -1159,14 +1373,13 @@
           else {
 
             icon.textContent =
-              item.icon || "🌐";
+              item.icon ||
+              "🌐";
 
           }
 
 
-          /*
-           * 名前
-           */
+          /* 名前 */
 
           const name =
             document.createElement(
@@ -1189,11 +1402,11 @@
           );
 
 
-          /*
-           * 編集モード
-           */
+          /* 編集モード */
 
-          if (editMode) {
+          if (
+            editMode
+          ) {
 
             const deleteButton =
               document.createElement(
@@ -1205,9 +1418,6 @@
 
             deleteButton.textContent =
               "×";
-
-            deleteButton.title =
-              "削除";
 
 
             deleteButton.addEventListener(
@@ -1511,7 +1721,8 @@
           ) {
 
             url =
-              "https://" + url;
+              "https://" +
+              url;
 
           }
 
@@ -1520,7 +1731,7 @@
             Date.now();
 
 
-          const newFavorite = {
+          favorites.push({
 
             name: name,
 
@@ -1529,7 +1740,9 @@
             icon: "🌐",
 
             favicon:
-              getFaviconUrl(url),
+              getFaviconUrl(
+                url
+              ),
 
             order:
               favorites.length + 1,
@@ -1540,12 +1753,7 @@
             lastClicked:
               now
 
-          };
-
-
-          favorites.push(
-            newFavorite
-          );
+          });
 
 
           saveFavorites();
@@ -1566,12 +1774,16 @@
        ファビコン
        ================================== */
 
-    function getFaviconUrl(url) {
+    function getFaviconUrl(
+      url
+    ) {
 
       try {
 
         const parsed =
-          new URL(url);
+          new URL(
+            url
+          );
 
 
         return (
@@ -1717,7 +1929,6 @@
           editSearchInput.value =
             "";
 
-
           displayFavorites();
 
         }
@@ -1772,7 +1983,7 @@
 
 
     /* ==================================
-       削除確認
+       削除
        ================================== */
 
     function confirmDelete(
@@ -1809,6 +2020,490 @@
       );
 
     }
+
+
+    /* ==================================
+       バックアップ
+       ================================== */
+
+    const backupDialog =
+      document.getElementById(
+        "backupDialog"
+      );
+
+    const backupCount =
+      document.getElementById(
+        "backupCount"
+      );
+
+
+    document
+      .getElementById(
+        "backupButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          closeMenu();
+
+
+          backupCount.textContent =
+            favorites.length;
+
+
+          backupDialog.classList.add(
+            "open"
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "closeBackupButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          backupDialog.classList.remove(
+            "open"
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "createBackupButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          createBackup();
+
+        }
+      );
+
+
+    function createBackup() {
+
+      const backup = {
+
+        version: 1,
+
+        createdAt:
+          new Date().toISOString(),
+
+        favorites:
+          favorites
+
+      };
+
+
+      const json =
+        JSON.stringify(
+          backup,
+          null,
+          2
+        );
+
+
+      const blob =
+        new Blob(
+          [json],
+          {
+            type:
+              "application/json"
+          }
+        );
+
+
+      const url =
+        URL.createObjectURL(
+          blob
+        );
+
+
+      const date =
+        new Date();
+
+
+      const filename =
+        "my-favorites-backup-" +
+        date.getFullYear() +
+        "-" +
+        String(
+          date.getMonth() + 1
+        ).padStart(
+          2,
+          "0"
+        ) +
+        "-" +
+        String(
+          date.getDate()
+        ).padStart(
+          2,
+          "0"
+        ) +
+        ".json";
+
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+
+      link.href =
+        url;
+
+      link.download =
+        filename;
+
+
+      document.body.appendChild(
+        link
+      );
+
+      link.click();
+
+      link.remove();
+
+
+      setTimeout(
+        function() {
+
+          URL.revokeObjectURL(
+            url
+          );
+
+        },
+        1000
+      );
+
+
+      alert(
+        "バックアップファイルを作成しました。\n\n" +
+        filename
+      );
+
+    }
+
+
+    /* ==================================
+       復元
+       ================================== */
+
+    const restoreDialog =
+      document.getElementById(
+        "restoreDialog"
+      );
+
+    const backupFile =
+      document.getElementById(
+        "backupFile"
+      );
+
+    const restoreInfo =
+      document.getElementById(
+        "restoreInfo"
+      );
+
+    const restoreConfirmButton =
+      document.getElementById(
+        "restoreConfirmButton"
+      );
+
+
+    document
+      .getElementById(
+        "restoreButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          closeMenu();
+
+          restoreData =
+            null;
+
+          backupFile.value =
+            "";
+
+          restoreInfo.textContent =
+            "バックアップファイルを選択してください。";
+
+          restoreConfirmButton.disabled =
+            true;
+
+          restoreDialog.classList.add(
+            "open"
+          );
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "closeRestoreButton"
+      )
+      .addEventListener(
+        "click",
+        function() {
+
+          restoreDialog.classList.remove(
+            "open"
+          );
+
+        }
+      );
+
+
+    backupFile.addEventListener(
+      "change",
+      function() {
+
+        const file =
+          this.files[0];
+
+
+        if (!file) {
+
+          restoreData =
+            null;
+
+          restoreConfirmButton.disabled =
+            true;
+
+          return;
+
+        }
+
+
+        const reader =
+          new FileReader();
+
+
+        reader.onload =
+          function(event) {
+
+            try {
+
+              const data =
+                JSON.parse(
+                  event.target.result
+                );
+
+
+              /*
+               * 新しいバックアップ形式
+               */
+
+              if (
+                data &&
+                Array.isArray(
+                  data.favorites
+                )
+              ) {
+
+                restoreData =
+                  data.favorites;
+
+              }
+
+
+              /*
+               * favorites.json形式にも対応
+               */
+
+              else if (
+                Array.isArray(
+                  data
+                )
+              ) {
+
+                restoreData =
+                  data;
+
+              }
+
+
+              else {
+
+                throw new Error(
+                  "データ形式が正しくありません。"
+                );
+
+              }
+
+
+              if (
+                restoreData.length === 0
+              ) {
+
+                restoreInfo.textContent =
+                  "お気に入りが0件のバックアップです。";
+
+              }
+
+              else {
+
+                restoreInfo.innerHTML =
+                  "バックアップ内のお気に入り： " +
+                  "<strong>" +
+                  restoreData.length +
+                  "件</strong>";
+
+              }
+
+
+              restoreConfirmButton.disabled =
+                false;
+
+            }
+
+            catch (error) {
+
+              restoreData =
+                null;
+
+              restoreConfirmButton.disabled =
+                true;
+
+              restoreInfo.textContent =
+                "このファイルは使用できません。";
+
+              alert(
+                "バックアップファイルを読み込めませんでした。"
+              );
+
+              console.error(
+                error
+              );
+
+            }
+
+          };
+
+
+        reader.readAsText(
+          file
+        );
+
+      }
+    );
+
+
+    /* ==================================
+       復元実行
+       ================================== */
+
+    restoreConfirmButton.addEventListener(
+      "click",
+      function() {
+
+        if (
+          !Array.isArray(
+            restoreData
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        const result =
+          confirm(
+            "現在のお気に入りを、\n" +
+            restoreData.length +
+            "件のバックアップデータに置き換えますか？\n\n" +
+            "この操作は現在のデータを上書きします。"
+          );
+
+
+        if (!result) {
+
+          return;
+
+        }
+
+
+        /*
+         * 復元前に現在のデータを
+         * 自動バックアップ
+         */
+
+        const safetyBackup = {
+
+          version: 1,
+
+          createdAt:
+            new Date().toISOString(),
+
+          favorites:
+            favorites
+
+        };
+
+
+        localStorage.setItem(
+          "myFavoritesBeforeRestore",
+          JSON.stringify(
+            safetyBackup
+          )
+        );
+
+
+        favorites =
+          restoreData.map(
+            (item, index) => {
+
+              return {
+
+                ...item,
+
+                registeredAt:
+                  item.registeredAt ||
+                  (
+                    Date.now() +
+                    index
+                  ),
+
+                lastClicked:
+                  item.lastClicked ||
+                  0
+
+              };
+
+            }
+          );
+
+
+        saveFavorites();
+
+
+        restoreDialog.classList.remove(
+          "open"
+        );
+
+
+        displayFavorites();
+
+
+        alert(
+          "バックアップから復元しました。"
+        );
+
+      }
+    );
 
 
     /* ==================================
