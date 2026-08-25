@@ -537,7 +537,6 @@
 
 <body>
 
-
   <!-- ==================================
        通常ヘッダー
        ================================== -->
@@ -717,7 +716,7 @@
 
 
       <!-- ==============================
-           バックアップ
+           データ管理
            ============================== -->
 
       <div class="menu-section">
@@ -1042,6 +1041,287 @@
 
 
     /* ==================================
+       URLを安全に整える
+       ================================== */
+
+    function normalizeUrl(url) {
+
+      if (!url) {
+        return "";
+      }
+
+      url = url.trim();
+
+      if (
+        !url.startsWith("http://") &&
+        !url.startsWith("https://")
+      ) {
+        url = "https://" + url;
+      }
+
+      return url;
+
+    }
+
+
+    /* ==================================
+       ファビコン候補を作成
+       ================================== */
+
+    function getFaviconCandidates(url) {
+
+      const candidates = [];
+
+      try {
+
+        const parsed =
+          new URL(
+            normalizeUrl(url)
+          );
+
+        const origin =
+          parsed.origin;
+
+
+        /*
+         * 最も一般的な favicon.ico
+         */
+
+        candidates.push(
+          origin + "/favicon.ico"
+        );
+
+
+        /*
+         * favicon.png
+         */
+
+        candidates.push(
+          origin + "/favicon.png"
+        );
+
+
+        /*
+         * Apple Touch Icon
+         */
+
+        candidates.push(
+          origin + "/apple-touch-icon.png"
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "URL解析エラー:",
+          error
+        );
+
+      }
+
+
+      return [
+        ...new Set(
+          candidates
+        )
+      ];
+
+    }
+
+
+    /* ==================================
+       ファビコンURLを取得
+       ================================== */
+
+    function getFaviconUrl(url) {
+
+      const candidates =
+        getFaviconCandidates(
+          url
+        );
+
+
+      if (
+        candidates.length > 0
+      ) {
+
+        return candidates[0];
+
+      }
+
+
+      return "";
+
+    }
+
+
+    /* ==================================
+       ファビコン表示
+       複数候補を順番に試す
+       ================================== */
+
+    function createFaviconElement(
+      item
+    ) {
+
+      const icon =
+        document.createElement(
+          "div"
+        );
+
+      icon.className =
+        "icon";
+
+
+      /*
+       * ファビコン候補
+       */
+
+      let candidates =
+        getFaviconCandidates(
+          item.url
+        );
+
+
+      /*
+       * 以前保存されていたfaviconが
+       * 候補にあれば先頭へ
+       */
+
+      if (
+        item.favicon
+      ) {
+
+        candidates =
+          [
+            item.favicon,
+            ...candidates
+          ];
+
+      }
+
+
+      /*
+       * 重複を削除
+       */
+
+      candidates =
+        [
+          ...new Set(
+            candidates.filter(
+              Boolean
+            )
+          )
+        ];
+
+
+      let index = 0;
+
+
+      function tryNext() {
+
+        /*
+         * 全候補失敗
+         */
+
+        if (
+          index >=
+          candidates.length
+        ) {
+
+          icon.textContent =
+            item.icon ||
+            "🌐";
+
+          return;
+
+        }
+
+
+        const img =
+          document.createElement(
+            "img"
+          );
+
+
+        const candidate =
+          candidates[index];
+
+
+        index++;
+
+
+        img.src =
+          candidate;
+
+
+        img.alt =
+          "";
+
+
+        /*
+         * 読み込み成功
+         */
+
+        img.onload =
+          function() {
+
+            /*
+             * 今回正常に表示できた
+             * URLを保存
+             */
+
+            if (
+              item.favicon !==
+              candidate
+            ) {
+
+              item.favicon =
+                candidate;
+
+              saveFavorites();
+
+            }
+
+          };
+
+
+        /*
+         * 読み込み失敗
+         */
+
+        img.onerror =
+          function() {
+
+            /*
+             * 壊れた画像を画面に残さない
+             */
+
+            img.remove();
+
+
+            tryNext();
+
+          };
+
+
+        icon.appendChild(
+          img
+        );
+
+      }
+
+
+      tryNext();
+
+
+      return icon;
+
+    }
+
+
+    /* ==================================
        読み込み
        ================================== */
 
@@ -1053,6 +1333,10 @@
         );
 
 
+      /*
+       * 端末に保存済みデータがある場合
+       */
+
       if (saved) {
 
         try {
@@ -1061,6 +1345,45 @@
             JSON.parse(
               saved
             );
+
+
+          /*
+           * 古いデータとの互換性を確保
+           */
+
+          favorites =
+            favorites.map(
+              (item, index) => {
+
+                return {
+
+                  ...item,
+
+                  url:
+                    normalizeUrl(
+                      item.url
+                    ),
+
+                  registeredAt:
+                    item.registeredAt
+                    ||
+                    (
+                      Date.now() +
+                      index
+                    ),
+
+                  lastClicked:
+                    item.lastClicked
+                    ||
+                    0
+
+                };
+
+              }
+            );
+
+
+          saveFavorites();
 
           displayFavorites();
 
@@ -1080,6 +1403,10 @@
       }
 
 
+      /*
+       * 初回のみ favorites.json を読む
+       */
+
       try {
 
         const response =
@@ -1089,7 +1416,9 @@
           );
 
 
-        if (!response.ok) {
+        if (
+          !response.ok
+        ) {
 
           throw new Error(
             "favorites.jsonを読み込めませんでした"
@@ -1114,13 +1443,23 @@
 
                 ...item,
 
+                url:
+                  normalizeUrl(
+                    item.url
+                  ),
+
                 registeredAt:
                   item.registeredAt
-                  || (now + index),
+                  ||
+                  (
+                    now +
+                    index
+                  ),
 
                 lastClicked:
                   item.lastClicked
-                  || 0
+                  ||
+                  0
 
               };
 
@@ -1133,7 +1472,6 @@
         displayFavorites();
 
       }
-
 
       catch (error) {
 
@@ -1299,7 +1637,9 @@
             "tile";
 
 
-          if (!editMode) {
+          if (
+            !editMode
+          ) {
 
             tile.style.cursor =
               "pointer";
@@ -1327,59 +1667,19 @@
           }
 
 
-          /* アイコン */
+          /*
+           * ファビコン
+           */
 
           const icon =
-            document.createElement(
-              "div"
+            createFaviconElement(
+              item
             );
 
-          icon.className =
-            "icon";
 
-
-          if (
-            item.favicon
-          ) {
-
-            const img =
-              document.createElement(
-                "img"
-              );
-
-            img.src =
-              item.favicon;
-
-            img.alt =
-              "";
-
-
-            img.onerror =
-              function() {
-
-                icon.innerHTML =
-                  item.icon ||
-                  "🌐";
-
-              };
-
-
-            icon.appendChild(
-              img
-            );
-
-          }
-
-          else {
-
-            icon.textContent =
-              item.icon ||
-              "🌐";
-
-          }
-
-
-          /* 名前 */
+          /*
+           * 名前
+           */
 
           const name =
             document.createElement(
@@ -1402,7 +1702,9 @@
           );
 
 
-          /* 編集モード */
+          /*
+           * 編集モード
+           */
 
           if (
             editMode
@@ -1685,11 +1987,15 @@
           const name =
             nameInput.value.trim();
 
-          let url =
-            urlInput.value.trim();
+          const url =
+            normalizeUrl(
+              urlInput.value
+            );
 
 
-          if (!name) {
+          if (
+            !name
+          ) {
 
             alert(
               "サイト名を入力してください。"
@@ -1700,7 +2006,9 @@
           }
 
 
-          if (!url) {
+          if (
+            !url
+          ) {
 
             alert(
               "URLを入力してください。"
@@ -1711,33 +2019,20 @@
           }
 
 
-          if (
-            !url.startsWith(
-              "http://"
-            ) &&
-            !url.startsWith(
-              "https://"
-            )
-          ) {
-
-            url =
-              "https://" +
-              url;
-
-          }
-
-
           const now =
             Date.now();
 
 
           favorites.push({
 
-            name: name,
+            name:
+              name,
 
-            url: url,
+            url:
+              url,
 
-            icon: "🌐",
+            icon:
+              "🌐",
 
             favicon:
               getFaviconUrl(
@@ -1768,38 +2063,6 @@
 
         }
       );
-
-
-    /* ==================================
-       ファビコン
-       ================================== */
-
-    function getFaviconUrl(
-      url
-    ) {
-
-      try {
-
-        const parsed =
-          new URL(
-            url
-          );
-
-
-        return (
-          parsed.origin +
-          "/favicon.ico"
-        );
-
-      }
-
-      catch {
-
-        return "";
-
-      }
-
-    }
 
 
     /* ==================================
@@ -1998,7 +2261,9 @@
         );
 
 
-      if (!result) {
+      if (
+        !result
+      ) {
 
         return;
 
@@ -2094,7 +2359,8 @@
 
       const backup = {
 
-        version: 1,
+        version:
+          1,
 
         createdAt:
           new Date().toISOString(),
@@ -2274,7 +2540,9 @@
           this.files[0];
 
 
-        if (!file) {
+        if (
+          !file
+        ) {
 
           restoreData =
             null;
@@ -2429,7 +2697,9 @@
           );
 
 
-        if (!result) {
+        if (
+          !result
+        ) {
 
           return;
 
@@ -2437,13 +2707,13 @@
 
 
         /*
-         * 復元前に現在のデータを
-         * 自動バックアップ
+         * 復元前の安全用バックアップ
          */
 
         const safetyBackup = {
 
-          version: 1,
+          version:
+            1,
 
           createdAt:
             new Date().toISOString(),
@@ -2466,20 +2736,38 @@
           restoreData.map(
             (item, index) => {
 
+              const url =
+                normalizeUrl(
+                  item.url
+                );
+
+
               return {
 
                 ...item,
 
+                url:
+                  url,
+
                 registeredAt:
-                  item.registeredAt ||
+                  item.registeredAt
+                  ||
                   (
                     Date.now() +
                     index
                   ),
 
                 lastClicked:
-                  item.lastClicked ||
-                  0
+                  item.lastClicked
+                  ||
+                  0,
+
+                favicon:
+                  item.favicon
+                  ||
+                  getFaviconUrl(
+                    url
+                  )
 
               };
 
