@@ -23,37 +23,40 @@
       color: #333;
     }
 
-    /* ==============================
+    /* ==================================
        ヘッダー
-       ============================== */
+       ================================== */
 
     .header {
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      max-width: 900px;
+      width: 100%;
+      max-width: 1200px;
+
       margin: 0 auto;
 
-      padding: 16px 20px 12px;
+      padding: 14px 16px 10px;
     }
 
     .title {
       margin: 0;
-      font-size: 24px;
+
+      font-size: 22px;
       font-weight: 700;
     }
 
     .menu-button {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
 
       border: none;
       border-radius: 12px;
 
       background: white;
 
-      font-size: 25px;
+      font-size: 24px;
 
       cursor: pointer;
 
@@ -61,106 +64,200 @@
         0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
-    /* ==============================
+    /* ==================================
        メイン
-       ============================== */
+       ================================== */
 
     .container {
-      max-width: 900px;
+      width: 100%;
+      max-width: 1200px;
+
       margin: 0 auto;
-      padding: 8px 20px 30px;
+
+      padding: 6px 12px 30px;
     }
 
+    /* ==================================
+       タイル
+       ================================== */
+
     .tiles {
-  display: grid;
+      display: grid;
 
-  /*
-   * スマホでは4列
-   */
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+      /* スマホ：4列 */
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
 
-  gap: 10px;
-}
+      gap: 8px;
+    }
 
     .tile {
       position: relative;
 
       display: flex;
       flex-direction: column;
+
       align-items: center;
       justify-content: center;
 
-      min-height: 120px;
-      padding: 15px;
+      /*
+       * 正方形にする
+       */
+      aspect-ratio: 1 / 1;
+
+      min-width: 0;
+
+      padding: 7px;
 
       background: white;
-      border-radius: 16px;
+
+      border-radius: 13px;
 
       text-decoration: none;
+
       color: #333;
 
       box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.08);
+        0 2px 7px rgba(0, 0, 0, 0.07);
 
-      transition: transform 0.1s ease;
+      transition:
+        transform 0.1s ease;
     }
 
     .tile:active {
-      transform: scale(0.96);
+      transform: scale(0.95);
     }
 
-    .icon {
-      width: 44px;
-      height: 44px;
+    /* ==================================
+       ファビコン
+       ================================== */
 
-      margin-bottom: 9px;
+    .icon {
+      width: 34px;
+      height: 34px;
+
+      margin-bottom: 4px;
 
       display: flex;
+
       align-items: center;
       justify-content: center;
 
-      font-size: 32px;
+      flex-shrink: 0;
+
+      font-size: 25px;
     }
 
     .icon img {
-      width: 38px;
-      height: 38px;
+      width: 32px;
+      height: 32px;
 
       object-fit: contain;
 
-      border-radius: 7px;
+      border-radius: 6px;
     }
 
+    /* ==================================
+       サイト名
+       ================================== */
+
     .name {
-      font-size: 15px;
+      width: 100%;
+
+      font-size: 12px;
       font-weight: 600;
+
+      line-height: 1.25;
 
       text-align: center;
 
       word-break: break-word;
+
+      overflow-wrap: anywhere;
     }
+
+    /* ==================================
+       読み込み・空表示
+       ================================== */
 
     .loading {
       text-align: center;
+
       padding: 40px 20px;
+
       color: #777;
     }
 
     .empty {
       text-align: center;
+
       padding: 50px 20px;
+
       color: #777;
     }
 
-    /* ==============================
+    /* ==================================
+       PC
+       ================================== */
+
+    @media (min-width: 700px) {
+
+      .container {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .tiles {
+        /*
+         * PCは画面幅に合わせて自動調整
+         *
+         * 1タイルが120pxより小さく
+         * ならないようにする
+         */
+        grid-template-columns:
+          repeat(
+            auto-fit,
+            minmax(120px, 1fr)
+          );
+
+        gap: 12px;
+      }
+
+      .tile {
+        padding: 10px;
+      }
+
+      .icon {
+        width: 42px;
+        height: 42px;
+
+        margin-bottom: 6px;
+
+        font-size: 30px;
+      }
+
+      .icon img {
+        width: 38px;
+        height: 38px;
+      }
+
+      .name {
+        font-size: 14px;
+      }
+
+    }
+
+    /* ==================================
        メニュー
-       ============================== */
+       ================================== */
 
     .menu-overlay {
       position: fixed;
+
       inset: 0;
 
-      background: rgba(0, 0, 0, 0.25);
+      background:
+        rgba(0, 0, 0, 0.25);
 
       display: none;
 
@@ -177,10 +274,12 @@
       top: 0;
       right: 0;
 
-      width: min(330px, 88vw);
+      width:
+        min(330px, 88vw);
+
       height: 100%;
 
-      padding: 24px 20px;
+      padding: 22px 18px;
 
       background: white;
 
@@ -192,27 +291,30 @@
 
     .menu-header {
       display: flex;
+
       align-items: center;
       justify-content: space-between;
 
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
     .menu-title {
       font-size: 20px;
+
       font-weight: 700;
     }
 
     .close-button {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
 
       border: none;
+
       border-radius: 10px;
 
       background: #f2f2f2;
 
-      font-size: 22px;
+      font-size: 21px;
 
       cursor: pointer;
     }
@@ -221,16 +323,19 @@
       width: 100%;
 
       display: flex;
+
       align-items: center;
 
-      padding: 15px 12px;
+      padding: 14px 11px;
 
       border: none;
+
       border-radius: 10px;
 
       background: transparent;
 
       font-size: 16px;
+
       text-align: left;
 
       cursor: pointer;
@@ -241,16 +346,20 @@
     }
 
     .menu-section {
-      margin-top: 22px;
-      padding-top: 18px;
+      margin-top: 20px;
 
-      border-top: 1px solid #eee;
+      padding-top: 16px;
+
+      border-top:
+        1px solid #eee;
     }
 
     .menu-section-title {
-      margin: 0 0 8px 12px;
+      margin:
+        0 0 7px 11px;
 
       font-size: 13px;
+
       color: #777;
     }
 
@@ -258,11 +367,13 @@
       width: 100%;
 
       display: flex;
+
       align-items: center;
 
-      padding: 12px;
+      padding: 11px;
 
       border: none;
+
       border-radius: 10px;
 
       background: transparent;
@@ -270,6 +381,7 @@
       font-size: 15px;
 
       cursor: pointer;
+
       text-align: left;
     }
 
@@ -279,29 +391,34 @@
 
     .sort-option.active {
       font-weight: 700;
+
       background: #f2f2f2;
     }
 
     .sort-mark {
       width: 25px;
+
       margin-right: 5px;
     }
 
-    /* ==============================
+    /* ==================================
        ダイアログ
-       ============================== */
+       ================================== */
 
     .dialog-overlay {
       position: fixed;
+
       inset: 0;
 
       display: none;
+
       align-items: center;
       justify-content: center;
 
       padding: 20px;
 
-      background: rgba(0, 0, 0, 0.35);
+      background:
+        rgba(0, 0, 0, 0.35);
 
       z-index: 2000;
     }
@@ -311,9 +428,10 @@
     }
 
     .dialog {
-      width: min(450px, 100%);
+      width:
+        min(450px, 100%);
 
-      padding: 24px;
+      padding: 23px;
 
       background: white;
 
@@ -324,13 +442,14 @@
     }
 
     .dialog h2 {
-      margin: 0 0 20px;
+      margin:
+        0 0 19px;
 
       font-size: 21px;
     }
 
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 15px;
     }
 
     .form-group label {
@@ -339,6 +458,7 @@
       margin-bottom: 7px;
 
       font-size: 14px;
+
       font-weight: 600;
     }
 
@@ -347,7 +467,9 @@
 
       padding: 12px 13px;
 
-      border: 1px solid #ddd;
+      border:
+        1px solid #ddd;
+
       border-radius: 10px;
 
       font-size: 16px;
@@ -361,9 +483,10 @@
 
     .dialog-buttons {
       display: flex;
+
       gap: 10px;
 
-      margin-top: 22px;
+      margin-top: 21px;
     }
 
     .dialog-button {
@@ -372,9 +495,11 @@
       padding: 13px;
 
       border: none;
+
       border-radius: 10px;
 
       font-size: 15px;
+
       font-weight: 600;
 
       cursor: pointer;
@@ -386,32 +511,35 @@
 
     .register-button {
       background: #333;
+
       color: white;
     }
 
-    /* ==============================
+    /* ==================================
        編集モード
-       ============================== */
+       ================================== */
 
     .delete-button {
       position: absolute;
 
-      top: 8px;
-      right: 8px;
+      top: 5px;
+      right: 5px;
 
-      width: 34px;
-      height: 34px;
+      width: 29px;
+      height: 29px;
 
       display: flex;
+
       align-items: center;
       justify-content: center;
 
       border: none;
+
       border-radius: 50%;
 
       background: #eee;
 
-      font-size: 17px;
+      font-size: 16px;
 
       cursor: pointer;
 
@@ -428,10 +556,12 @@
       align-items: center;
       justify-content: space-between;
 
-      max-width: 900px;
+      width: 100%;
+      max-width: 1200px;
+
       margin: 0 auto;
 
-      padding: 16px 20px 12px;
+      padding: 14px 16px 10px;
     }
 
     .edit-header.open {
@@ -439,20 +569,24 @@
     }
 
     .edit-title {
-      font-size: 22px;
+      font-size: 20px;
+
       font-weight: 700;
     }
 
     .done-button {
-      padding: 10px 15px;
+      padding: 9px 14px;
 
       border: none;
+
       border-radius: 10px;
 
       background: #333;
+
       color: white;
 
       font-size: 15px;
+
       font-weight: 600;
 
       cursor: pointer;
@@ -461,10 +595,13 @@
     .edit-search {
       display: none;
 
-      max-width: 900px;
+      width: 100%;
+      max-width: 1200px;
+
       margin: 0 auto;
 
-      padding: 4px 20px 16px;
+      padding:
+        4px 16px 14px;
     }
 
     .edit-search.open {
@@ -474,9 +611,11 @@
     .edit-search input {
       width: 100%;
 
-      padding: 12px 15px;
+      padding: 11px 14px;
 
-      border: 1px solid #ddd;
+      border:
+        1px solid #ddd;
+
       border-radius: 12px;
 
       background: white;
@@ -490,18 +629,19 @@
       display: none;
     }
 
-    /* ==============================
+    /* ==================================
        バックアップ
-       ============================== */
+       ================================== */
 
     .backup-info {
-      padding: 14px;
+      padding: 13px;
 
       background: #f7f7f7;
 
       border-radius: 12px;
 
       font-size: 14px;
+
       line-height: 1.6;
     }
 
@@ -519,6 +659,7 @@
 
     .restore-warning {
       margin-top: 12px;
+
       padding: 12px;
 
       background: #fff8e1;
@@ -526,28 +667,9 @@
       border-radius: 10px;
 
       font-size: 13px;
+
       line-height: 1.6;
     }
-
-    @media (min-width: 700px) {
-
-  .tiles {
-    /*
-     * PCでは画面幅に合わせて自動調整
-     *
-     * 1タイルが小さくなりすぎないように
-     * 最小幅を設定
-     */
-    grid-template-columns:
-      repeat(
-        auto-fit,
-        minmax(120px, 1fr)
-      );
-
-    gap: 12px;
-  }
-
-}
   </style>
 </head>
 
@@ -731,9 +853,9 @@
       </div>
 
 
-      <!-- ==============================
+      <!-- ==================================
            データ管理
-           ============================== -->
+           ================================== -->
 
       <div class="menu-section">
 
@@ -1072,7 +1194,8 @@
         !url.startsWith("http://") &&
         !url.startsWith("https://")
       ) {
-        url = "https://" + url;
+        url =
+          "https://" + url;
       }
 
       return url;
@@ -1081,7 +1204,7 @@
 
 
     /* ==================================
-       ファビコン候補を作成
+       ファビコン候補
        ================================== */
 
     function getFaviconCandidates(url) {
@@ -1099,27 +1222,13 @@
           parsed.origin;
 
 
-        /*
-         * 最も一般的な favicon.ico
-         */
-
         candidates.push(
           origin + "/favicon.ico"
         );
 
-
-        /*
-         * favicon.png
-         */
-
         candidates.push(
           origin + "/favicon.png"
         );
-
-
-        /*
-         * Apple Touch Icon
-         */
 
         candidates.push(
           origin + "/apple-touch-icon.png"
@@ -1147,7 +1256,7 @@
 
 
     /* ==================================
-       ファビコンURLを取得
+       初期ファビコンURL
        ================================== */
 
     function getFaviconUrl(url) {
@@ -1157,24 +1266,15 @@
           url
         );
 
-
-      if (
-        candidates.length > 0
-      ) {
-
-        return candidates[0];
-
-      }
-
-
-      return "";
+      return (
+        candidates[0] || ""
+      );
 
     }
 
 
     /* ==================================
        ファビコン表示
-       複数候補を順番に試す
        ================================== */
 
     function createFaviconElement(
@@ -1190,20 +1290,11 @@
         "icon";
 
 
-      /*
-       * ファビコン候補
-       */
-
       let candidates =
         getFaviconCandidates(
           item.url
         );
 
-
-      /*
-       * 以前保存されていたfaviconが
-       * 候補にあれば先頭へ
-       */
 
       if (
         item.favicon
@@ -1217,10 +1308,6 @@
 
       }
 
-
-      /*
-       * 重複を削除
-       */
 
       candidates =
         [
@@ -1236,10 +1323,6 @@
 
 
       function tryNext() {
-
-        /*
-         * 全候補失敗
-         */
 
         if (
           index >=
@@ -1271,22 +1354,12 @@
         img.src =
           candidate;
 
-
         img.alt =
           "";
 
 
-        /*
-         * 読み込み成功
-         */
-
         img.onload =
           function() {
-
-            /*
-             * 今回正常に表示できた
-             * URLを保存
-             */
 
             if (
               item.favicon !==
@@ -1303,19 +1376,10 @@
           };
 
 
-        /*
-         * 読み込み失敗
-         */
-
         img.onerror =
           function() {
 
-            /*
-             * 壊れた画像を画面に残さない
-             */
-
             img.remove();
-
 
             tryNext();
 
@@ -1338,7 +1402,7 @@
 
 
     /* ==================================
-       読み込み
+       データ読み込み
        ================================== */
 
     async function loadFavorites() {
@@ -1349,10 +1413,6 @@
         );
 
 
-      /*
-       * 端末に保存済みデータがある場合
-       */
-
       if (saved) {
 
         try {
@@ -1362,10 +1422,6 @@
               saved
             );
 
-
-          /*
-           * 古いデータとの互換性を確保
-           */
 
           favorites =
             favorites.map(
@@ -1410,7 +1466,6 @@
         catch (error) {
 
           console.error(
-            "保存データの読み込みに失敗しました。",
             error
           );
 
@@ -1418,10 +1473,6 @@
 
       }
 
-
-      /*
-       * 初回のみ favorites.json を読む
-       */
 
       try {
 
@@ -1534,7 +1585,6 @@
 
       }
 
-
       else if (
         currentSort ===
         "oldest"
@@ -1548,7 +1598,6 @@
 
       }
 
-
       else if (
         currentSort ===
         "registered"
@@ -1561,7 +1610,6 @@
         );
 
       }
-
 
       else if (
         currentSort ===
@@ -1683,19 +1731,11 @@
           }
 
 
-          /*
-           * ファビコン
-           */
-
           const icon =
             createFaviconElement(
               item
             );
 
-
-          /*
-           * 名前
-           */
 
           const name =
             document.createElement(
@@ -1717,10 +1757,6 @@
             name
           );
 
-
-          /*
-           * 編集モード
-           */
 
           if (
             editMode
@@ -2586,10 +2622,6 @@
                 );
 
 
-              /*
-               * 新しいバックアップ形式
-               */
-
               if (
                 data &&
                 Array.isArray(
@@ -2602,11 +2634,6 @@
 
               }
 
-
-              /*
-               * favorites.json形式にも対応
-               */
-
               else if (
                 Array.isArray(
                   data
@@ -2617,7 +2644,6 @@
                   data;
 
               }
-
 
               else {
 
@@ -2721,10 +2747,6 @@
 
         }
 
-
-        /*
-         * 復元前の安全用バックアップ
-         */
 
         const safetyBackup = {
 
