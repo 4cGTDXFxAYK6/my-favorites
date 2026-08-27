@@ -72,10 +72,15 @@
     }
 
     .tiles {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
+  display: grid;
+
+  /*
+   * スマホでは4列
+   */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 10px;
+}
 
     .tile {
       position: relative;
@@ -526,12 +531,23 @@
 
     @media (min-width: 700px) {
 
-      .tiles {
-        grid-template-columns:
-          repeat(4, 1fr);
-      }
+  .tiles {
+    /*
+     * PCでは画面幅に合わせて自動調整
+     *
+     * 1タイルが小さくなりすぎないように
+     * 最小幅を設定
+     */
+    grid-template-columns:
+      repeat(
+        auto-fit,
+        minmax(120px, 1fr)
+      );
 
-    }
+    gap: 12px;
+  }
+
+}
   </style>
 </head>
 
