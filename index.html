@@ -670,6 +670,113 @@
 
       line-height: 1.6;
     }
+
+    /* ==================================
+       ダークモード
+       ================================== */
+
+    body.dark-mode {
+      background: #181818;
+      color: #f1f1f1;
+    }
+
+    body.dark-mode .menu-button {
+      background: #2a2a2a;
+      color: #f1f1f1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    body.dark-mode .tile {
+      background: #242424;
+      color: #f1f1f1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+    }
+
+    body.dark-mode .menu-panel {
+      background: #202020;
+      color: #f1f1f1;
+      box-shadow: -4px 0 18px rgba(0, 0, 0, 0.35);
+    }
+
+    body.dark-mode .menu-item,
+    body.dark-mode .sort-option {
+      color: #f1f1f1;
+    }
+
+    body.dark-mode .menu-item:active,
+    body.dark-mode .sort-option:active,
+    body.dark-mode .sort-option.active {
+      background: #303030;
+    }
+
+    body.dark-mode .menu-section {
+      border-top-color: #3a3a3a;
+    }
+
+    body.dark-mode .menu-section-title {
+      color: #aaa;
+    }
+
+    body.dark-mode .close-button {
+      background: #303030;
+      color: #f1f1f1;
+    }
+
+    body.dark-mode .dialog {
+      background: #242424;
+      color: #f1f1f1;
+    }
+
+    body.dark-mode .form-group input,
+    body.dark-mode .edit-search input {
+      background: #303030;
+      color: #f1f1f1;
+      border-color: #4a4a4a;
+    }
+
+    body.dark-mode .form-group input::placeholder,
+    body.dark-mode .edit-search input::placeholder {
+      color: #999;
+    }
+
+    body.dark-mode .cancel-button {
+      background: #3a3a3a;
+      color: #f1f1f1;
+    }
+
+    body.dark-mode .register-button,
+    body.dark-mode .done-button {
+      background: #f1f1f1;
+      color: #202020;
+    }
+
+    body.dark-mode .backup-info {
+      background: #303030;
+    }
+
+    body.dark-mode .restore-warning {
+      background: #3a3322;
+      color: #f1f1f1;
+    }
+
+    body.dark-mode .delete-button {
+      background: #3a3a3a;
+      color: #f1f1f1;
+    }
+
+    body.dark-mode .loading,
+    body.dark-mode .empty {
+      color: #aaa;
+    }
+
+    .theme-option {
+      position: relative;
+    }
+
+    .theme-mark {
+      width: 25px;
+      margin-right: 5px;
+    }
   </style>
 </head>
 
@@ -856,6 +963,31 @@
       <!-- ==================================
            データ管理
            ================================== -->
+
+      <div class="menu-section">
+
+        <div class="menu-section-title">
+          表示モード
+        </div>
+
+        <button
+          class="sort-option theme-option"
+          data-theme="light"
+        >
+          <span class="theme-mark"></span>
+          ☀️ ライトモード
+        </button>
+
+        <button
+          class="sort-option theme-option"
+          data-theme="dark"
+        >
+          <span class="theme-mark"></span>
+          🌙 ダークモード
+        </button>
+
+      </div>
+
 
       <div class="menu-section">
 
@@ -1883,6 +2015,113 @@
 
 
     /* ==================================
+       表示モード
+       ================================== */
+
+    let currentTheme =
+      localStorage.getItem(
+        "favoriteTheme"
+      ) || "light";
+
+
+    function applyTheme() {
+
+      if (currentTheme === "dark") {
+
+        document.body.classList.add(
+          "dark-mode"
+        );
+
+      }
+
+      else {
+
+        document.body.classList.remove(
+          "dark-mode"
+        );
+
+      }
+
+      updateThemeButtons();
+
+    }
+
+
+    function updateThemeButtons() {
+
+      const themeButtons =
+        document.querySelectorAll(
+          ".theme-option"
+        );
+
+      themeButtons.forEach(
+        button => {
+
+          const mark =
+            button.querySelector(
+              ".theme-mark"
+            );
+
+          if (
+            button.dataset.theme ===
+            currentTheme
+          ) {
+
+            mark.textContent =
+              "●";
+
+            button.classList.add(
+              "active"
+            );
+
+          }
+
+          else {
+
+            mark.textContent =
+              "○";
+
+            button.classList.remove(
+              "active"
+            );
+
+          }
+
+        }
+      );
+
+    }
+
+
+    document
+      .querySelectorAll(
+        ".theme-option"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            function() {
+
+              currentTheme =
+                this.dataset.theme;
+
+              localStorage.setItem(
+                "favoriteTheme",
+                currentTheme
+              );
+
+              applyTheme();
+
+            }
+          );
+
+        }
+      );
+
+
+    /* ==================================
        並び順
        ================================== */
 
@@ -2835,6 +3074,8 @@
     /* ==================================
        起動
        ================================== */
+
+    applyTheme();
 
     loadFavorites();
 
