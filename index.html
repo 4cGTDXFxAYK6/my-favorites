@@ -1881,13 +1881,16 @@
 
                 saveFavorites();
 
+                // 先に画面を並び替えてから、新しいタブを開く
                 displayFavorites();
 
-                window.open(
-                  item.url,
-                  "_blank",
-                  "noopener,noreferrer"
-                );
+                setTimeout(function() {
+                  window.open(
+                    item.url,
+                    "_blank",
+                    "noopener,noreferrer"
+                  );
+                }, 50);
 
               }
             );
