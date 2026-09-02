@@ -4,9 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="icon" href="favicon.png" type="image/png">
-
-
   <title>お気に入り</title>
 
   <style>
@@ -927,19 +924,19 @@
 
         <button
           class="sort-option"
-          data-sort="recent"
+          data-sort="most"
         >
           <span class="sort-mark"></span>
-          クリックした順（新しい順）
+          クリック回数の多い順
         </button>
 
 
         <button
           class="sort-option"
-          data-sort="oldest"
+          data-sort="least"
         >
           <span class="sort-mark"></span>
-          クリックした順（古い順）
+          クリック回数の少ない順
         </button>
 
 
@@ -1290,7 +1287,17 @@
     let currentSort =
       localStorage.getItem(
         "favoriteSort"
-      ) || "recent";
+      ) || "most";
+
+    if (currentSort === "recent") {
+      currentSort = "most";
+      localStorage.setItem("favoriteSort", currentSort);
+    }
+
+    if (currentSort === "oldest") {
+      currentSort = "least";
+      localStorage.setItem("favoriteSort", currentSort);
+    }
 
     let editMode = false;
 
@@ -1582,6 +1589,15 @@
                   lastClicked:
                     item.lastClicked
                     ||
+                    0,
+
+                  clickCount:
+                    Number.isFinite(
+                      item.clickCount
+                    )
+                    ?
+                    item.clickCount
+                    :
                     0
 
                 };
@@ -1661,6 +1677,15 @@
                 lastClicked:
                   item.lastClicked
                   ||
+                  0,
+
+                clickCount:
+                  Number.isFinite(
+                    item.clickCount
+                  )
+                  ?
+                  item.clickCount
+                  :
                   0
 
               };
@@ -1709,26 +1734,26 @@
 
       if (
         currentSort ===
-        "recent"
+        "most"
       ) {
 
         sorted.sort(
           (a, b) =>
-            (b.lastClicked || 0) -
-            (a.lastClicked || 0)
+            (b.clickCount || 0) -
+            (a.clickCount || 0)
         );
 
       }
 
       else if (
         currentSort ===
-        "oldest"
+        "least"
       ) {
 
         sorted.sort(
           (a, b) =>
-            (a.lastClicked || 0) -
-            (b.lastClicked || 0)
+            (a.clickCount || 0) -
+            (b.clickCount || 0)
         );
 
       }
@@ -1850,6 +1875,9 @@
 
                 item.lastClicked =
                   Date.now();
+
+                item.clickCount =
+                  (item.clickCount || 0) + 1;
 
                 saveFavorites();
 
@@ -2340,7 +2368,10 @@
               now,
 
             lastClicked:
-              now
+              0,
+
+            clickCount:
+              0
 
           });
 
@@ -3040,6 +3071,15 @@
                 lastClicked:
                   item.lastClicked
                   ||
+                  0,
+
+                clickCount:
+                  Number.isFinite(
+                    item.clickCount
+                  )
+                  ?
+                  item.clickCount
+                  :
                   0,
 
                 favicon:
