@@ -1289,6 +1289,9 @@
         "favoriteSort"
       ) || "most";
 
+    // 現在の検索条件を保持して、並び順変更時にも同じ条件で即時再描画する
+    let currentSearchKeyword = "";
+
     if (currentSort === "recent") {
       currentSort = "most";
       localStorage.setItem("favoriteSort", currentSort);
@@ -1798,8 +1801,11 @@
        ================================== */
 
     function displayFavorites(
-      searchKeyword = ""
+      searchKeyword = currentSearchKeyword
     ) {
+
+      // どの経路から再描画しても現在の検索条件を保持する
+      currentSearchKeyword = searchKeyword || "";
 
       const container =
         document.getElementById(
@@ -2162,7 +2168,7 @@
 
     const sortButtons =
       document.querySelectorAll(
-        ".sort-option"
+        ".sort-option[data-sort]"
       );
 
 
@@ -2185,7 +2191,8 @@
 
             updateSortButtons();
 
-            displayFavorites();
+            // 並び順変更直後に、現在の検索条件のまま再描画する
+            displayFavorites(currentSearchKeyword);
 
           }
         );
@@ -2458,8 +2465,9 @@
       "input",
       function() {
 
+        currentSearchKeyword = this.value || "";
         displayFavorites(
-          this.value
+          currentSearchKeyword
         );
 
       }
@@ -2566,8 +2574,9 @@
       "input",
       function() {
 
+        currentSearchKeyword = this.value || "";
         displayFavorites(
-          this.value
+          currentSearchKeyword
         );
 
       }
