@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
 
   <title>お気に入り</title>
 
@@ -777,34 +778,317 @@
       width: 25px;
       margin-right: 5px;
     }
+
+    /* ===== スクリーンショット風UI ===== */
+    html, body { min-height: 100%; }
+    body {
+      background: #181818;
+      color: #f5f5f5;
+      padding-bottom: 105px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .book-header {
+      position: relative;
+      width: 100%;
+      height: 72px;
+      border-bottom: 1px solid #3a3a3a;
+      background: #181818;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0 24px;
+    }
+    .book-tabs {
+      width: 100%;
+      height: 54px;
+      display: flex;
+      align-items: center;
+    }
+    .tab-back {
+      width: 68px;
+      height: 44px;
+      border: 0;
+      background: transparent;
+      color: #aaa;
+      font-size: 23px;
+      letter-spacing: 3px;
+      cursor: pointer;
+    }
+    .tab-divider { width: 1px; height: 38px; background: #555; margin: 0 20px 0 8px; }
+    .tab-title {
+      flex: 1;
+      text-align: center;
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 700;
+    }
+    .tab-current {
+      width: 300px;
+      max-width: 38vw;
+      height: 46px;
+      border: 0;
+      border-radius: 9px 9px 0 0;
+      background: #202020;
+      color: #f4f4f4;
+      font-size: 21px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .tab-current span { color: #bbb; font-size: 29px; margin-left: 8px; font-weight: 400; }
+    .theme-toggle {
+      position: absolute;
+      right: 24px;
+      top: 83px;
+      width: 88px;
+      height: 58px;
+      border: 1px solid #4a4a4a;
+      border-radius: 30px;
+      background: #303030;
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .normal-header { display: none !important; }
+    .container {
+      max-width: none;
+      width: 100%;
+      padding: 88px 17px 105px;
+    }
+    .sort-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin: 0 0 24px;
+      color: #cfcfcf;
+    }
+    .sort-label { font-size: 22px; font-weight: 600; }
+    #sortSelect {
+      min-width: 185px;
+      height: 53px;
+      padding: 0 38px 0 18px;
+      border: 1px solid #4b4b4b;
+      border-radius: 27px;
+      background: #303030;
+      color: #f4f4f4;
+      font-size: 21px;
+      font-weight: 700;
+      outline: none;
+    }
+    .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 17px; }
+    .tile {
+      aspect-ratio: 1 / .98;
+      min-height: 184px;
+      padding: 22px 10px 13px;
+      background: #292929;
+      color: #f6f6f6;
+      border-radius: 21px;
+      box-shadow: none;
+      border: 1px solid #303030;
+    }
+    .icon { width: 94px; height: 94px; margin-bottom: 12px; font-size: 54px; }
+    .icon img { width: 88px; height: 88px; border-radius: 16px; }
+    .name { font-size: 19px; font-weight: 700; line-height: 1.25; }
+    .delete-button { width: 38px; height: 38px; top: 6px; right: 6px; background: #444; color: #eee; font-size: 22px; }
+    .bottom-actions {
+      position: fixed;
+      left: 50%;
+      bottom: 27px;
+      transform: translateX(-50%);
+      z-index: 1500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 13px;
+      border-radius: 44px;
+      background: rgba(45,45,45,.96);
+      box-shadow: 0 5px 20px rgba(0,0,0,.38);
+      border: 1px solid #363636;
+    }
+    .action-button {
+      height: 58px;
+      min-width: 142px;
+      padding: 0 24px;
+      border: 0;
+      border-radius: 30px;
+      color: white;
+      font-size: 22px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .action-button span { margin-right: 7px; font-size: 25px; }
+    .add-action { background: #1688ee; }
+    .save-action { background: #24ad5b; }
+    .restore-action { background: #9b9b9b; }
+    .menu-panel { background: #202020; color: #f1f1f1; }
+    .menu-item, .sort-option { color: #f1f1f1; }
+    .dialog { background: #242424; color: #f1f1f1; }
+    .form-group input, .edit-search input { background: #303030; color: #f1f1f1; border-color: #4a4a4a; }
+    @media (max-width: 600px) {
+      .book-header { height: 62px; padding: 0 10px; }
+      .book-tabs { height: 48px; }
+      .tab-back { width: 48px; font-size: 20px; }
+      .tab-divider { margin: 0 9px 0 3px; height: 32px; }
+      .tab-title { font-size: 25px; }
+      .tab-current { width: 175px; max-width: 32vw; height: 43px; font-size: 18px; }
+      .tab-current span { font-size: 25px; }
+      .theme-toggle { top: 74px; right: 24px; width: 72px; height: 54px; font-size: 25px; }
+      .container { padding: 86px 17px 105px; }
+      .sort-label { font-size: 20px; }
+      #sortSelect { min-width: 177px; height: 52px; font-size: 19px; }
+      .tiles { gap: 15px; }
+      .tile { min-height: 0; padding: 19px 7px 12px; border-radius: 19px; }
+      .icon { width: 82px; height: 82px; margin-bottom: 9px; }
+      .icon img { width: 78px; height: 78px; }
+      .name { font-size: 17px; }
+      .bottom-actions { bottom: 23px; padding: 9px 10px; gap: 8px; }
+      .action-button { width: 112px; height: 55px; padding: 0 10px; font-size: 19px; }
+    }
+
+
+    /* テーマをbodyクラスだけに依存せず、HTML属性でも明示 */
+    html[data-theme="light"] body {
+      background: #f5f5f5 !important;
+      color: #222 !important;
+    }
+    html[data-theme="dark"] body {
+      background: #1b1b1d !important;
+      color: #f1f1f1 !important;
+    }
+    html[data-theme="light"] .book-header { background: #f5f5f5 !important; border-bottom-color: #d8d8d8 !important; }
+    html[data-theme="light"] .tab-title { color: #222 !important; }
+    html[data-theme="light"] .tab-back { color: #666 !important; }
+    html[data-theme="light"] .tab-current { background: #fff !important; color: #222 !important; }
+    html[data-theme="light"] .sort-bar { color: #555 !important; }
+    html[data-theme="light"] #sortSelect { background: #fff !important; color: #222 !important; border-color: #d0d0d0 !important; }
+    html[data-theme="light"] .tile { background: #fff !important; color: #222 !important; border-color: #e4e4e4 !important; }
+    html[data-theme="light"] .bottom-actions { background: rgba(255,255,255,.97) !important; border-color: #ddd !important; }
+    html[data-theme="light"] .theme-toggle { background: #fff !important; color: #222 !important; border-color: #d2d2d2 !important; }
+    html[data-theme="light"] .delete-button { background: #e7e7e7 !important; color: #444 !important; }
+    html[data-theme="light"] .empty, html[data-theme="light"] .loading { color: #555 !important; }
+
+
+    /* テーマ切替を端末ブラウザでも確実に反映 */
+    html[data-theme="dark"] { color-scheme: dark; }
+    html[data-theme="light"] { color-scheme: light; }
+    .theme-toggle { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+
+    /* ===== テーマ切替・スマホ最適化 ===== */
+    body.light-mode {
+      background: #f5f5f5;
+      color: #222;
+    }
+    body.light-mode .book-header {
+      background: #f5f5f5;
+      border-bottom-color: #d8d8d8;
+    }
+    body.light-mode .tab-back { color: #666; }
+    body.light-mode .tab-divider { background: #c8c8c8; }
+    body.light-mode .tab-title { color: #222; }
+    body.light-mode .tab-current {
+      background: #fff;
+      color: #222;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    }
+    body.light-mode .theme-toggle {
+      background: #fff;
+      border-color: #d2d2d2;
+      color: #222;
+    }
+    body.light-mode .sort-bar { color: #555; }
+    body.light-mode #sortSelect {
+      background: #fff;
+      color: #222;
+      border-color: #d0d0d0;
+    }
+    body.light-mode .tile {
+      background: #fff;
+      color: #222;
+      border-color: #e4e4e4;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+    body.light-mode .bottom-actions {
+      background: rgba(255,255,255,.96);
+      border-color: #ddd;
+      box-shadow: 0 4px 18px rgba(0,0,0,.16);
+    }
+
+    @media (max-width: 600px) {
+      .book-header { height: 62px; padding: 0 8px; }
+      .book-tabs { height: 48px; }
+      .tab-back { width: 42px; font-size: 18px; }
+      .tab-divider { margin: 0 7px 0 2px; height: 30px; }
+      .tab-title { font-size: 22px; }
+      .tab-current { width: 150px; max-width: 38vw; height: 40px; font-size: 16px; }
+      .tab-current span { font-size: 22px; margin-left: 4px; }
+      .theme-toggle {
+        top: 68px;
+        right: 12px;
+        width: 58px;
+        height: 42px;
+        border-radius: 22px;
+        font-size: 20px;
+      }
+      .container { padding: 76px 12px 76px; }
+      .sort-bar { gap: 6px; margin-bottom: 16px; }
+      .sort-label { font-size: 16px; }
+      #sortSelect {
+        min-width: 0;
+        width: 155px;
+        height: 42px;
+        padding: 0 30px 0 12px;
+        border-radius: 22px;
+        font-size: 16px;
+      }
+      .tiles { gap: 10px; }
+      .tile { padding: 14px 5px 9px; border-radius: 15px; }
+      .icon { width: 64px; height: 64px; margin-bottom: 7px; font-size: 40px; }
+      .icon img { width: 60px; height: 60px; border-radius: 12px; }
+      .name { font-size: 14px; }
+      .delete-button { width: 30px; height: 30px; font-size: 18px; }
+      .bottom-actions {
+        left: 50%;
+        right: auto;
+        bottom: max(8px, env(safe-area-inset-bottom));
+        width: calc(100vw - 24px);
+        max-width: 420px;
+        box-sizing: border-box;
+        transform: translateX(-50%);
+        gap: 4px;
+        padding: 5px;
+        border-radius: 22px;
+      }
+      .action-button {
+        flex: 1 1 0;
+        width: 0;
+        min-width: 0;
+        height: 38px;
+        padding: 0 2px;
+        border-radius: 19px;
+        font-size: 13px;
+        letter-spacing: -0.02em;
+      }
+      .action-button span { margin-right: 2px; font-size: 15px; }
+    }
+
   </style>
 </head>
 
 <body>
 
-  <!-- ==================================
-       通常ヘッダー
-       ================================== -->
-
-  <header
-    class="header normal-header"
-    id="normalHeader"
-  >
-
-    <h1 class="title">
-      ⭐ お気に入り
-    </h1>
-
-    <button
-      class="menu-button"
-      id="menuButton"
-      aria-label="メニュー"
-    >
-      ☰
-    </button>
-
+  <!-- ブック型ヘッダー -->
+  <header class="book-header">
+    <div class="book-tabs">
+      <button class="tab-back" id="menuButton" aria-label="メニュー">•••</button>
+      <div class="tab-divider"></div>
+      <div class="tab-title">お気に入り</div>
+      <button class="tab-current" id="bookTabButton" aria-label="メニュー">マイ・ブック… <span>×</span></button>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="テーマ切替">☀️</button>
   </header>
-
 
   <!-- ==================================
        編集ヘッダー
@@ -853,6 +1137,16 @@
 
   <main class="container">
 
+    <div class="sort-bar">
+      <span class="sort-label">並び替え：</span>
+      <select id="sortSelect" aria-label="並び替え">
+        <option value="most">よく使う順</option>
+        <option value="least">あまり使わない順</option>
+        <option value="registered">登録した順</option>
+        <option value="name">五十音順</option>
+      </select>
+    </div>
+
     <div id="favorites">
 
       <div class="loading">
@@ -863,6 +1157,13 @@
 
   </main>
 
+
+  <!-- 下部アクション -->
+  <nav class="bottom-actions" aria-label="お気に入り操作">
+    <button class="action-button add-action" id="bottomAddButton"><span>＋</span>追加</button>
+    <button class="action-button save-action" id="bottomSaveButton"><span>☁</span>保存</button>
+    <button class="action-button restore-action" id="bottomRestoreButton"><span>⟳</span>復元</button>
+  </nav>
 
   <!-- ==================================
        メニュー
@@ -1289,6 +1590,9 @@
         "favoriteSort"
       ) || "most";
 
+    // 現在の検索条件を保持して、並び順変更時にも同じ条件で即時再描画する
+    let currentSearchKeyword = "";
+
     if (currentSort === "recent") {
       currentSort = "most";
       localStorage.setItem("favoriteSort", currentSort);
@@ -1416,307 +1720,48 @@
 
 
     /* ==================================
-       ファビコン表示
+       アイコン表示
+       ※自動ファビコン取得は使用しない
        ================================== */
 
-    function createFaviconElement(
-      item
-    ) {
+    function createFaviconElement(item) {
 
-      const icon =
-        document.createElement(
-          "div"
-        );
+      const icon = document.createElement("div");
+      icon.className = "icon";
 
-      icon.className =
-        "icon";
+      // 登録時に指定されたアイコンだけを表示します。
+      // 旧データに favicon が残っていても、外部サイトの
+      // favicon.ico / apple-touch-icon 等は自動表示しません。
+      let iconValue = item.icon || "🌐";
 
-
-      let candidates =
-        getFaviconCandidates(
-          item.url
-        );
-
-
-      if (
-        item.favicon
-      ) {
-
-        candidates =
-          [
-            item.favicon,
-            ...candidates
-          ];
-
-      }
-
-
-      candidates =
-        [
-          ...new Set(
-            candidates.filter(
-              Boolean
-            )
-          )
-        ];
-
-
-      let index = 0;
-
-
-      function tryNext() {
-
-        if (
-          index >=
-          candidates.length
-        ) {
-
-          icon.textContent =
-            item.icon ||
-            "🌐";
-
-          return;
-
+      // サイトから自動取得された favicon はカードには表示しない。
+      // 旧データに URL / プロトコル相対URL / favicon サービス等が
+      // 残っていても、すべて無効化して標準アイコンに戻す。
+      if (typeof iconValue === "string") {
+        const v = iconValue.trim();
+        const looksLikeFavicon =
+          /^(https?:)?\/\//i.test(v) ||
+          /^\/.*favicon/i.test(v) ||
+          /(?:favicon\.ico|favicon\.png|apple-touch-icon|google\.com\/s2\/favicons|gstatic\.com\/favicon)/i.test(v);
+        if (looksLikeFavicon) {
+          iconValue = "🌐";
         }
-
-
-        const img =
-          document.createElement(
-            "img"
-          );
-
-
-        const candidate =
-          candidates[index];
-
-
-        index++;
-
-
-        img.src =
-          candidate;
-
-        img.alt =
-          "";
-
-
-        img.onload =
-          function() {
-
-            if (
-              item.favicon !==
-              candidate
-            ) {
-
-              item.favicon =
-                candidate;
-
-              saveFavorites();
-
-            }
-
-          };
-
-
-        img.onerror =
-          function() {
-
-            img.remove();
-
-            tryNext();
-
-          };
-
-
-        icon.appendChild(
-          img
-        );
-
       }
 
-
-      tryNext();
-
+      if (typeof iconValue === "string" && /^data:image\//i.test(iconValue)) {
+        const img = document.createElement("img");
+        img.src = iconValue;
+        img.alt = "";
+        img.onerror = function () {
+          img.remove();
+          icon.textContent = "🌐";
+        };
+        icon.appendChild(img);
+      } else {
+        icon.textContent = iconValue;
+      }
 
       return icon;
-
-    }
-
-
-    /* ==================================
-       データ読み込み
-       ================================== */
-
-    async function loadFavorites() {
-
-      const saved =
-        localStorage.getItem(
-          "myFavorites"
-        );
-
-
-      if (saved) {
-
-        try {
-
-          favorites =
-            JSON.parse(
-              saved
-            );
-
-
-          favorites =
-            favorites.map(
-              (item, index) => {
-
-                return {
-
-                  ...item,
-
-                  url:
-                    normalizeUrl(
-                      item.url
-                    ),
-
-                  registeredAt:
-                    item.registeredAt
-                    ||
-                    (
-                      Date.now() +
-                      index
-                    ),
-
-                  lastClicked:
-                    item.lastClicked
-                    ||
-                    0,
-
-                  clickCount:
-                    Number.isFinite(
-                      item.clickCount
-                    )
-                    ?
-                    item.clickCount
-                    :
-                    0
-
-                };
-
-              }
-            );
-
-
-          saveFavorites();
-
-          displayFavorites();
-
-          return;
-
-        }
-
-        catch (error) {
-
-          console.error(
-            error
-          );
-
-        }
-
-      }
-
-
-      try {
-
-        const response =
-          await fetch(
-            "favorites.json?v=" +
-            Date.now()
-          );
-
-
-        if (
-          !response.ok
-        ) {
-
-          throw new Error(
-            "favorites.jsonを読み込めませんでした"
-          );
-
-        }
-
-
-        favorites =
-          await response.json();
-
-
-        const now =
-          Date.now();
-
-
-        favorites =
-          favorites.map(
-            (item, index) => {
-
-              return {
-
-                ...item,
-
-                url:
-                  normalizeUrl(
-                    item.url
-                  ),
-
-                registeredAt:
-                  item.registeredAt
-                  ||
-                  (
-                    now +
-                    index
-                  ),
-
-                lastClicked:
-                  item.lastClicked
-                  ||
-                  0,
-
-                clickCount:
-                  Number.isFinite(
-                    item.clickCount
-                  )
-                  ?
-                  item.clickCount
-                  :
-                  0
-
-              };
-
-            }
-          );
-
-
-        saveFavorites();
-
-        displayFavorites();
-
-      }
-
-      catch (error) {
-
-        document.getElementById(
-          "favorites"
-        ).innerHTML = `
-          <div class="empty">
-            お気に入りデータを
-            読み込めませんでした。
-          </div>
-        `;
-
-        console.error(
-          error
-        );
-
-      }
-
     }
 
 
@@ -1798,8 +1843,11 @@
        ================================== */
 
     function displayFavorites(
-      searchKeyword = ""
+      searchKeyword = currentSearchKeyword
     ) {
+
+      // どの経路から再描画しても現在の検索条件を保持する
+      currentSearchKeyword = searchKeyword || "";
 
       const container =
         document.getElementById(
@@ -2056,28 +2104,22 @@
     let currentTheme =
       localStorage.getItem(
         "favoriteTheme"
-      ) || "light";
+      ) || "dark";
 
 
     function applyTheme() {
 
-      if (currentTheme === "dark") {
-
-        document.body.classList.add(
-          "dark-mode"
-        );
-
-      }
-
-      else {
-
-        document.body.classList.remove(
-          "dark-mode"
-        );
-
-      }
+      // iOSブラウザでも確実に即時反映するため、html属性とbodyクラスを同時更新
+      document.documentElement.setAttribute("data-theme", currentTheme);
+      document.body.classList.toggle("dark-mode", currentTheme === "dark");
+      document.body.classList.toggle("light-mode", currentTheme === "light");
 
       updateThemeButtons();
+      const toggle = document.getElementById("themeToggle");
+      if (toggle) {
+        toggle.textContent = currentTheme === "dark" ? "☀️" : "🌙";
+        toggle.setAttribute("aria-label", currentTheme === "dark" ? "ライトモードに切替" : "ダークモードに切替");
+      }
 
     }
 
@@ -2162,7 +2204,7 @@
 
     const sortButtons =
       document.querySelectorAll(
-        ".sort-option"
+        ".sort-option[data-sort]"
       );
 
 
@@ -2185,7 +2227,8 @@
 
             updateSortButtons();
 
-            displayFavorites();
+            // 並び順変更直後に、現在の検索条件のまま再描画する
+            displayFavorites(currentSearchKeyword);
 
           }
         );
@@ -2195,6 +2238,9 @@
 
 
     function updateSortButtons() {
+
+      const select = document.getElementById("sortSelect");
+      if (select) select.value = currentSort;
 
       sortButtons.forEach(
         button => {
@@ -2361,9 +2407,7 @@
               "🌐",
 
             favicon:
-              getFaviconUrl(
-                url
-              ),
+              "",
 
             order:
               favorites.length + 1,
@@ -2458,8 +2502,9 @@
       "input",
       function() {
 
+        currentSearchKeyword = this.value || "";
         displayFavorites(
-          this.value
+          currentSearchKeyword
         );
 
       }
@@ -2566,8 +2611,9 @@
       "input",
       function() {
 
+        currentSearchKeyword = this.value || "";
         displayFavorites(
-          this.value
+          currentSearchKeyword
         );
 
       }
@@ -3089,9 +3135,7 @@
                 favicon:
                   item.favicon
                   ||
-                  getFaviconUrl(
-                    url
-                  )
+                  ""
 
               };
 
@@ -3117,6 +3161,41 @@
       }
     );
 
+
+
+    /* ===== 新UI操作 ===== */
+    const sortSelect = document.getElementById("sortSelect");
+    if (sortSelect) {
+      sortSelect.value = currentSort;
+      sortSelect.addEventListener("change", function () {
+        currentSort = this.value;
+        localStorage.setItem("favoriteSort", currentSort);
+        updateSortButtons();
+        displayFavorites(currentSearchKeyword);
+      });
+    }
+
+    const themeToggle = document.getElementById("themeToggle");
+    if (themeToggle) {
+      const toggleTheme = function (event) {
+        if (event) event.preventDefault();
+        currentTheme = currentTheme === "dark" ? "light" : "dark";
+        localStorage.setItem("favoriteTheme", currentTheme);
+        applyTheme();
+      };
+      themeToggle.addEventListener("click", toggleTheme);
+    }
+
+    document.getElementById("bottomAddButton").addEventListener("click", function () {
+      document.getElementById("openRegisterButton").click();
+    });
+    document.getElementById("bottomSaveButton").addEventListener("click", function () {
+      document.getElementById("backupButton").click();
+    });
+    document.getElementById("bottomRestoreButton").addEventListener("click", function () {
+      document.getElementById("restoreButton").click();
+    });
+    document.getElementById("bookTabButton").addEventListener("click", openMenu);
 
     /* ==================================
        起動
