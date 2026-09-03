@@ -1839,6 +1839,66 @@
 
 
     /* ==================================
+       データ読み込み
+       ================================== */
+
+    async function loadFavorites() {
+
+      const saved = localStorage.getItem("myFavorites");
+
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (!Array.isArray(parsed)) throw new Error("保存データの形式が正しくありません。");
+
+          const now = Date.now();
+          favorites = parsed.map((item, index) => ({
+            ...item,
+            name: typeof item.name === "string" ? item.name : "お気に入り",
+            url: normalizeUrl(item.url),
+            registeredAt: item.registeredAt || (now + index),
+            lastClicked: item.lastClicked || 0,
+            clickCount: Number.isFinite(item.clickCount) ? item.clickCount : 0
+          })).filter(item => item.url);
+
+          saveFavorites();
+          displayFavorites();
+          return;
+        } catch (error) {
+          console.error("保存データの読み込みに失敗しました:", error);
+        }
+      }
+
+      // 初回のみ favorites.json を読み込む。
+      // file:// 直開き等で fetch が使えない場合も、空表示で正常起動する。
+      try {
+        const response = await fetch("favorites.json?v=" + Date.now(), { cache: "no-store" });
+        if (!response.ok) throw new Error("favorites.jsonを読み込めませんでした");
+
+        const data = await response.json();
+        if (!Array.isArray(data)) throw new Error("favorites.jsonの形式が正しくありません");
+
+        const now = Date.now();
+        favorites = data.map((item, index) => ({
+          ...item,
+          name: typeof item.name === "string" ? item.name : "お気に入り",
+          url: normalizeUrl(item.url),
+          registeredAt: item.registeredAt || (now + index),
+          lastClicked: item.lastClicked || 0,
+          clickCount: Number.isFinite(item.clickCount) ? item.clickCount : 0
+        })).filter(item => item.url);
+
+        saveFavorites();
+        displayFavorites();
+      } catch (error) {
+        // 初回データがない環境では「お気に入りがありません」と表示して起動を継続。
+        favorites = [];
+        displayFavorites();
+        console.warn("初期データを読み込めませんでした:", error);
+      }
+    }
+
+    /* ==================================
        表示
        ================================== */
 
@@ -2550,9 +2610,9 @@
             true;
 
 
-          normalHeader.classList.add(
-            "hidden"
-          );
+          if (normalHeader) {
+            normalHeader.classList.add("hidden");
+          }
 
           editHeader.classList.add(
             "open"
@@ -2584,9 +2644,9 @@
             false;
 
 
-          normalHeader.classList.remove(
-            "hidden"
-          );
+          if (normalHeader) {
+            normalHeader.classList.remove("hidden");
+          }
 
           editHeader.classList.remove(
             "open"
