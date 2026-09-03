@@ -890,7 +890,7 @@
     }
     .icon { width: 94px; height: 94px; margin-bottom: 12px; font-size: 54px; }
     .icon img { width: 88px; height: 88px; border-radius: 16px; }
-    .name { font-size: 19px; font-weight: 700; line-height: 1.25; }
+    .name { font-size: 16px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; box-sizing: border-box; }
     .delete-button { width: 38px; height: 38px; top: 6px; right: 6px; background: #444; color: #eee; font-size: 22px; }
     .bottom-actions {
       position: fixed;
@@ -943,7 +943,7 @@
       .tile { min-height: 0; padding: 19px 7px 12px; border-radius: 19px; }
       .icon { width: 82px; height: 82px; margin-bottom: 9px; }
       .icon img { width: 78px; height: 78px; }
-      .name { font-size: 17px; }
+      .name { font-size: 15px; }
       .bottom-actions { bottom: 23px; padding: 9px 10px; gap: 8px; }
       .action-button { width: 112px; height: 55px; padding: 0 10px; font-size: 19px; }
     }
@@ -1043,11 +1043,11 @@
         border-radius: 22px;
         font-size: 16px;
       }
-      .tiles { gap: 10px; }
+      .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
       .tile { padding: 14px 5px 9px; border-radius: 15px; }
       .icon { width: 64px; height: 64px; margin-bottom: 7px; font-size: 40px; }
       .icon img { width: 60px; height: 60px; border-radius: 12px; }
-      .name { font-size: 14px; }
+      .name { font-size: 13px; }
       .delete-button { width: 30px; height: 30px; font-size: 18px; }
       .bottom-actions {
         left: 50%;
@@ -1344,7 +1344,8 @@
         <input
           type="text"
           id="nameInput"
-          placeholder="例：Google"
+          maxlength="8"
+          placeholder="例：Google（8文字まで）"
         >
 
       </div>
@@ -2445,7 +2446,7 @@
         function() {
 
           const name =
-            nameInput.value.trim();
+            nameInput.value.trim().slice(0, 8);
 
           const url =
             normalizeUrl(
