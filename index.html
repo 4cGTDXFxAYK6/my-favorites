@@ -1721,7 +1721,7 @@
 
     /* ==================================
        アイコン表示
-       ※自動ファビコン取得は使用しない
+       サイトのファビコンをカード内に表示
        ================================== */
 
     function createFaviconElement(item) {
@@ -1729,41 +1729,69 @@
       const icon = document.createElement("div");
       icon.className = "icon";
 
-      // 登録時に指定されたアイコンだけを表示します。
-      // 旧データに favicon が残っていても、外部サイトの
-      // favicon.ico / apple-touch-icon 等は自動表示しません。
-      let iconValue = item.icon || "🌐";
+      const candidates = [];
+      const addCandidate = (value) => {
+        if (!value || typeof value !== "string") return;
+        const v = value.trim();
+        if (!v) return;
+        candidates.push(v);
+      };
 
-      // サイトから自動取得された favicon はカードには表示しない。
-      // 旧データに URL / プロトコル相対URL / favicon サービス等が
-      // 残っていても、すべて無効化して標準アイコンに戻す。
-      if (typeof iconValue === "string") {
-        const v = iconValue.trim();
-        const looksLikeFavicon =
-          /^(https?:)?\/\//i.test(v) ||
-          /^\/.*favicon/i.test(v) ||
-          /(?:favicon\.ico|favicon\.png|apple-touch-icon|google\.com\/s2\/favicons|gstatic\.com\/favicon)/i.test(v);
-        if (looksLikeFavicon) {
-          iconValue = "🌐";
-        }
+      // 保存済みのアイコンを最優先
+      if (item.icon && /^data:image\//i.test(String(item.icon).trim())) {
+        addCandidate(String(item.icon).trim());
+      } else if (item.icon && /^https?:\/\//i.test(String(item.icon).trim())) {
+        addCandidate(String(item.icon).trim());
       }
 
-      if (typeof iconValue === "string" && /^data:image\//i.test(iconValue)) {
-        const img = document.createElement("img");
-        img.src = iconValue;
-        img.alt = "";
-        img.onerror = function () {
+      if (item.favicon && /^https?:\/\//i.test(String(item.favicon).trim())) {
+        addCandidate(String(item.favicon).trim());
+      }
+
+      // サイト自身の favicon を順番に試す
+      try {
+        const parsed = new URL(normalizeUrl(item.url));
+        const origin = parsed.origin;
+        addCandidate(origin + "/favicon.ico");
+        addCandidate(origin + "/favicon.png");
+        addCandidate(origin + "/apple-touch-icon.png");
+        addCandidate("https://www.google.com/s2/favicons?sz=128&domain=" + encodeURIComponent(parsed.hostname));
+      } catch (error) {
+        console.warn("ファビコンURLを作成できません:", error);
+      }
+
+      const uniqueCandidates = [...new Set(candidates)];
+
+      if (!uniqueCandidates.length) {
+        icon.textContent = "🌐";
+        return icon;
+      }
+
+      const img = document.createElement("img");
+      img.alt = "";
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.referrerPolicy = "no-referrer";
+
+      let index = 0;
+      const tryNext = () => {
+        if (index >= uniqueCandidates.length) {
           img.remove();
           icon.textContent = "🌐";
-        };
-        icon.appendChild(img);
-      } else {
-        icon.textContent = iconValue;
-      }
+          return;
+        }
+        img.src = uniqueCandidates[index++];
+      };
+
+      img.onerror = tryNext;
+      img.onload = () => {
+        icon.classList.add("has-image");
+      };
+      icon.appendChild(img);
+      tryNext();
 
       return icon;
     }
-
 
     /* ==================================
        並び替え
