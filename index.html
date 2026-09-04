@@ -1043,7 +1043,7 @@
         border-radius: 22px;
         font-size: 16px;
       }
-      .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+      .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
       .tile { padding: 14px 5px 9px; border-radius: 15px; }
       .icon { width: 64px; height: 64px; margin-bottom: 7px; font-size: 40px; }
       .icon img { width: 60px; height: 60px; border-radius: 12px; }
@@ -1344,8 +1344,8 @@
         <input
           type="text"
           id="nameInput"
-          maxlength="8"
-          placeholder="例：Google（8文字まで）"
+          maxlength="6"
+          placeholder="例：Google（6文字まで）"
         >
 
       </div>
@@ -2446,7 +2446,7 @@
         function() {
 
           const name =
-            nameInput.value.trim().slice(0, 8);
+            nameInput.value.trim().slice(0, 6);
 
           const url =
             normalizeUrl(
