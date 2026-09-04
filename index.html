@@ -209,18 +209,8 @@
       }
 
       .tiles {
-        /*
-         * PCは画面幅に合わせて自動調整
-         *
-         * 1タイルが120pxより小さく
-         * ならないようにする
-         */
-        grid-template-columns:
-          repeat(
-            auto-fit,
-            minmax(120px, 1fr)
-          );
-
+        /* PC：基本10列 */
+        grid-template-columns: repeat(10, minmax(0, 1fr));
         gap: 12px;
       }
 
@@ -877,7 +867,7 @@
       font-weight: 700;
       outline: none;
     }
-    .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 17px; }
+    .tiles { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 12px; }
     .tile {
       aspect-ratio: 1 / .98;
       min-height: 184px;
@@ -947,6 +937,14 @@
     .menu-item, .sort-option { color: #f1f1f1; }
     .dialog { background: #242424; color: #f1f1f1; }
     .form-group input, .edit-search input { background: #303030; color: #f1f1f1; border-color: #4a4a4a; }
+    @media (min-width: 1600px) {
+      .tiles { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+    }
+
+    @media (min-width: 2000px) {
+      .tiles { grid-template-columns: repeat(14, minmax(0, 1fr)); }
+    }
+
     @media (max-width: 600px) {
       .book-header { height: 62px; padding: 0 10px; }
       .book-tabs { height: 48px; }
