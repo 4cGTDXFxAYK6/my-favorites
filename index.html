@@ -1048,6 +1048,25 @@
       .icon { width: 52px; height: 52px; margin-bottom: 5px; font-size: 34px; flex-shrink: 0; }
       .icon img { width: 48px; height: 48px; border-radius: 10px; }
       .name { display: block; width: 100%; min-width: 0; font-size: 11px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: inherit; }
+      /* 4列スマホでもサイト名の文字下端が切れないようにする */
+      .tile {
+        box-sizing: border-box;
+        overflow: visible;
+        min-height: 0;
+        height: auto;
+        aspect-ratio: 1 / 1;
+      }
+      .tile .icon {
+        flex: 0 0 52px;
+      }
+      .tile .name {
+        flex: 0 0 auto;
+        height: auto;
+        min-height: 14px;
+        line-height: 14px;
+        padding: 0;
+        margin: 0;
+      }
       .delete-button { width: 30px; height: 30px; font-size: 18px; }
       .bottom-actions {
         left: 50%;
