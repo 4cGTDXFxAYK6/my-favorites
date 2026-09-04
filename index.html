@@ -814,7 +814,7 @@
       letter-spacing: 3px;
       cursor: pointer;
     }
-    .tab-divider { width: 1px; height: 38px; background: #555; margin: 0 20px 0 8px; }
+    .tab-divider { display: none !important; }
     .tab-title {
       flex: 1;
       text-align: center;
@@ -1020,7 +1020,7 @@
       .book-header { height: 62px; padding: 0 8px; }
       .book-tabs { height: 48px; }
       .tab-back { width: 42px; font-size: 18px; }
-      .tab-divider { margin: 0 7px 0 2px; height: 30px; }
+      .tab-divider { display: none !important; }
       .tab-title { font-size: 22px; }
       .tab-current { width: 150px; max-width: 38vw; height: 40px; font-size: 16px; }
       .tab-current span { font-size: 22px; margin-left: 4px; }
@@ -1101,7 +1101,6 @@
   <!-- ブック型ヘッダー -->
   <header class="book-header">
     <div class="book-tabs">
-      <div class="tab-divider"></div>
       <div class="tab-title">お気に入り</div>
       <button class="tab-current" id="bookTabButton" aria-label="メニュー">マイ・ブック… <span>×</span></button>
     </div>
