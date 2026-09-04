@@ -1093,6 +1093,19 @@
       .action-button span { margin-right: 2px; font-size: 15px; }
     }
 
+  
+    /* ===== 表示モード変更ボタン：ヘッダー内でタイトルと同じ高さに配置 ===== */
+    .book-header .theme-toggle {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    @media (max-width: 600px) {
+      .book-header .theme-toggle {
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+      }
+    }
   </style>
 </head>
 
