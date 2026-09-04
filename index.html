@@ -907,6 +907,26 @@
       box-shadow: 0 5px 20px rgba(0,0,0,.38);
       border: 1px solid #363636;
     }
+    .sort-action {
+      height: 58px;
+      min-width: 142px;
+      padding: 0 28px 0 18px;
+      border: 1px solid #4b4b4b;
+      border-radius: 30px;
+      background: #303030;
+      color: #f4f4f4;
+      font-size: 18px;
+      font-weight: 800;
+      outline: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    html[data-theme="light"] .sort-action,
+    body.light-mode .sort-action {
+      background: #fff;
+      color: #222;
+      border-color: #d0d0d0;
+    }
     .action-button {
       height: 58px;
       min-width: 142px;
@@ -1094,6 +1114,36 @@
     }
 
   
+    /* ===== 下部操作：並び順を追加・保存・復元と横並びにする ===== */
+    @media (max-width: 600px) {
+      .bottom-actions {
+        width: calc(100vw - 16px);
+        max-width: 420px;
+        gap: 4px;
+        padding: 5px;
+      }
+      .bottom-actions .sort-action,
+      .bottom-actions .action-button {
+        flex: 1 1 0;
+        width: 0;
+        min-width: 0;
+        height: 38px;
+        padding: 0 3px;
+        border-radius: 19px;
+        font-size: 12px;
+        box-sizing: border-box;
+      }
+      .bottom-actions .sort-action {
+        padding-left: 5px;
+        padding-right: 17px;
+        font-size: 11px;
+      }
+      .bottom-actions .action-button span {
+        margin-right: 2px;
+        font-size: 14px;
+      }
+    }
+
     /* ===== 表示モード変更ボタン：ヘッダー内でタイトルと同じ高さに配置 ===== */
     .book-header .theme-toggle {
       top: 50%;
@@ -1166,16 +1216,6 @@
 
   <main class="container">
 
-    <div class="sort-bar">
-      <span class="sort-label">並び替え：</span>
-      <select id="sortSelect" aria-label="並び替え">
-        <option value="most">よく使う順</option>
-        <option value="least">あまり使わない順</option>
-        <option value="registered">登録した順</option>
-        <option value="name">五十音順</option>
-      </select>
-    </div>
-
     <div id="favorites">
 
       <div class="loading">
@@ -1189,6 +1229,12 @@
 
   <!-- 下部アクション -->
   <nav class="bottom-actions" aria-label="お気に入り操作">
+    <select class="sort-action" id="sortSelect" aria-label="並び順">
+      <option value="most">よく使う順</option>
+      <option value="least">あまり使わない順</option>
+      <option value="registered">登録した順</option>
+      <option value="name">五十音順</option>
+    </select>
     <button class="action-button add-action" id="bottomAddButton"><span>＋</span>追加</button>
     <button class="action-button save-action" id="bottomSaveButton"><span>☁</span>保存</button>
     <button class="action-button restore-action" id="bottomRestoreButton"><span>⟳</span>復元</button>
