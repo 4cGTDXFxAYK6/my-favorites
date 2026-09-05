@@ -729,7 +729,7 @@
       margin-right: 5px;
     }
 
-    /* ===== スクリーンショット風UI ===== */
+    /* ===== UI詳細設計 ===== */
     html, body { min-height: 100%; }
     body {
       background: #181818;
@@ -772,33 +772,22 @@
       line-height: 1;
       font-weight: 700;
     }
-    .tab-current {
-      width: 300px;
-      max-width: 38vw;
-      height: 46px;
-      border: 0;
-      border-radius: 9px 9px 0 0;
-      background: #202020;
-      color: #f4f4f4;
-      font-size: 21px;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    .tab-current span { color: #bbb; font-size: 29px; margin-left: 8px; font-weight: 400; }
     .theme-toggle {
       position: absolute;
       right: 24px;
-      top: 83px;
-      width: 88px;
-      height: 58px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px;
+      height: 50px;
       border: 1px solid #4a4a4a;
-      border-radius: 30px;
+      border-radius: 50%;
       background: #303030;
-      font-size: 28px;
+      font-size: 24px;
       cursor: pointer;
       z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .normal-header { display: none !important; }
     .container {
@@ -806,29 +795,8 @@
       width: 100%;
       padding: 20px 17px 105px;
     }
-    .sort-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      margin: 0 0 24px;
-      color: #cfcfcf;
-    }
-    .sort-label { font-size: 22px; font-weight: 600; }
-    #sortSelect {
-      min-width: 185px;
-      height: 53px;
-      padding: 0 38px 0 18px;
-      border: 1px solid #4b4b4b;
-      border-radius: 27px;
-      background: #303030;
-      color: #f4f4f4;
-      font-size: 21px;
-      font-weight: 700;
-      outline: none;
-    }
     
-    /* PCのデフォルト設定 */
+    /* PCのグリッド・タイル設定（画像を小さく変更） */
     .tiles {
       display: grid;
       grid-template-columns: repeat(10, minmax(0, 1fr));
@@ -844,38 +812,39 @@
       aspect-ratio: 1 / 1;
       min-width: 0;
       min-height: 0;
-      padding: 10px 6px;
+      padding: 8px 4px;
       background: #292929;
       color: #f6f6f6;
-      border-radius: 18px;
+      border-radius: 16px;
       box-shadow: none;
       border: 1px solid #303030;
       overflow: hidden;
       box-sizing: border-box;
     }
 
+    /* アイコン画像を小さめに調整 */
     .icon {
-      width: clamp(32px, 45%, 64px);
-      height: clamp(32px, 45%, 64px);
+      width: clamp(24px, 32%, 44px);
+      height: clamp(24px, 32%, 44px);
       margin-bottom: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      font-size: clamp(20px, 3.5vw, 40px);
+      font-size: clamp(18px, 2.5vw, 30px);
     }
 
     .icon img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      border-radius: 10px;
+      border-radius: 8px;
     }
 
     .name {
       width: 100%;
-      font-size: clamp(11px, 1.1vw, 14px);
-      font-weight: 700;
+      font-size: clamp(11px, 1vw, 13px);
+      font-weight: 600;
       line-height: 1.2;
       text-align: center;
       white-space: nowrap;
@@ -885,66 +854,79 @@
     }
 
     .delete-button {
-      width: 28px;
-      height: 28px;
-      top: 6px;
-      right: 6px;
+      width: 26px;
+      height: 26px;
+      top: 5px;
+      right: 5px;
       background: #444;
       color: #eee;
-      font-size: 16px;
+      font-size: 15px;
     }
 
+    /* 下部アクションバー（デザイン調整） */
     .bottom-actions {
       position: fixed;
       left: 50%;
-      bottom: 27px;
+      bottom: 24px;
       transform: translateX(-50%);
       z-index: 1500;
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 13px;
-      border-radius: 44px;
-      background: rgba(45,45,45,.96);
-      box-shadow: 0 5px 20px rgba(0,0,0,.38);
-      border: 1px solid #363636;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 50px;
+      background: rgba(38, 38, 38, 0.95);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
+
     .sort-action {
-      height: 58px;
-      min-width: 142px;
-      padding: 0 28px 0 18px;
-      border: 1px solid #4b4b4b;
-      border-radius: 30px;
-      background: #303030;
+      height: 48px;
+      min-width: 150px;
+      padding: 0 36px 0 16px;
+      border: 1px solid #444;
+      border-radius: 24px;
+      background: #2a2a2a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%20aaa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 14px center;
       color: #f4f4f4;
-      font-size: 18px;
-      font-weight: 800;
+      font-size: 16px;
+      font-weight: 700;
       outline: none;
       cursor: pointer;
       white-space: nowrap;
+      appearance: none;
+      -webkit-appearance: none;
     }
-    html[data-theme="light"] .sort-action,
-    body.light-mode .sort-action {
-      background: #fff;
-      color: #222;
-      border-color: #d0d0d0;
-    }
+
     .action-button {
-      height: 58px;
-      min-width: 142px;
-      padding: 0 24px;
+      height: 48px;
+      padding: 0 22px;
       border: 0;
-      border-radius: 30px;
+      border-radius: 24px;
       color: white;
-      font-size: 22px;
-      font-weight: 800;
+      font-size: 17px;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.15s ease;
     }
-    .action-button span { margin-right: 7px; font-size: 25px; }
-    .add-action { background: #1688ee; }
-    .save-action { background: #24ad5b; }
-    .restore-action { background: #9b9b9b; }
+
+    .action-button:active {
+      opacity: 0.85;
+    }
+
+    .action-button span {
+      margin-right: 6px;
+      font-size: 18px;
+    }
+
+    .add-action { background: #1a80e6; }
+    .save-action { background: #22a052; }
+    .restore-action { background: #999999; color: #111; }
+
     .menu-panel { background: #202020; color: #f1f1f1; }
     .menu-item, .sort-option { color: #f1f1f1; }
     .dialog { background: #242424; color: #f1f1f1; }
@@ -961,190 +943,102 @@
     @media (max-width: 600px) {
       .book-header { height: 62px; padding: 0 10px; }
       .book-tabs { height: 48px; }
-      .tab-back { width: 48px; font-size: 20px; }
-      .tab-divider { margin: 0 9px 0 3px; height: 32px; }
-      .tab-title { font-size: 25px; }
-      .tab-current { width: 175px; max-width: 32vw; height: 43px; font-size: 18px; }
-      .tab-current span { font-size: 25px; }
-      .theme-toggle { top: 74px; right: 24px; width: 72px; height: 54px; font-size: 25px; }
-      .container { padding: 0 17px 105px; }
-      .sort-label { font-size: 20px; }
-      #sortSelect { min-width: 177px; height: 52px; font-size: 19px; }
+      .tab-title { font-size: 22px; }
+      .theme-toggle { right: 12px; width: 42px; height: 42px; font-size: 20px; }
+      .container { padding: 0 12px 105px; }
+      
       .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
       .tile {
         aspect-ratio: 1 / 1;
         min-height: 0;
         height: auto;
-        padding: 8px 4px 8px;
+        padding: 8px 4px;
         border-radius: 15px;
-        justify-content: flex-start;
+        justify-content: center;
         box-sizing: border-box;
-        overflow: visible;
       }
       .icon {
-        width: 52px;
-        height: 52px;
-        margin-bottom: 5px;
-        font-size: 34px;
-        flex: 0 0 52px;
+        width: 44px;
+        height: 44px;
+        margin-bottom: 4px;
+        font-size: 28px;
+        flex: 0 0 44px;
       }
-      .icon img { width: 48px; height: 48px; border-radius: 10px; }
+      .icon img { width: 40px; height: 40px; border-radius: 8px; }
       .name {
         display: block;
         width: 100%;
-        min-width: 0;
         font-size: 11px;
         line-height: 14px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         text-align: center;
-        color: inherit;
-        flex: 0 0 auto;
-        height: auto;
-        min-height: 14px;
-        padding: 0;
-        margin: 0;
       }
-      .delete-button { width: 30px; height: 30px; font-size: 18px; }
+      .delete-button { width: 28px; height: 28px; font-size: 16px; }
+      
       .bottom-actions {
         left: 50%;
         right: auto;
-        bottom: max(8px, env(safe-area-inset-bottom));
-        width: calc(100vw - 24px);
+        bottom: max(12px, env(safe-area-inset-bottom));
+        width: calc(100vw - 20px);
         max-width: 420px;
         box-sizing: border-box;
         transform: translateX(-50%);
-        gap: 4px;
-        padding: 5px;
-        border-radius: 22px;
-      }
-      .action-button {
-        flex: 1 1 0;
-        width: 0;
-        min-width: 0;
-        height: 38px;
-        padding: 0 2px;
-        border-radius: 19px;
-        font-size: 13px;
-        letter-spacing: -0.02em;
-      }
-      .action-button span { margin-right: 2px; font-size: 15px; }
-    }
-
-    /* ===== テーマをbodyクラスだけに依存せず、HTML属性でも明示 ===== */
-    html[data-theme="light"] body {
-      background: #f5f5f5 !important;
-      color: #222 !important;
-    }
-    html[data-theme="dark"] body {
-      background: #1b1b1d !important;
-      color: #f1f1f1 !important;
-    }
-    html[data-theme="light"] .book-header { background: #f5f5f5 !important; border-bottom-color: #d8d8d8 !important; }
-    html[data-theme="light"] .tab-title { color: #222 !important; }
-    html[data-theme="light"] .tab-back { color: #666 !important; }
-    html[data-theme="light"] .tab-current { background: #fff !important; color: #222 !important; }
-    html[data-theme="light"] .sort-bar { color: #555 !important; }
-    html[data-theme="light"] #sortSelect { background: #fff !important; color: #222 !important; border-color: #d0d0d0 !important; }
-    html[data-theme="light"] .tile { background: #fff !important; color: #222 !important; border-color: #e4e4e4 !important; }
-    html[data-theme="light"] .bottom-actions { background: rgba(255,255,255,.97) !important; border-color: #ddd !important; }
-    html[data-theme="light"] .theme-toggle { background: #fff !important; color: #222 !important; border-color: #d2d2d2 !important; }
-    html[data-theme="light"] .delete-button { background: #e7e7e7 !important; color: #444 !important; }
-    html[data-theme="light"] .empty, html[data-theme="light"] .loading { color: #555 !important; }
-
-    /* テーマ切替を端末ブラウザでも確実に反映 */
-    html[data-theme="dark"] { color-scheme: dark; }
-    html[data-theme="light"] { color-scheme: light; }
-    .theme-toggle { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
-
-    /* ===== テーマ切替・スマホ最適化 ===== */
-    body.light-mode {
-      background: #f5f5f5;
-      color: #222;
-    }
-    body.light-mode .book-header {
-      background: #f5f5f5;
-      border-bottom-color: #d8d8d8;
-    }
-    body.light-mode .tab-back { color: #666; }
-    body.light-mode .tab-divider { background: #c8c8c8; }
-    body.light-mode .tab-title { color: #222; }
-    body.light-mode .tab-current {
-      background: #fff;
-      color: #222;
-      box-shadow: 0 1px 4px rgba(0,0,0,.08);
-    }
-    body.light-mode .theme-toggle {
-      background: #fff;
-      border-color: #d2d2d2;
-      color: #222;
-    }
-    body.light-mode .sort-bar { color: #555; }
-    body.light-mode #sortSelect {
-      background: #fff;
-      color: #222;
-      border-color: #d0d0d0;
-    }
-    body.light-mode .tile {
-      background: #fff;
-      color: #222;
-      border-color: #e4e4e4;
-      box-shadow: 0 2px 8px rgba(0,0,0,.08);
-    }
-    body.light-mode .bottom-actions {
-      background: rgba(255,255,255,.96);
-      border-color: #ddd;
-      box-shadow: 0 4px 18px rgba(0,0,0,.16);
-    }
-
-    /* ===== 下部操作：並び順を追加・保存・復元と横並びにする ===== */
-    @media (max-width: 600px) {
-      .bottom-actions {
-        width: calc(100vw - 16px);
-        max-width: 420px;
-        gap: 4px;
-        padding: 5px;
+        gap: 5px;
+        padding: 6px;
+        border-radius: 30px;
       }
       .bottom-actions .sort-action,
       .bottom-actions .action-button {
         flex: 1 1 0;
         width: 0;
         min-width: 0;
-        height: 38px;
-        padding: 0 3px;
-        border-radius: 19px;
+        height: 40px;
+        padding: 0 2px;
+        border-radius: 20px;
         font-size: 12px;
         box-sizing: border-box;
       }
       .bottom-actions .sort-action {
-        padding-left: 5px;
-        padding-right: 17px;
-        font-size: 11px;
+        padding-left: 8px;
+        padding-right: 20px;
+        font-size: 12px;
+        background-position: right 6px center;
       }
       .bottom-actions .action-button span {
-        margin-right: 2px;
+        margin-right: 3px;
         font-size: 14px;
       }
     }
 
-    /* ===== 表示モード変更ボタン：ヘッダー内でタイトルと同じ高さに配置 ===== */
-    .book-header .theme-toggle {
-      top: 50%;
-      transform: translateY(-50%);
+    /* ===== テーマ対応 ===== */
+    html[data-theme="light"] body {
+      background: #f5f5f5 !important;
+      color: #222 !important;
     }
-    @media (max-width: 600px) {
-      .book-header .theme-toggle {
-        top: 50%;
-        right: 12px;
-        transform: translateY(-50%);
-      }
+    html[data-theme="dark"] body {
+      background: #181818 !important;
+      color: #f1f1f1 !important;
     }
+    html[data-theme="light"] .book-header { background: #f5f5f5 !important; border-bottom-color: #d8d8d8 !important; }
+    html[data-theme="light"] .tab-title { color: #222 !important; }
+    html[data-theme="light"] .tile { background: #fff !important; color: #222 !important; border-color: #e4e4e4 !important; }
+    html[data-theme="light"] .bottom-actions { background: rgba(255,255,255,.96) !important; border-color: #ddd !important; }
+    html[data-theme="light"] .sort-action { background-color: #f0f0f0; color: #222; border-color: #ccc; }
+    html[data-theme="light"] .theme-toggle { background: #fff !important; color: #222 !important; border-color: #d2d2d2 !important; }
+    html[data-theme="light"] .delete-button { background: #e7e7e7 !important; color: #444 !important; }
+    html[data-theme="light"] .empty, html[data-theme="light"] .loading { color: #555 !important; }
+
+    html[data-theme="dark"] { color-scheme: dark; }
+    html[data-theme="light"] { color-scheme: light; }
+    .theme-toggle { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
   </style>
 </head>
 
 <body>
 
+  <!-- ブック型ヘッダー -->
   <header class="book-header">
     <div class="book-tabs">
       <div class="tab-title">お気に入り</div>
@@ -1152,52 +1046,25 @@
     <button class="theme-toggle" id="themeToggle" aria-label="テーマ切替">☀️</button>
   </header>
 
-  <header
-    class="edit-header"
-    id="editHeader"
-  >
-
-    <div class="edit-title">
-      ✏️ お気に入りを編集
-    </div>
-
-    <button
-      class="done-button"
-      id="doneButton"
-    >
-      ✓ 完了
-    </button>
-
+  <!-- 編集ヘッダー -->
+  <header class="edit-header" id="editHeader">
+    <div class="edit-title">✏️ お気に入りを編集</div>
+    <button class="done-button" id="doneButton">✓ 完了</button>
   </header>
 
-
-  <div
-    class="edit-search"
-    id="editSearch"
-  >
-
-    <input
-      type="search"
-      id="editSearchInput"
-      placeholder="🔍 編集するお気に入りを検索"
-    >
-
+  <!-- 編集検索 -->
+  <div class="edit-search" id="editSearch">
+    <input type="search" id="editSearchInput" placeholder="🔍 編集するお気に入りを検索">
   </div>
 
-
+  <!-- メイン -->
   <main class="container">
-
     <div id="favorites">
-
-      <div class="loading">
-        読み込み中...
-      </div>
-
+      <div class="loading">読み込み中...</div>
     </div>
-
   </main>
 
-
+  <!-- 下部操作 -->
   <nav class="bottom-actions" aria-label="お気に入り操作">
     <select class="sort-action" id="sortSelect" aria-label="並び順">
       <option value="most">高頻度</option>
@@ -1210,542 +1077,142 @@
     <button class="action-button restore-action" id="bottomRestoreButton"><span>⟳</span>復元</button>
   </nav>
 
-  <div
-    class="menu-overlay"
-    id="menuOverlay"
-  >
-
+  <!-- メニュー -->
+  <div class="menu-overlay" id="menuOverlay">
     <div class="menu-panel">
-
       <div class="menu-header">
-
-        <div class="menu-title">
-          メニュー
-        </div>
-
-        <button
-          class="close-button"
-          id="closeMenuButton"
-        >
-          ✕
-        </button>
-
+        <div class="menu-title">メニュー</div>
+        <button class="close-button" id="closeMenuButton">✕</button>
       </div>
 
-
-      <button
-        class="menu-item"
-        id="openRegisterButton"
-      >
-        ＋ お気に入りを登録
-      </button>
-
-
-      <button
-        class="menu-item"
-        id="openSearchButton"
-      >
-        🔍 お気に入りを検索
-      </button>
-
-
-      <button
-        class="menu-item"
-        id="openEditButton"
-      >
-        ✏️ 編集モード
-      </button>
-
+      <button class="menu-item" id="openRegisterButton">＋ お気に入りを登録</button>
+      <button class="menu-item" id="openSearchButton">🔍 お気に入りを検索</button>
+      <button class="menu-item" id="openEditButton">✏️ 編集モード</button>
 
       <div class="menu-section">
-
-        <div class="menu-section-title">
-          並び順
-        </div>
-
-
-        <button
-          class="sort-option"
-          data-sort="most"
-        >
-          <span class="sort-mark"></span>
-          クリック回数の多い順
-        </button>
-
-
-        <button
-          class="sort-option"
-          data-sort="least"
-        >
-          <span class="sort-mark"></span>
-          クリック回数の少ない順
-        </button>
-
-
-        <button
-          class="sort-option"
-          data-sort="registered"
-        >
-          <span class="sort-mark"></span>
-          登録順
-        </button>
-
-
-        <button
-          class="sort-option"
-          data-sort="name"
-        >
-          <span class="sort-mark"></span>
-          五十音順
-        </button>
-
+        <div class="menu-section-title">並び順</div>
+        <button class="sort-option" data-sort="most"><span class="sort-mark"></span>クリック回数の多い順</button>
+        <button class="sort-option" data-sort="least"><span class="sort-mark"></span>クリック回数の少ない順</button>
+        <button class="sort-option" data-sort="registered"><span class="sort-mark"></span>登録順</button>
+        <button class="sort-option" data-sort="name"><span class="sort-mark"></span>五十音順</button>
       </div>
-
 
       <div class="menu-section">
-
-        <div class="menu-section-title">
-          表示モード
-        </div>
-
-        <button
-          class="sort-option theme-option"
-          data-theme="light"
-        >
-          <span class="theme-mark"></span>
-          ☀️ ライトモード
-        </button>
-
-        <button
-          class="sort-option theme-option"
-          data-theme="dark"
-        >
-          <span class="theme-mark"></span>
-          🌙 ダークモード
-        </button>
-
+        <div class="menu-section-title">表示モード</div>
+        <button class="sort-option theme-option" data-theme="light"><span class="theme-mark"></span>☀️ ライトモード</button>
+        <button class="sort-option theme-option" data-theme="dark"><span class="theme-mark"></span>🌙 ダークモード</button>
       </div>
-
 
       <div class="menu-section">
-
-        <div class="menu-section-title">
-          データ管理
-        </div>
-
-
-        <button
-          class="menu-item"
-          id="backupButton"
-        >
-          💾 バックアップ
-        </button>
-
-
-        <button
-          class="menu-item"
-          id="restoreButton"
-        >
-          📂 バックアップから復元
-        </button>
-
+        <div class="menu-section-title">データ管理</div>
+        <button class="menu-item" id="backupButton">💾 バックアップ</button>
+        <button class="menu-item" id="restoreButton">📂 バックアップから復元</button>
       </div>
-
     </div>
-
   </div>
 
-
-  <div
-    class="dialog-overlay"
-    id="registerDialog"
-  >
-
+  <!-- 登録ダイアログ -->
+  <div class="dialog-overlay" id="registerDialog">
     <div class="dialog">
-
-      <h2>
-        お気に入りを登録
-      </h2>
-
-
+      <h2>お気に入りを登録</h2>
       <div class="form-group">
-
-        <label for="nameInput">
-          サイト名
-        </label>
-
-        <input
-          type="text"
-          id="nameInput"
-          maxlength="8"
-          placeholder="例：Google（6文字まで）"
-        >
-
+        <label for="nameInput">サイト名</label>
+        <input type="text" id="nameInput" maxlength="8" placeholder="例：Google（6文字まで）">
       </div>
-
-
       <div class="form-group">
-
-        <label for="urlInput">
-          URL
-        </label>
-
-        <input
-          type="url"
-          id="urlInput"
-          placeholder="https://example.com/"
-        >
-
+        <label for="urlInput">URL</label>
+        <input type="url" id="urlInput" placeholder="https://example.com/">
       </div>
-
-
       <div class="dialog-buttons">
-
-        <button
-          class="dialog-button cancel-button"
-          id="cancelRegisterButton"
-        >
-          キャンセル
-        </button>
-
-        <button
-          class="dialog-button register-button"
-          id="registerButton"
-        >
-          登録
-        </button>
-
+        <button class="dialog-button cancel-button" id="cancelRegisterButton">キャンセル</button>
+        <button class="dialog-button register-button" id="registerButton">登録</button>
       </div>
-
     </div>
-
   </div>
 
-
-  <div
-    class="dialog-overlay"
-    id="searchDialog"
-  >
-
+  <!-- 検索ダイアログ -->
+  <div class="dialog-overlay" id="searchDialog">
     <div class="dialog">
-
-      <h2>
-        お気に入りを検索
-      </h2>
-
-
+      <h2>お気に入りを検索</h2>
       <div class="form-group">
-
-        <label for="searchInput">
-          キーワード
-        </label>
-
-        <input
-          type="search"
-          id="searchInput"
-          placeholder="サイト名を入力"
-        >
-
+        <label for="searchInput">キーワード</label>
+        <input type="search" id="searchInput" placeholder="サイト名を入力">
       </div>
-
-
       <div class="dialog-buttons">
-
-        <button
-          class="dialog-button cancel-button"
-          id="closeSearchButton"
-        >
-          閉じる
-        </button>
-
+        <button class="dialog-button cancel-button" id="closeSearchButton">閉じる</button>
       </div>
-
     </div>
-
   </div>
 
-
-  <div
-    class="dialog-overlay"
-    id="backupDialog"
-  >
-
+  <!-- バックアップダイアログ -->
+  <div class="dialog-overlay" id="backupDialog">
     <div class="dialog">
-
-      <h2>
-        💾 バックアップ
-      </h2>
-
-
-      <div class="backup-info">
-
-        現在登録されているお気に入り：
-
-        <span
-          class="backup-count"
-          id="backupCount"
-        >
-          0
-        </span>
-
-        件
-
-      </div>
-
-
-      <div class="restore-warning">
-
-        バックアップファイルには、
-        お気に入りの名前・URL・並び順などが
-        保存されます。
-
-      </div>
-
-
+      <h2>💾 バックアップ</h2>
+      <div class="backup-info">現在登録されているお気に入り：<span class="backup-count" id="backupCount">0</span> 件</div>
+      <div class="restore-warning">バックアップファイルには、お気に入りの名前・URL・並び順などが保存されます。</div>
       <div class="dialog-buttons">
-
-        <button
-          class="dialog-button cancel-button"
-          id="closeBackupButton"
-        >
-          閉じる
-        </button>
-
-        <button
-          class="dialog-button register-button"
-          id="createBackupButton"
-        >
-          ファイルを作成
-        </button>
-
+        <button class="dialog-button cancel-button" id="closeBackupButton">閉じる</button>
+        <button class="dialog-button register-button" id="createBackupButton">ファイルを作成</button>
       </div>
-
     </div>
-
   </div>
 
-
-  <div
-    class="dialog-overlay"
-    id="restoreDialog"
-  >
-
+  <!-- 復元ダイアログ -->
+  <div class="dialog-overlay" id="restoreDialog">
     <div class="dialog">
-
-      <h2>
-        📂 バックアップから復元
-      </h2>
-
-
+      <h2>📂 バックアップから復元</h2>
       <div class="form-group">
-
-        <label for="backupFile">
-          バックアップファイル
-        </label>
-
-        <input
-          type="file"
-          id="backupFile"
-          class="file-input"
-          accept=".json,application/json"
-        >
-
+        <label for="backupFile">バックアップファイル</label>
+        <input type="file" id="backupFile" class="file-input" accept=".json,application/json">
       </div>
-
-
-      <div
-        class="backup-info"
-        id="restoreInfo"
-      >
-        バックアップファイルを
-        選択してください。
-      </div>
-
-
-      <div class="restore-warning">
-
-        ⚠️ 復元すると、現在のお気に入りが
-        バックアップの内容に置き換わります。
-
-        <br><br>
-
-        復元前に、現在のデータを
-        バックアップしておくことをおすすめします。
-
-      </div>
-
-
+      <div class="backup-info" id="restoreInfo">バックアップファイルを選択してください。</div>
+      <div class="restore-warning">⚠️ 復元すると、現在のお気に入りがバックアップの内容に置き換わります。<br><br>復元前に、現在のデータをバックアップしておくことをおすすめします。</div>
       <div class="dialog-buttons">
-
-        <button
-          class="dialog-button cancel-button"
-          id="closeRestoreButton"
-        >
-          キャンセル
-        </button>
-
-        <button
-          class="dialog-button register-button"
-          id="restoreConfirmButton"
-          disabled
-        >
-          復元する
-        </button>
-
+        <button class="dialog-button cancel-button" id="closeRestoreButton">キャンセル</button>
+        <button class="dialog-button register-button" id="restoreConfirmButton" disabled>復元する</button>
       </div>
-
     </div>
-
   </div>
-
 
   <script>
-
-    /* ==================================
-       基本設定
-       ================================== */
-
     let favorites = [];
-
-    let currentSort =
-      localStorage.getItem(
-        "favoriteSort"
-      ) || "most";
-
+    let currentSort = localStorage.getItem("favoriteSort") || "most";
     let currentSearchKeyword = "";
 
-    if (currentSort === "recent") {
-      currentSort = "most";
-      localStorage.setItem("favoriteSort", currentSort);
-    }
-
-    if (currentSort === "oldest") {
-      currentSort = "least";
-      localStorage.setItem("favoriteSort", currentSort);
-    }
+    if (currentSort === "recent") currentSort = "most";
+    if (currentSort === "oldest") currentSort = "least";
 
     let editMode = false;
-
     let restoreData = null;
 
-
-    /* ==================================
-       保存
-       ================================== */
-
     function saveFavorites() {
-
-      localStorage.setItem(
-        "myFavorites",
-        JSON.stringify(
-          favorites
-        )
-      );
-
+      localStorage.setItem("myFavorites", JSON.stringify(favorites));
     }
-
-
-    /* ==================================
-       URLを安全に整える
-       ================================== */
 
     function normalizeUrl(url) {
-
-      if (!url) {
-        return "";
-      }
-
+      if (!url) return "";
       url = url.trim();
-
-      if (
-        !url.startsWith("http://") &&
-        !url.startsWith("https://")
-      ) {
-        url =
-          "https://" + url;
+      if (!url.startsWith("http://") && !url.startsWith("https://")) {
+        url = "https://" + url;
       }
-
       return url;
-
     }
-
-
-    /* ==================================
-       ファビコン候補
-       ================================== */
 
     function getFaviconCandidates(url) {
-
       const candidates = [];
-
       try {
-
-        const parsed =
-          new URL(
-            normalizeUrl(url)
-          );
-
-        const origin =
-          parsed.origin;
-
-
-        candidates.push(
-          origin + "/favicon.ico"
-        );
-
-        candidates.push(
-          origin + "/favicon.png"
-        );
-
-        candidates.push(
-          origin + "/apple-touch-icon.png"
-        );
-
+        const parsed = new URL(normalizeUrl(url));
+        const origin = parsed.origin;
+        candidates.push(origin + "/favicon.ico");
+        candidates.push(origin + "/favicon.png");
+        candidates.push(origin + "/apple-touch-icon.png");
+      } catch (error) {
+        console.error("URL解析エラー:", error);
       }
-
-      catch (error) {
-
-        console.error(
-          "URL解析エラー:",
-          error
-        );
-
-      }
-
-
-      return [
-        ...new Set(
-          candidates
-        )
-      ];
-
+      return [...new Set(candidates)];
     }
-
-
-    /* ==================================
-       初期ファビコンURL
-       ================================== */
-
-    function getFaviconUrl(url) {
-
-      const candidates =
-        getFaviconCandidates(
-          url
-        );
-
-      return (
-        candidates[0] || ""
-      );
-
-    }
-
-
-    /* ==================================
-       アイコン表示
-       ================================== */
 
     function createFaviconElement(item) {
-
       const icon = document.createElement("div");
       icon.className = "icon";
 
@@ -1802,23 +1269,15 @@
       };
 
       img.onerror = tryNext;
-      img.onload = () => {
-        icon.classList.add("has-image");
-      };
+      img.onload = () => { icon.classList.add("has-image"); };
       icon.appendChild(img);
       tryNext();
 
       return icon;
     }
 
-    /* ==================================
-       並び替え
-       ================================== */
-
     function sortFavorites(items) {
-
       const sorted = [...items];
-
       if (currentSort === "most") {
         sorted.sort((a, b) => (b.clickCount || 0) - (a.clickCount || 0));
       } else if (currentSort === "least") {
@@ -1828,23 +1287,15 @@
       } else if (currentSort === "name") {
         sorted.sort((a, b) => (a.name || "").localeCompare(b.name || "", "ja"));
       }
-
       return sorted;
     }
 
-
-    /* ==================================
-       データ読み込み
-       ================================== */
-
     async function loadFavorites() {
-
       const saved = localStorage.getItem("myFavorites");
-
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          if (!Array.isArray(parsed)) throw new Error("保存データの形式が正しくありません。");
+          if (!Array.isArray(parsed)) throw new Error("データエラー");
 
           const now = Date.now();
           favorites = parsed.map((item, index) => ({
@@ -1860,16 +1311,16 @@
           displayFavorites();
           return;
         } catch (error) {
-          console.error("保存データの読み込みに失敗しました:", error);
+          console.error("データ読み込み失敗:", error);
         }
       }
 
       try {
         const response = await fetch("favorites.json?v=" + Date.now(), { cache: "no-store" });
-        if (!response.ok) throw new Error("favorites.jsonを読み込めませんでした");
+        if (!response.ok) throw new Error("JSONエラー");
 
         const data = await response.json();
-        if (!Array.isArray(data)) throw new Error("favorites.jsonの形式が正しくありません");
+        if (!Array.isArray(data)) throw new Error("JSON形式エラー");
 
         const now = Date.now();
         favorites = data.map((item, index) => ({
@@ -1886,18 +1337,11 @@
       } catch (error) {
         favorites = [];
         displayFavorites();
-        console.warn("初期データを読み込めませんでした:", error);
       }
     }
 
-    /* ==================================
-       表示
-       ================================== */
-
     function displayFavorites(searchKeyword = currentSearchKeyword) {
-
       currentSearchKeyword = searchKeyword || "";
-
       const container = document.getElementById("favorites");
 
       let items = favorites.filter(item =>
@@ -1907,11 +1351,7 @@
       items = sortFavorites(items);
 
       if (items.length === 0) {
-        container.innerHTML = `
-          <div class="empty">
-            お気に入りがありません。
-          </div>
-        `;
+        container.innerHTML = `<div class="empty">お気に入りがありません。</div>`;
         return;
       }
 
@@ -1964,11 +1404,7 @@
       container.appendChild(tiles);
     }
 
-
-    /* ==================================
-       メニュー
-       ================================== */
-
+    /* メニュー制御 */
     const menuOverlay = document.getElementById("menuOverlay");
     const closeMenuButton = document.getElementById("closeMenuButton");
 
@@ -1982,18 +1418,9 @@
     }
 
     closeMenuButton.addEventListener("click", closeMenu);
+    menuOverlay.addEventListener("click", (e) => { if (e.target === menuOverlay) closeMenu(); });
 
-    menuOverlay.addEventListener("click", function(event) {
-      if (event.target === menuOverlay) {
-        closeMenu();
-      }
-    });
-
-
-    /* ==================================
-       表示モード
-       ================================== */
-
+    /* テーマ制御 */
     let currentTheme = localStorage.getItem("favoriteTheme") || "dark";
 
     function applyTheme() {
@@ -2031,11 +1458,7 @@
       });
     });
 
-
-    /* ==================================
-       並び順
-       ================================== */
-
+    /* ソートボタン制御 */
     const sortButtons = document.querySelectorAll(".sort-option[data-sort]");
 
     sortButtons.forEach(button => {
@@ -2063,11 +1486,7 @@
       });
     }
 
-
-    /* ==================================
-       登録
-       ================================== */
-
+    /* 登録 */
     const registerDialog = document.getElementById("registerDialog");
     const nameInput = document.getElementById("nameInput");
     const urlInput = document.getElementById("urlInput");
@@ -2080,31 +1499,24 @@
       setTimeout(() => nameInput.focus(), 100);
     });
 
-    document.getElementById("cancelRegisterButton").addEventListener("click", function() {
-      registerDialog.classList.remove("open");
-    });
+    document.getElementById("cancelRegisterButton").addEventListener("click", () => registerDialog.classList.remove("open"));
 
     document.getElementById("registerButton").addEventListener("click", function() {
       const name = nameInput.value.trim().slice(0, 6);
       const url = normalizeUrl(urlInput.value);
 
-      if (!name) {
-        alert("サイト名を入力してください。");
-        return;
-      }
-      if (!url) {
-        alert("URLを入力してください。");
+      if (!name || !url) {
+        alert("名前とURLを入力してください。");
         return;
       }
 
-      const now = Date.now();
       favorites.push({
         name: name,
         url: url,
         icon: "🌐",
         favicon: "",
         order: favorites.length + 1,
-        registeredAt: now,
+        registeredAt: Date.now(),
         lastClicked: 0,
         clickCount: 0
       });
@@ -2114,11 +1526,7 @@
       displayFavorites();
     });
 
-
-    /* ==================================
-       検索
-       ================================== */
-
+    /* 検索 */
     const searchDialog = document.getElementById("searchDialog");
     const searchInput = document.getElementById("searchInput");
 
@@ -2129,7 +1537,7 @@
       setTimeout(() => searchInput.focus(), 100);
     });
 
-    document.getElementById("closeSearchButton").addEventListener("click", function() {
+    document.getElementById("closeSearchButton").addEventListener("click", () => {
       searchDialog.classList.remove("open");
       displayFavorites();
     });
@@ -2139,11 +1547,7 @@
       displayFavorites(currentSearchKeyword);
     });
 
-
-    /* ==================================
-       編集モード
-       ================================== */
-
+    /* 編集 */
     const normalHeader = document.getElementById("normalHeader");
     const editHeader = document.getElementById("editHeader");
     const editSearch = document.getElementById("editSearch");
@@ -2173,25 +1577,15 @@
       displayFavorites(currentSearchKeyword);
     });
 
-
-    /* ==================================
-       削除
-       ================================== */
-
     function confirmDelete(item) {
-      const result = confirm("「" + item.name + "」を削除しますか？");
-      if (!result) return;
-
-      favorites = favorites.filter(favorite => favorite !== item);
-      saveFavorites();
-      displayFavorites(editSearchInput.value);
+      if (confirm("「" + item.name + "」を削除しますか？")) {
+        favorites = favorites.filter(favorite => favorite !== item);
+        saveFavorites();
+        displayFavorites(editSearchInput.value);
+      }
     }
 
-
-    /* ==================================
-       バックアップ
-       ================================== */
-
+    /* バックアップ */
     const backupDialog = document.getElementById("backupDialog");
     const backupCount = document.getElementById("backupCount");
 
@@ -2201,33 +1595,15 @@
       backupDialog.classList.add("open");
     });
 
-    document.getElementById("closeBackupButton").addEventListener("click", function() {
-      backupDialog.classList.remove("open");
-    });
+    document.getElementById("closeBackupButton").addEventListener("click", () => backupDialog.classList.remove("open"));
 
     document.getElementById("createBackupButton").addEventListener("click", function() {
-      createBackup();
-    });
-
-    function createBackup() {
-      const backup = {
-        version: 1,
-        createdAt: new Date().toISOString(),
-        favorites: favorites
-      };
-
+      const backup = { version: 1, createdAt: new Date().toISOString(), favorites: favorites };
       const json = JSON.stringify(backup, null, 2);
       const blob = new Blob([json], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const date = new Date();
-      const filename =
-        "my-favorites-backup-" +
-        date.getFullYear() +
-        "-" +
-        String(date.getMonth() + 1).padStart(2, "0") +
-        "-" +
-        String(date.getDate()).padStart(2, "0") +
-        ".json";
+      const filename = `my-favorites-backup-${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}.json`;
 
       const link = document.createElement("a");
       link.href = url;
@@ -2236,18 +1612,11 @@
       link.click();
       link.remove();
 
-      setTimeout(function() {
-        URL.revokeObjectURL(url);
-      }, 1000);
-
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
       alert("バックアップファイルを作成しました。\n\n" + filename);
-    }
+    });
 
-
-    /* ==================================
-       復元
-       ================================== */
-
+    /* 復元 */
     const restoreDialog = document.getElementById("restoreDialog");
     const backupFile = document.getElementById("backupFile");
     const restoreInfo = document.getElementById("restoreInfo");
@@ -2262,9 +1631,7 @@
       restoreDialog.classList.add("open");
     });
 
-    document.getElementById("closeRestoreButton").addEventListener("click", function() {
-      restoreDialog.classList.remove("open");
-    });
+    document.getElementById("closeRestoreButton").addEventListener("click", () => restoreDialog.classList.remove("open"));
 
     backupFile.addEventListener("change", function() {
       const file = this.files[0];
@@ -2283,69 +1650,40 @@
           } else if (Array.isArray(data)) {
             restoreData = data;
           } else {
-            throw new Error("データ形式が正しくありません。");
+            throw new Error("データ形式エラー");
           }
 
-          if (restoreData.length === 0) {
-            restoreInfo.textContent = "お気に入りが0件のバックアップです。";
-          } else {
-            restoreInfo.innerHTML =
-              "バックアップ内のお気に入り： <strong>" + restoreData.length + "件</strong>";
-          }
-
+          restoreInfo.innerHTML = "バックアップ内のお気に入り： <strong>" + restoreData.length + "件</strong>";
           restoreConfirmButton.disabled = false;
         } catch (error) {
           restoreData = null;
           restoreConfirmButton.disabled = true;
           restoreInfo.textContent = "このファイルは使用できません。";
-          alert("バックアップファイルを読み込めませんでした。");
-          console.error(error);
         }
       };
-
       reader.readAsText(file);
     });
 
     restoreConfirmButton.addEventListener("click", function() {
       if (!Array.isArray(restoreData)) return;
 
-      const result = confirm(
-        "現在のお気に入りを、\n" +
-        restoreData.length +
-        "件のバックアップデータに置き換えますか？\n\n" +
-        "この操作は現在のデータを上書きします。"
-      );
-
-      if (!result) return;
-
-      const safetyBackup = {
-        version: 1,
-        createdAt: new Date().toISOString(),
-        favorites: favorites
-      };
-
-      localStorage.setItem("myFavoritesBeforeRestore", JSON.stringify(safetyBackup));
-
-      favorites = restoreData.map((item, index) => {
-        const url = normalizeUrl(item.url);
-        return {
+      if (confirm("現在のお気に入りを復元データで上書きしますか？")) {
+        favorites = restoreData.map((item, index) => ({
           ...item,
-          url: url,
+          url: normalizeUrl(item.url),
           registeredAt: item.registeredAt || (Date.now() + index),
           lastClicked: item.lastClicked || 0,
-          clickCount: Number.isFinite(item.clickCount) ? item.clickCount : 0,
-          favicon: item.favicon || ""
-        };
-      });
+          clickCount: Number.isFinite(item.clickCount) ? item.clickCount : 0
+        }));
 
-      saveFavorites();
-      restoreDialog.classList.remove("open");
-      displayFavorites();
-      alert("バックアップから復元しました。");
+        saveFavorites();
+        restoreDialog.classList.remove("open");
+        displayFavorites();
+        alert("復元しました。");
+      }
     });
 
-
-    /* ===== 新UI操作 ===== */
+    /* 下部バー連動 */
     const sortSelect = document.getElementById("sortSelect");
     if (sortSelect) {
       sortSelect.value = currentSort;
@@ -2359,32 +1697,20 @@
 
     const themeToggle = document.getElementById("themeToggle");
     if (themeToggle) {
-      const toggleTheme = function (event) {
-        if (event) event.preventDefault();
+      themeToggle.addEventListener("click", function (e) {
+        e.preventDefault();
         currentTheme = currentTheme === "dark" ? "light" : "dark";
         localStorage.setItem("favoriteTheme", currentTheme);
         applyTheme();
-      };
-      themeToggle.addEventListener("click", toggleTheme);
+      });
     }
 
-    document.getElementById("bottomAddButton").addEventListener("click", function () {
-      document.getElementById("openRegisterButton").click();
-    });
-    document.getElementById("bottomSaveButton").addEventListener("click", function () {
-      document.getElementById("backupButton").click();
-    });
-    document.getElementById("bottomRestoreButton").addEventListener("click", function () {
-      document.getElementById("restoreButton").click();
-    });
-
-    /* ==================================
-       起動
-       ================================== */
+    document.getElementById("bottomAddButton").addEventListener("click", () => document.getElementById("openRegisterButton").click());
+    document.getElementById("bottomSaveButton").addEventListener("click", () => document.getElementById("backupButton").click());
+    document.getElementById("bottomRestoreButton").addEventListener("click", () => document.getElementById("restoreButton").click());
 
     applyTheme();
     loadFavorites();
-
   </script>
 
 </body>
