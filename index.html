@@ -198,47 +198,6 @@
     }
 
     /* ==================================
-       PC
-       ================================== */
-
-    @media (min-width: 700px) {
-
-      .container {
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-
-      .tiles {
-        /* PC：基本10列 */
-        grid-template-columns: repeat(10, minmax(0, 1fr));
-        gap: 12px;
-      }
-
-      .tile {
-        padding: 10px;
-      }
-
-      .icon {
-        width: 42px;
-        height: 42px;
-
-        margin-bottom: 6px;
-
-        font-size: 30px;
-      }
-
-      .icon img {
-        width: 38px;
-        height: 38px;
-      }
-
-      .name {
-        font-size: 14px;
-      }
-
-    }
-
-    /* ==================================
        メニュー
        ================================== */
 
@@ -517,6 +476,7 @@
       right: 5px;
 
       width: 29px;
+
       height: 29px;
 
       display: flex;
@@ -867,21 +827,73 @@
       font-weight: 700;
       outline: none;
     }
-    .tiles { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 12px; }
+    
+    /* PCのデフォルト設定 */
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+      gap: 12px;
+    }
+
     .tile {
-      aspect-ratio: 1 / .98;
-      min-height: 184px;
-      padding: 22px 10px 13px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1 / 1;
+      min-width: 0;
+      min-height: 0;
+      padding: 10px 6px;
       background: #292929;
       color: #f6f6f6;
-      border-radius: 21px;
+      border-radius: 18px;
       box-shadow: none;
       border: 1px solid #303030;
+      overflow: hidden;
+      box-sizing: border-box;
     }
-    .icon { width: 94px; height: 94px; margin-bottom: 12px; font-size: 54px; }
-    .icon img { width: 88px; height: 88px; border-radius: 16px; }
-    .name { font-size: 16px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; box-sizing: border-box; }
-    .delete-button { width: 38px; height: 38px; top: 6px; right: 6px; background: #444; color: #eee; font-size: 22px; }
+
+    .icon {
+      width: clamp(32px, 45%, 64px);
+      height: clamp(32px, 45%, 64px);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: clamp(20px, 3.5vw, 40px);
+    }
+
+    .icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
+    .name {
+      width: 100%;
+      font-size: clamp(11px, 1.1vw, 14px);
+      font-weight: 700;
+      line-height: 1.2;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-shrink: 0;
+    }
+
+    .delete-button {
+      width: 28px;
+      height: 28px;
+      top: 6px;
+      right: 6px;
+      background: #444;
+      color: #eee;
+      font-size: 16px;
+    }
+
     .bottom-actions {
       position: fixed;
       left: 50%;
@@ -937,6 +949,7 @@
     .menu-item, .sort-option { color: #f1f1f1; }
     .dialog { background: #242424; color: #f1f1f1; }
     .form-group input, .edit-search input { background: #303030; color: #f1f1f1; border-color: #4a4a4a; }
+
     @media (min-width: 1600px) {
       .tiles { grid-template-columns: repeat(12, minmax(0, 1fr)); }
     }
@@ -954,21 +967,72 @@
       .tab-current { width: 175px; max-width: 32vw; height: 43px; font-size: 18px; }
       .tab-current span { font-size: 25px; }
       .theme-toggle { top: 74px; right: 24px; width: 72px; height: 54px; font-size: 25px; }
-      /* スマホだけヘッダー下の不要な空白を詰める */
       .container { padding: 0 17px 105px; }
       .sort-label { font-size: 20px; }
       #sortSelect { min-width: 177px; height: 52px; font-size: 19px; }
-      .tiles { gap: 15px; }
-      .tile { min-height: 0; padding: 19px 7px 12px; border-radius: 19px; }
-      .icon { width: 82px; height: 82px; margin-bottom: 9px; }
-      .icon img { width: 78px; height: 78px; }
-      .name { font-size: 15px; }
-      .bottom-actions { bottom: 23px; padding: 9px 10px; gap: 8px; }
-      .action-button { width: 112px; height: 55px; padding: 0 10px; font-size: 19px; }
+      .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+      .tile {
+        aspect-ratio: 1 / 1;
+        min-height: 0;
+        height: auto;
+        padding: 8px 4px 8px;
+        border-radius: 15px;
+        justify-content: flex-start;
+        box-sizing: border-box;
+        overflow: visible;
+      }
+      .icon {
+        width: 52px;
+        height: 52px;
+        margin-bottom: 5px;
+        font-size: 34px;
+        flex: 0 0 52px;
+      }
+      .icon img { width: 48px; height: 48px; border-radius: 10px; }
+      .name {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        font-size: 11px;
+        line-height: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        color: inherit;
+        flex: 0 0 auto;
+        height: auto;
+        min-height: 14px;
+        padding: 0;
+        margin: 0;
+      }
+      .delete-button { width: 30px; height: 30px; font-size: 18px; }
+      .bottom-actions {
+        left: 50%;
+        right: auto;
+        bottom: max(8px, env(safe-area-inset-bottom));
+        width: calc(100vw - 24px);
+        max-width: 420px;
+        box-sizing: border-box;
+        transform: translateX(-50%);
+        gap: 4px;
+        padding: 5px;
+        border-radius: 22px;
+      }
+      .action-button {
+        flex: 1 1 0;
+        width: 0;
+        min-width: 0;
+        height: 38px;
+        padding: 0 2px;
+        border-radius: 19px;
+        font-size: 13px;
+        letter-spacing: -0.02em;
+      }
+      .action-button span { margin-right: 2px; font-size: 15px; }
     }
 
-
-    /* テーマをbodyクラスだけに依存せず、HTML属性でも明示 */
+    /* ===== テーマをbodyクラスだけに依存せず、HTML属性でも明示 ===== */
     html[data-theme="light"] body {
       background: #f5f5f5 !important;
       color: #222 !important;
@@ -988,7 +1052,6 @@
     html[data-theme="light"] .theme-toggle { background: #fff !important; color: #222 !important; border-color: #d2d2d2 !important; }
     html[data-theme="light"] .delete-button { background: #e7e7e7 !important; color: #444 !important; }
     html[data-theme="light"] .empty, html[data-theme="light"] .loading { color: #555 !important; }
-
 
     /* テーマ切替を端末ブラウザでも確実に反映 */
     html[data-theme="dark"] { color-scheme: dark; }
@@ -1035,84 +1098,6 @@
       box-shadow: 0 4px 18px rgba(0,0,0,.16);
     }
 
-    @media (max-width: 600px) {
-      .book-header { height: 62px; padding: 0 8px; }
-      .book-tabs { height: 48px; }
-      .tab-back { width: 42px; font-size: 18px; }
-      .tab-divider { display: none !important; }
-      .tab-title { font-size: 22px; }
-      .tab-current { width: 150px; max-width: 38vw; height: 40px; font-size: 16px; }
-      .tab-current span { font-size: 22px; margin-left: 4px; }
-      .theme-toggle {
-        top: 68px;
-        right: 12px;
-        width: 58px;
-        height: 42px;
-        border-radius: 22px;
-        font-size: 20px;
-      }
-      .container { padding: 12px 12px 76px; }
-      .sort-bar { gap: 6px; margin-bottom: 16px; }
-      .sort-label { font-size: 16px; }
-      #sortSelect {
-        min-width: 0;
-        width: 155px;
-        height: 42px;
-        padding: 0 30px 0 12px;
-        border-radius: 22px;
-        font-size: 16px;
-      }
-      .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-      .tile { padding: 8px 4px 8px; border-radius: 15px; justify-content: flex-start; }
-      .icon { width: 52px; height: 52px; margin-bottom: 5px; font-size: 34px; flex-shrink: 0; }
-      .icon img { width: 48px; height: 48px; border-radius: 10px; }
-      .name { display: block; width: 100%; min-width: 0; font-size: 11px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; color: inherit; }
-      /* 4列スマホでもサイト名の文字下端が切れないようにする */
-      .tile {
-        box-sizing: border-box;
-        overflow: visible;
-        min-height: 0;
-        height: auto;
-        aspect-ratio: 1 / 1;
-      }
-      .tile .icon {
-        flex: 0 0 52px;
-      }
-      .tile .name {
-        flex: 0 0 auto;
-        height: auto;
-        min-height: 14px;
-        line-height: 14px;
-        padding: 0;
-        margin: 0;
-      }
-      .delete-button { width: 30px; height: 30px; font-size: 18px; }
-      .bottom-actions {
-        left: 50%;
-        right: auto;
-        bottom: max(8px, env(safe-area-inset-bottom));
-        width: calc(100vw - 24px);
-        max-width: 420px;
-        box-sizing: border-box;
-        transform: translateX(-50%);
-        gap: 4px;
-        padding: 5px;
-        border-radius: 22px;
-      }
-      .action-button {
-        flex: 1 1 0;
-        width: 0;
-        min-width: 0;
-        height: 38px;
-        padding: 0 2px;
-        border-radius: 19px;
-        font-size: 13px;
-        letter-spacing: -0.02em;
-      }
-      .action-button span { margin-right: 2px; font-size: 15px; }
-    }
-
-  
     /* ===== 下部操作：並び順を追加・保存・復元と横並びにする ===== */
     @media (max-width: 600px) {
       .bottom-actions {
@@ -1155,74 +1140,17 @@
         transform: translateY(-50%);
       }
     }
-    /* ===== PC：アイコンの重なりを防ぎつつ正方形で表示 ===== */
-    @media (min-width: 700px) {
-      .tile {
-        min-width: 0;
-        overflow: hidden;
-        box-sizing: border-box;
-      }
-
-      .tile .icon {
-        /* タイル幅の55%以内・最大64pxに固定。10/12/14列でも隣へはみ出さない */
-        width: min(64px, 55%);
-        height: auto;
-        aspect-ratio: 1 / 1;
-        min-width: 0;
-        min-height: 0;
-        max-width: calc(100% - 8px);
-        max-height: calc(100% - 8px);
-        flex: 0 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        box-sizing: border-box;
-      }
-
-      .tile .icon img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        min-width: 0;
-        min-height: 0;
-        max-width: 100%;
-        max-height: 100%;
-        aspect-ratio: 1 / 1;
-        object-fit: cover;
-        object-position: center;
-        border-radius: 12px;
-        box-sizing: border-box;
-      }
-
-      .tile .name {
-        display: block;
-        width: 100%;
-        min-width: 0;
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        box-sizing: border-box;
-      }
-    }
-
-</style>
+  </style>
 </head>
 
 <body>
 
-  <!-- ブック型ヘッダー -->
   <header class="book-header">
     <div class="book-tabs">
       <div class="tab-title">お気に入り</div>
     </div>
     <button class="theme-toggle" id="themeToggle" aria-label="テーマ切替">☀️</button>
   </header>
-
-  <!-- ==================================
-       編集ヘッダー
-       ================================== -->
 
   <header
     class="edit-header"
@@ -1243,10 +1171,6 @@
   </header>
 
 
-  <!-- ==================================
-       編集検索
-       ================================== -->
-
   <div
     class="edit-search"
     id="editSearch"
@@ -1261,10 +1185,6 @@
   </div>
 
 
-  <!-- ==================================
-       メイン
-       ================================== -->
-
   <main class="container">
 
     <div id="favorites">
@@ -1278,7 +1198,6 @@
   </main>
 
 
-  <!-- 下部アクション -->
   <nav class="bottom-actions" aria-label="お気に入り操作">
     <select class="sort-action" id="sortSelect" aria-label="並び順">
       <option value="most">高頻度</option>
@@ -1290,10 +1209,6 @@
     <button class="action-button save-action" id="bottomSaveButton"><span>☁</span>保存</button>
     <button class="action-button restore-action" id="bottomRestoreButton"><span>⟳</span>復元</button>
   </nav>
-
-  <!-- ==================================
-       メニュー
-       ================================== -->
 
   <div
     class="menu-overlay"
@@ -1322,7 +1237,7 @@
         class="menu-item"
         id="openRegisterButton"
       >
-        ＋　お気に入りを登録
+        ＋ お気に入りを登録
       </button>
 
 
@@ -1330,7 +1245,7 @@
         class="menu-item"
         id="openSearchButton"
       >
-        🔍　お気に入りを検索
+        🔍 お気に入りを検索
       </button>
 
 
@@ -1338,7 +1253,7 @@
         class="menu-item"
         id="openEditButton"
       >
-        ✏️　編集モード
+        ✏️ 編集モード
       </button>
 
 
@@ -1387,10 +1302,6 @@
       </div>
 
 
-      <!-- ==================================
-           データ管理
-           ================================== -->
-
       <div class="menu-section">
 
         <div class="menu-section-title">
@@ -1427,7 +1338,7 @@
           class="menu-item"
           id="backupButton"
         >
-          💾　バックアップ
+          💾 バックアップ
         </button>
 
 
@@ -1435,7 +1346,7 @@
           class="menu-item"
           id="restoreButton"
         >
-          📂　バックアップから復元
+          📂 バックアップから復元
         </button>
 
       </div>
@@ -1444,10 +1355,6 @@
 
   </div>
 
-
-  <!-- ==================================
-       登録ダイアログ
-       ================================== -->
 
   <div
     class="dialog-overlay"
@@ -1515,10 +1422,6 @@
   </div>
 
 
-  <!-- ==================================
-       検索ダイアログ
-       ================================== -->
-
   <div
     class="dialog-overlay"
     id="searchDialog"
@@ -1561,10 +1464,6 @@
 
   </div>
 
-
-  <!-- ==================================
-       バックアップダイアログ
-       ================================== -->
 
   <div
     class="dialog-overlay"
@@ -1625,10 +1524,6 @@
 
   </div>
 
-
-  <!-- ==================================
-       復元ダイアログ
-       ================================== -->
 
   <div
     class="dialog-overlay"
@@ -1717,7 +1612,6 @@
         "favoriteSort"
       ) || "most";
 
-    // 現在の検索条件を保持して、並び順変更時にも同じ条件で即時再描画する
     let currentSearchKeyword = "";
 
     if (currentSort === "recent") {
@@ -1848,7 +1742,6 @@
 
     /* ==================================
        アイコン表示
-       サイトのファビコンをカード内に表示
        ================================== */
 
     function createFaviconElement(item) {
@@ -1864,7 +1757,6 @@
         candidates.push(v);
       };
 
-      // 保存済みのアイコンを最優先
       if (item.icon && /^data:image\//i.test(String(item.icon).trim())) {
         addCandidate(String(item.icon).trim());
       } else if (item.icon && /^https?:\/\//i.test(String(item.icon).trim())) {
@@ -1875,7 +1767,6 @@
         addCandidate(String(item.favicon).trim());
       }
 
-      // サイト自身の favicon を順番に試す
       try {
         const parsed = new URL(normalizeUrl(item.url));
         const origin = parsed.origin;
@@ -1924,72 +1815,21 @@
        並び替え
        ================================== */
 
-    function sortFavorites(
-      items
-    ) {
+    function sortFavorites(items) {
 
-      const sorted =
-        [...items];
+      const sorted = [...items];
 
-
-      if (
-        currentSort ===
-        "most"
-      ) {
-
-        sorted.sort(
-          (a, b) =>
-            (b.clickCount || 0) -
-            (a.clickCount || 0)
-        );
-
+      if (currentSort === "most") {
+        sorted.sort((a, b) => (b.clickCount || 0) - (a.clickCount || 0));
+      } else if (currentSort === "least") {
+        sorted.sort((a, b) => (a.clickCount || 0) - (b.clickCount || 0));
+      } else if (currentSort === "registered") {
+        sorted.sort((a, b) => (a.registeredAt || 0) - (b.registeredAt || 0));
+      } else if (currentSort === "name") {
+        sorted.sort((a, b) => (a.name || "").localeCompare(b.name || "", "ja"));
       }
-
-      else if (
-        currentSort ===
-        "least"
-      ) {
-
-        sorted.sort(
-          (a, b) =>
-            (a.clickCount || 0) -
-            (b.clickCount || 0)
-        );
-
-      }
-
-      else if (
-        currentSort ===
-        "registered"
-      ) {
-
-        sorted.sort(
-          (a, b) =>
-            (a.registeredAt || 0) -
-            (b.registeredAt || 0)
-        );
-
-      }
-
-      else if (
-        currentSort ===
-        "name"
-      ) {
-
-        sorted.sort(
-          (a, b) =>
-            (a.name || "")
-              .localeCompare(
-                b.name || "",
-                "ja"
-              )
-        );
-
-      }
-
 
       return sorted;
-
     }
 
 
@@ -2024,8 +1864,6 @@
         }
       }
 
-      // 初回のみ favorites.json を読み込む。
-      // file:// 直開き等で fetch が使えない場合も、空表示で正常起動する。
       try {
         const response = await fetch("favorites.json?v=" + Date.now(), { cache: "no-store" });
         if (!response.ok) throw new Error("favorites.jsonを読み込めませんでした");
@@ -2046,7 +1884,6 @@
         saveFavorites();
         displayFavorites();
       } catch (error) {
-        // 初回データがない環境では「お気に入りがありません」と表示して起動を継続。
         favorites = [];
         displayFavorites();
         console.warn("初期データを読み込めませんでした:", error);
@@ -2057,190 +1894,74 @@
        表示
        ================================== */
 
-    function displayFavorites(
-      searchKeyword = currentSearchKeyword
-    ) {
+    function displayFavorites(searchKeyword = currentSearchKeyword) {
 
-      // どの経路から再描画しても現在の検索条件を保持する
       currentSearchKeyword = searchKeyword || "";
 
-      const container =
-        document.getElementById(
-          "favorites"
-        );
+      const container = document.getElementById("favorites");
 
+      let items = favorites.filter(item =>
+        (item.name || "").toLowerCase().includes(searchKeyword.toLowerCase())
+      );
 
-      let items =
-        favorites.filter(
-          item =>
-            (item.name || "")
-              .toLowerCase()
-              .includes(
-                searchKeyword
-                  .toLowerCase()
-              )
-        );
+      items = sortFavorites(items);
 
-
-      items =
-        sortFavorites(
-          items
-        );
-
-
-      if (
-        items.length === 0
-      ) {
-
+      if (items.length === 0) {
         container.innerHTML = `
           <div class="empty">
             お気に入りがありません。
           </div>
         `;
-
         return;
-
       }
 
+      const tiles = document.createElement("div");
+      tiles.className = "tiles";
 
-      const tiles =
-        document.createElement(
-          "div"
-        );
+      items.forEach(item => {
+        const tile = document.createElement("div");
+        tile.className = "tile";
 
-      tiles.className =
-        "tiles";
+        if (!editMode) {
+          tile.style.cursor = "pointer";
+          tile.addEventListener("click", function() {
+            item.lastClicked = Date.now();
+            item.clickCount = (item.clickCount || 0) + 1;
+            saveFavorites();
+            displayFavorites();
 
-
-      items.forEach(
-        item => {
-
-          const tile =
-            document.createElement(
-              "div"
-            );
-
-          tile.className =
-            "tile";
-
-
-          if (
-            !editMode
-          ) {
-
-            tile.style.cursor =
-              "pointer";
-
-
-            tile.addEventListener(
-              "click",
-              function() {
-
-                item.lastClicked =
-                  Date.now();
-
-                item.clickCount =
-                  (item.clickCount || 0) + 1;
-
-                saveFavorites();
-
-                // 先に画面を並び替えてから、新しいタブを開く
-                displayFavorites();
-
-                setTimeout(function() {
-                  window.open(
-                    item.url,
-                    "_blank",
-                    "noopener,noreferrer"
-                  );
-                }, 50);
-
-              }
-            );
-
-          }
-
-
-          const icon =
-            createFaviconElement(
-              item
-            );
-
-
-          const name =
-            document.createElement(
-              "div"
-            );
-
-          name.className =
-            "name";
-
-          name.textContent =
-            String(item.name || "").slice(0, 6);
-          name.title = String(item.name || "");
-
-
-          tile.appendChild(
-            icon
-          );
-
-          tile.appendChild(
-            name
-          );
-
-
-          if (
-            editMode
-          ) {
-
-            const deleteButton =
-              document.createElement(
-                "button"
-              );
-
-            deleteButton.className =
-              "delete-button";
-
-            deleteButton.textContent =
-              "×";
-
-
-            deleteButton.addEventListener(
-              "click",
-              function(event) {
-
-                event.stopPropagation();
-
-                confirmDelete(
-                  item
-                );
-
-              }
-            );
-
-
-            tile.appendChild(
-              deleteButton
-            );
-
-          }
-
-
-          tiles.appendChild(
-            tile
-          );
-
+            setTimeout(function() {
+              window.open(item.url, "_blank", "noopener,noreferrer");
+            }, 50);
+          });
         }
-      );
 
+        const icon = createFaviconElement(item);
 
-      container.innerHTML =
-        "";
+        const name = document.createElement("div");
+        name.className = "name";
+        name.textContent = String(item.name || "").slice(0, 6);
+        name.title = String(item.name || "");
 
-      container.appendChild(
-        tiles
-      );
+        tile.appendChild(icon);
+        tile.appendChild(name);
 
+        if (editMode) {
+          const deleteButton = document.createElement("button");
+          deleteButton.className = "delete-button";
+          deleteButton.textContent = "×";
+          deleteButton.addEventListener("click", function(event) {
+            event.stopPropagation();
+            confirmDelete(item);
+          });
+          tile.appendChild(deleteButton);
+        }
+
+        tiles.appendChild(tile);
+      });
+
+      container.innerHTML = "";
+      container.appendChild(tiles);
     }
 
 
@@ -2248,82 +1969,34 @@
        メニュー
        ================================== */
 
-    const menuButton =
-      document.getElementById(
-        "menuButton"
-      );
-
-    const menuOverlay =
-      document.getElementById(
-        "menuOverlay"
-      );
-
-    const closeMenuButton =
-      document.getElementById(
-        "closeMenuButton"
-      );
-
+    const menuOverlay = document.getElementById("menuOverlay");
+    const closeMenuButton = document.getElementById("closeMenuButton");
 
     function openMenu() {
-
-      menuOverlay.classList.add(
-        "open"
-      );
-
+      menuOverlay.classList.add("open");
       updateSortButtons();
-
     }
-
 
     function closeMenu() {
-
-      menuOverlay.classList.remove(
-        "open"
-      );
-
+      menuOverlay.classList.remove("open");
     }
 
+    closeMenuButton.addEventListener("click", closeMenu);
 
-    // 左上の「…」メニューボタンはUIから削除済み。
-    // 存在しない要素へイベントを登録しない。
-
-
-    closeMenuButton.addEventListener(
-      "click",
-      closeMenu
-    );
-
-
-    menuOverlay.addEventListener(
-      "click",
-      function(event) {
-
-        if (
-          event.target ===
-          menuOverlay
-        ) {
-
-          closeMenu();
-
-        }
-
+    menuOverlay.addEventListener("click", function(event) {
+      if (event.target === menuOverlay) {
+        closeMenu();
       }
-    );
+    });
 
 
     /* ==================================
        表示モード
        ================================== */
 
-    let currentTheme =
-      localStorage.getItem(
-        "favoriteTheme"
-      ) || "dark";
-
+    let currentTheme = localStorage.getItem("favoriteTheme") || "dark";
 
     function applyTheme() {
-
-      // iOSブラウザでも確実に即時反映するため、html属性とbodyクラスを同時更新
       document.documentElement.setAttribute("data-theme", currentTheme);
       document.body.classList.toggle("dark-mode", currentTheme === "dark");
       document.body.classList.toggle("light-mode", currentTheme === "light");
@@ -2334,165 +2007,60 @@
         toggle.textContent = currentTheme === "dark" ? "☀️" : "🌙";
         toggle.setAttribute("aria-label", currentTheme === "dark" ? "ライトモードに切替" : "ダークモードに切替");
       }
-
     }
-
 
     function updateThemeButtons() {
-
-      const themeButtons =
-        document.querySelectorAll(
-          ".theme-option"
-        );
-
-      themeButtons.forEach(
-        button => {
-
-          const mark =
-            button.querySelector(
-              ".theme-mark"
-            );
-
-          if (
-            button.dataset.theme ===
-            currentTheme
-          ) {
-
-            mark.textContent =
-              "●";
-
-            button.classList.add(
-              "active"
-            );
-
-          }
-
-          else {
-
-            mark.textContent =
-              "○";
-
-            button.classList.remove(
-              "active"
-            );
-
-          }
-
+      const themeButtons = document.querySelectorAll(".theme-option");
+      themeButtons.forEach(button => {
+        const mark = button.querySelector(".theme-mark");
+        if (button.dataset.theme === currentTheme) {
+          mark.textContent = "●";
+          button.classList.add("active");
+        } else {
+          mark.textContent = "○";
+          button.classList.remove("active");
         }
-      );
-
+      });
     }
 
-
-    document
-      .querySelectorAll(
-        ".theme-option"
-      )
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            "click",
-            function() {
-
-              currentTheme =
-                this.dataset.theme;
-
-              localStorage.setItem(
-                "favoriteTheme",
-                currentTheme
-              );
-
-              applyTheme();
-
-            }
-          );
-
-        }
-      );
+    document.querySelectorAll(".theme-option").forEach(button => {
+      button.addEventListener("click", function() {
+        currentTheme = this.dataset.theme;
+        localStorage.setItem("favoriteTheme", currentTheme);
+        applyTheme();
+      });
+    });
 
 
     /* ==================================
        並び順
        ================================== */
 
-    const sortButtons =
-      document.querySelectorAll(
-        ".sort-option[data-sort]"
-      );
+    const sortButtons = document.querySelectorAll(".sort-option[data-sort]");
 
-
-    sortButtons.forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          function() {
-
-            currentSort =
-              this.dataset.sort;
-
-
-            localStorage.setItem(
-              "favoriteSort",
-              currentSort
-            );
-
-
-            updateSortButtons();
-
-            // 並び順変更直後に、現在の検索条件のまま再描画する
-            displayFavorites(currentSearchKeyword);
-
-          }
-        );
-
-      }
-    );
-
+    sortButtons.forEach(button => {
+      button.addEventListener("click", function() {
+        currentSort = this.dataset.sort;
+        localStorage.setItem("favoriteSort", currentSort);
+        updateSortButtons();
+        displayFavorites(currentSearchKeyword);
+      });
+    });
 
     function updateSortButtons() {
-
       const select = document.getElementById("sortSelect");
       if (select) select.value = currentSort;
 
-      sortButtons.forEach(
-        button => {
-
-          const mark =
-            button.querySelector(
-              ".sort-mark"
-            );
-
-
-          if (
-            button.dataset.sort ===
-            currentSort
-          ) {
-
-            mark.textContent =
-              "●";
-
-            button.classList.add(
-              "active"
-            );
-
-          }
-
-          else {
-
-            mark.textContent =
-              "○";
-
-            button.classList.remove(
-              "active"
-            );
-
-          }
-
+      sortButtons.forEach(button => {
+        const mark = button.querySelector(".sort-mark");
+        if (button.dataset.sort === currentSort) {
+          mark.textContent = "●";
+          button.classList.add("active");
+        } else {
+          mark.textContent = "○";
+          button.classList.remove("active");
         }
-      );
-
+      });
     }
 
 
@@ -2500,379 +2068,123 @@
        登録
        ================================== */
 
-    const registerDialog =
-      document.getElementById(
-        "registerDialog"
-      );
+    const registerDialog = document.getElementById("registerDialog");
+    const nameInput = document.getElementById("nameInput");
+    const urlInput = document.getElementById("urlInput");
 
-    const nameInput =
-      document.getElementById(
-        "nameInput"
-      );
+    document.getElementById("openRegisterButton").addEventListener("click", function() {
+      closeMenu();
+      nameInput.value = "";
+      urlInput.value = "";
+      registerDialog.classList.add("open");
+      setTimeout(() => nameInput.focus(), 100);
+    });
 
-    const urlInput =
-      document.getElementById(
-        "urlInput"
-      );
+    document.getElementById("cancelRegisterButton").addEventListener("click", function() {
+      registerDialog.classList.remove("open");
+    });
 
+    document.getElementById("registerButton").addEventListener("click", function() {
+      const name = nameInput.value.trim().slice(0, 6);
+      const url = normalizeUrl(urlInput.value);
 
-    document
-      .getElementById(
-        "openRegisterButton"
-      )
-      .addEventListener(
-        "click",
-        function() {
+      if (!name) {
+        alert("サイト名を入力してください。");
+        return;
+      }
+      if (!url) {
+        alert("URLを入力してください。");
+        return;
+      }
 
-          closeMenu();
+      const now = Date.now();
+      favorites.push({
+        name: name,
+        url: url,
+        icon: "🌐",
+        favicon: "",
+        order: favorites.length + 1,
+        registeredAt: now,
+        lastClicked: 0,
+        clickCount: 0
+      });
 
-          nameInput.value =
-            "";
-
-          urlInput.value =
-            "";
-
-          registerDialog.classList.add(
-            "open"
-          );
-
-          setTimeout(
-            () =>
-              nameInput.focus(),
-            100
-          );
-
-        }
-      );
-
-
-    document
-      .getElementById(
-        "cancelRegisterButton"
-      )
-      .addEventListener(
-        "click",
-        function() {
-
-          registerDialog.classList.remove(
-            "open"
-          );
-
-        }
-      );
-
-
-    document
-      .getElementById(
-        "registerButton"
-      )
-      .addEventListener(
-        "click",
-        function() {
-
-          const name =
-            nameInput.value.trim().slice(0, 6);
-
-          const url =
-            normalizeUrl(
-              urlInput.value
-            );
-
-
-          if (
-            !name
-          ) {
-
-            alert(
-              "サイト名を入力してください。"
-            );
-
-            return;
-
-          }
-
-
-          if (
-            !url
-          ) {
-
-            alert(
-              "URLを入力してください。"
-            );
-
-            return;
-
-          }
-
-
-          const now =
-            Date.now();
-
-
-          favorites.push({
-
-            name:
-              name,
-
-            url:
-              url,
-
-            icon:
-              "🌐",
-
-            favicon:
-              "",
-
-            order:
-              favorites.length + 1,
-
-            registeredAt:
-              now,
-
-            lastClicked:
-              0,
-
-            clickCount:
-              0
-
-          });
-
-
-          saveFavorites();
-
-
-          registerDialog.classList.remove(
-            "open"
-          );
-
-
-          displayFavorites();
-
-        }
-      );
+      saveFavorites();
+      registerDialog.classList.remove("open");
+      displayFavorites();
+    });
 
 
     /* ==================================
        検索
        ================================== */
 
-    const searchDialog =
-      document.getElementById(
-        "searchDialog"
-      );
+    const searchDialog = document.getElementById("searchDialog");
+    const searchInput = document.getElementById("searchInput");
 
-    const searchInput =
-      document.getElementById(
-        "searchInput"
-      );
+    document.getElementById("openSearchButton").addEventListener("click", function() {
+      closeMenu();
+      searchInput.value = "";
+      searchDialog.classList.add("open");
+      setTimeout(() => searchInput.focus(), 100);
+    });
 
+    document.getElementById("closeSearchButton").addEventListener("click", function() {
+      searchDialog.classList.remove("open");
+      displayFavorites();
+    });
 
-    document
-      .getElementById(
-        "openSearchButton"
-      )
-      .addEventListener(
-        "click",
-        function() {
-
-          closeMenu();
-
-          searchInput.value =
-            "";
-
-          searchDialog.classList.add(
-            "open"
-          );
-
-          setTimeout(
-            () =>
-              searchInput.focus(),
-            100
-          );
-
-        }
-      );
-
-
-    document
-      .getElementById(
-        "closeSearchButton"
-      )
-      .addEventListener(
-        "click",
-        function() {
-
-          searchDialog.classList.remove(
-            "open"
-          );
-
-          displayFavorites();
-
-        }
-      );
-
-
-    searchInput.addEventListener(
-      "input",
-      function() {
-
-        currentSearchKeyword = this.value || "";
-        displayFavorites(
-          currentSearchKeyword
-        );
-
-      }
-    );
+    searchInput.addEventListener("input", function() {
+      currentSearchKeyword = this.value || "";
+      displayFavorites(currentSearchKeyword);
+    });
 
 
     /* ==================================
        編集モード
        ================================== */
 
-    const normalHeader =
-      document.getElementById(
-        "normalHeader"
-      );
+    const normalHeader = document.getElementById("normalHeader");
+    const editHeader = document.getElementById("editHeader");
+    const editSearch = document.getElementById("editSearch");
+    const editSearchInput = document.getElementById("editSearchInput");
 
-    const editHeader =
-      document.getElementById(
-        "editHeader"
-      );
+    document.getElementById("openEditButton").addEventListener("click", function() {
+      closeMenu();
+      editMode = true;
+      if (normalHeader) normalHeader.classList.add("hidden");
+      editHeader.classList.add("open");
+      editSearch.classList.add("open");
+      editSearchInput.value = "";
+      displayFavorites();
+    });
 
-    const editSearch =
-      document.getElementById(
-        "editSearch"
-      );
+    document.getElementById("doneButton").addEventListener("click", function() {
+      editMode = false;
+      if (normalHeader) normalHeader.classList.remove("hidden");
+      editHeader.classList.remove("open");
+      editSearch.classList.remove("open");
+      editSearchInput.value = "";
+      displayFavorites();
+    });
 
-    const editSearchInput =
-      document.getElementById(
-        "editSearchInput"
-      );
-
-
-    document
-      .getElementById(
-        "openEditButton"
-      )
-      .addEventListener(
-        "click",
-        function() {
-
-          closeMenu();
-
-          editMode =
-            true;
-
-
-          if (normalHeader) {
-            normalHeader.classList.add("hidden");
-          }
-
-          editHeader.classList.add(
-            "open"
-          );
-
-          editSearch.classList.add(
-            "open"
-          );
-
-
-          editSearchInput.value =
-            "";
-
-          displayFavorites();
-
-        }
-      );
-
-
-    document
-      .getElementById(
-        "doneButton"
-      )
-      .addEventListener(
-        "click",
-        function() {
-
-          editMode =
-            false;
-
-
-          if (normalHeader) {
-            normalHeader.classList.remove("hidden");
-          }
-
-          editHeader.classList.remove(
-            "open"
-          );
-
-          editSearch.classList.remove(
-            "open"
-          );
-
-
-          editSearchInput.value =
-            "";
-
-
-          displayFavorites();
-
-        }
-      );
-
-
-    editSearchInput.addEventListener(
-      "input",
-      function() {
-
-        currentSearchKeyword = this.value || "";
-        displayFavorites(
-          currentSearchKeyword
-        );
-
-      }
-    );
+    editSearchInput.addEventListener("input", function() {
+      currentSearchKeyword = this.value || "";
+      displayFavorites(currentSearchKeyword);
+    });
 
 
     /* ==================================
        削除
        ================================== */
 
-    function confirmDelete(
-      item
-    ) {
+    function confirmDelete(item) {
+      const result = confirm("「" + item.name + "」を削除しますか？");
+      if (!result) return;
 
-      const result =
-        confirm(
-          "「" +
-          item.name +
-          "」を削除しますか？"
-        );
-
-
-      if (
-        !result
-      ) {
-
-        return;
-
-      }
-
-
-      favorites =
-        favorites.filter(
-          favorite =>
-            favorite !== item
-        );
-
-
+      favorites = favorites.filter(favorite => favorite !== item);
       saveFavorites();
-
-
-      displayFavorites(
-        editSearchInput.value
-      );
-
+      displayFavorites(editSearchInput.value);
     }
 
 
@@ -2880,173 +2192,55 @@
        バックアップ
        ================================== */
 
-    const backupDialog =
-      document.getElementById(
-        "backupDialog"
-      );
+    const backupDialog = document.getElementById("backupDialog");
+    const backupCount = document.getElementById("backupCount");
 
-    const backupCount =
-      document.getElementById(
-        "backupCount"
-      );
+    document.getElementById("backupButton").addEventListener("click", function() {
+      closeMenu();
+      backupCount.textContent = favorites.length;
+      backupDialog.classList.add("open");
+    });
 
+    document.getElementById("closeBackupButton").addEventListener("click", function() {
+      backupDialog.classList.remove("open");
+    });
 
-    document
-      .getElementById(
-        "backupButton"
-      )
-      .addEventListener(
-        "click",
-        function() {
-
-          closeMenu();
-
-
-          backupCount.textContent =
-            favorites.length;
-
-
-          backupDialog.classList.add(
-            "open"
-          );
-
-        }
-      );
-
-
-    document
-      .getElementById(
-        "closeBackupButton"
-      )
-      .addEventListener(
-        "click",
-        function() {
-
-          backupDialog.classList.remove(
-            "open"
-          );
-
-        }
-      );
-
-
-    document
-      .getElementById(
-        "createBackupButton"
-      )
-      .addEventListener(
-        "click",
-        function() {
-
-          createBackup();
-
-        }
-      );
-
+    document.getElementById("createBackupButton").addEventListener("click", function() {
+      createBackup();
+    });
 
     function createBackup() {
-
       const backup = {
-
-        version:
-          1,
-
-        createdAt:
-          new Date().toISOString(),
-
-        favorites:
-          favorites
-
+        version: 1,
+        createdAt: new Date().toISOString(),
+        favorites: favorites
       };
 
-
-      const json =
-        JSON.stringify(
-          backup,
-          null,
-          2
-        );
-
-
-      const blob =
-        new Blob(
-          [json],
-          {
-            type:
-              "application/json"
-          }
-        );
-
-
-      const url =
-        URL.createObjectURL(
-          blob
-        );
-
-
-      const date =
-        new Date();
-
-
+      const json = JSON.stringify(backup, null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const date = new Date();
       const filename =
         "my-favorites-backup-" +
         date.getFullYear() +
         "-" +
-        String(
-          date.getMonth() + 1
-        ).padStart(
-          2,
-          "0"
-        ) +
+        String(date.getMonth() + 1).padStart(2, "0") +
         "-" +
-        String(
-          date.getDate()
-        ).padStart(
-          2,
-          "0"
-        ) +
+        String(date.getDate()).padStart(2, "0") +
         ".json";
 
-
-      const link =
-        document.createElement(
-          "a"
-        );
-
-
-      link.href =
-        url;
-
-      link.download =
-        filename;
-
-
-      document.body.appendChild(
-        link
-      );
-
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
       link.click();
-
       link.remove();
 
+      setTimeout(function() {
+        URL.revokeObjectURL(url);
+      }, 1000);
 
-      setTimeout(
-        function() {
-
-          URL.revokeObjectURL(
-            url
-          );
-
-        },
-        1000
-      );
-
-
-      alert(
-        "バックアップファイルを作成しました。\n\n" +
-        filename
-      );
-
+      alert("バックアップファイルを作成しました。\n\n" + filename);
     }
 
 
@@ -3054,327 +2248,101 @@
        復元
        ================================== */
 
-    const restoreDialog =
-      document.getElementById(
-        "restoreDialog"
-      );
+    const restoreDialog = document.getElementById("restoreDialog");
+    const backupFile = document.getElementById("backupFile");
+    const restoreInfo = document.getElementById("restoreInfo");
+    const restoreConfirmButton = document.getElementById("restoreConfirmButton");
 
-    const backupFile =
-      document.getElementById(
-        "backupFile"
-      );
+    document.getElementById("restoreButton").addEventListener("click", function() {
+      closeMenu();
+      restoreData = null;
+      backupFile.value = "";
+      restoreInfo.textContent = "バックアップファイルを選択してください。";
+      restoreConfirmButton.disabled = true;
+      restoreDialog.classList.add("open");
+    });
 
-    const restoreInfo =
-      document.getElementById(
-        "restoreInfo"
-      );
+    document.getElementById("closeRestoreButton").addEventListener("click", function() {
+      restoreDialog.classList.remove("open");
+    });
 
-    const restoreConfirmButton =
-      document.getElementById(
-        "restoreConfirmButton"
-      );
-
-
-    document
-      .getElementById(
-        "restoreButton"
-      )
-      .addEventListener(
-        "click",
-        function() {
-
-          closeMenu();
-
-          restoreData =
-            null;
-
-          backupFile.value =
-            "";
-
-          restoreInfo.textContent =
-            "バックアップファイルを選択してください。";
-
-          restoreConfirmButton.disabled =
-            true;
-
-          restoreDialog.classList.add(
-            "open"
-          );
-
-        }
-      );
-
-
-    document
-      .getElementById(
-        "closeRestoreButton"
-      )
-      .addEventListener(
-        "click",
-        function() {
-
-          restoreDialog.classList.remove(
-            "open"
-          );
-
-        }
-      );
-
-
-    backupFile.addEventListener(
-      "change",
-      function() {
-
-        const file =
-          this.files[0];
-
-
-        if (
-          !file
-        ) {
-
-          restoreData =
-            null;
-
-          restoreConfirmButton.disabled =
-            true;
-
-          return;
-
-        }
-
-
-        const reader =
-          new FileReader();
-
-
-        reader.onload =
-          function(event) {
-
-            try {
-
-              const data =
-                JSON.parse(
-                  event.target.result
-                );
-
-
-              if (
-                data &&
-                Array.isArray(
-                  data.favorites
-                )
-              ) {
-
-                restoreData =
-                  data.favorites;
-
-              }
-
-              else if (
-                Array.isArray(
-                  data
-                )
-              ) {
-
-                restoreData =
-                  data;
-
-              }
-
-              else {
-
-                throw new Error(
-                  "データ形式が正しくありません。"
-                );
-
-              }
-
-
-              if (
-                restoreData.length === 0
-              ) {
-
-                restoreInfo.textContent =
-                  "お気に入りが0件のバックアップです。";
-
-              }
-
-              else {
-
-                restoreInfo.innerHTML =
-                  "バックアップ内のお気に入り： " +
-                  "<strong>" +
-                  restoreData.length +
-                  "件</strong>";
-
-              }
-
-
-              restoreConfirmButton.disabled =
-                false;
-
-            }
-
-            catch (error) {
-
-              restoreData =
-                null;
-
-              restoreConfirmButton.disabled =
-                true;
-
-              restoreInfo.textContent =
-                "このファイルは使用できません。";
-
-              alert(
-                "バックアップファイルを読み込めませんでした。"
-              );
-
-              console.error(
-                error
-              );
-
-            }
-
-          };
-
-
-        reader.readAsText(
-          file
-        );
-
+    backupFile.addEventListener("change", function() {
+      const file = this.files[0];
+      if (!file) {
+        restoreData = null;
+        restoreConfirmButton.disabled = true;
+        return;
       }
-    );
 
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          const data = JSON.parse(event.target.result);
+          if (data && Array.isArray(data.favorites)) {
+            restoreData = data.favorites;
+          } else if (Array.isArray(data)) {
+            restoreData = data;
+          } else {
+            throw new Error("データ形式が正しくありません。");
+          }
 
-    /* ==================================
-       復元実行
-       ================================== */
+          if (restoreData.length === 0) {
+            restoreInfo.textContent = "お気に入りが0件のバックアップです。";
+          } else {
+            restoreInfo.innerHTML =
+              "バックアップ内のお気に入り： <strong>" + restoreData.length + "件</strong>";
+          }
 
-    restoreConfirmButton.addEventListener(
-      "click",
-      function() {
-
-        if (
-          !Array.isArray(
-            restoreData
-          )
-        ) {
-
-          return;
-
+          restoreConfirmButton.disabled = false;
+        } catch (error) {
+          restoreData = null;
+          restoreConfirmButton.disabled = true;
+          restoreInfo.textContent = "このファイルは使用できません。";
+          alert("バックアップファイルを読み込めませんでした。");
+          console.error(error);
         }
+      };
 
+      reader.readAsText(file);
+    });
 
-        const result =
-          confirm(
-            "現在のお気に入りを、\n" +
-            restoreData.length +
-            "件のバックアップデータに置き換えますか？\n\n" +
-            "この操作は現在のデータを上書きします。"
-          );
+    restoreConfirmButton.addEventListener("click", function() {
+      if (!Array.isArray(restoreData)) return;
 
+      const result = confirm(
+        "現在のお気に入りを、\n" +
+        restoreData.length +
+        "件のバックアップデータに置き換えますか？\n\n" +
+        "この操作は現在のデータを上書きします。"
+      );
 
-        if (
-          !result
-        ) {
+      if (!result) return;
 
-          return;
+      const safetyBackup = {
+        version: 1,
+        createdAt: new Date().toISOString(),
+        favorites: favorites
+      };
 
-        }
+      localStorage.setItem("myFavoritesBeforeRestore", JSON.stringify(safetyBackup));
 
-
-        const safetyBackup = {
-
-          version:
-            1,
-
-          createdAt:
-            new Date().toISOString(),
-
-          favorites:
-            favorites
-
+      favorites = restoreData.map((item, index) => {
+        const url = normalizeUrl(item.url);
+        return {
+          ...item,
+          url: url,
+          registeredAt: item.registeredAt || (Date.now() + index),
+          lastClicked: item.lastClicked || 0,
+          clickCount: Number.isFinite(item.clickCount) ? item.clickCount : 0,
+          favicon: item.favicon || ""
         };
+      });
 
-
-        localStorage.setItem(
-          "myFavoritesBeforeRestore",
-          JSON.stringify(
-            safetyBackup
-          )
-        );
-
-
-        favorites =
-          restoreData.map(
-            (item, index) => {
-
-              const url =
-                normalizeUrl(
-                  item.url
-                );
-
-
-              return {
-
-                ...item,
-
-                url:
-                  url,
-
-                registeredAt:
-                  item.registeredAt
-                  ||
-                  (
-                    Date.now() +
-                    index
-                  ),
-
-                lastClicked:
-                  item.lastClicked
-                  ||
-                  0,
-
-                clickCount:
-                  Number.isFinite(
-                    item.clickCount
-                  )
-                  ?
-                  item.clickCount
-                  :
-                  0,
-
-                favicon:
-                  item.favicon
-                  ||
-                  ""
-
-              };
-
-            }
-          );
-
-
-        saveFavorites();
-
-
-        restoreDialog.classList.remove(
-          "open"
-        );
-
-
-        displayFavorites();
-
-
-        alert(
-          "バックアップから復元しました。"
-        );
-
-      }
-    );
-
+      saveFavorites();
+      restoreDialog.classList.remove("open");
+      displayFavorites();
+      alert("バックアップから復元しました。");
+    });
 
 
     /* ===== 新UI操作 ===== */
@@ -3415,7 +2383,6 @@
        ================================== */
 
     applyTheme();
-
     loadFavorites();
 
   </script>
