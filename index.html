@@ -114,6 +114,8 @@
       box-sizing: border-box;
       text-decoration: none;
       transition: transform 0.1s ease;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .tile:active {
@@ -130,6 +132,7 @@
       justify-content: center;
       flex-shrink: 0;
       font-size: clamp(18px, 2.5vw, 30px);
+      pointer-events: none;
     }
 
     .icon img {
@@ -137,6 +140,7 @@
       height: 100%;
       object-fit: contain;
       border-radius: 6px;
+      pointer-events: none;
     }
 
     .name {
@@ -149,6 +153,37 @@
       overflow: hidden;
       text-overflow: ellipsis;
       flex-shrink: 0;
+      pointer-events: none;
+    }
+
+    /* ==================================
+       編集モード・削除ボタン (右上✕)
+       ================================== */
+
+    .delete-button {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: 50%;
+      background: #ff3b30;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      line-height: 1;
+      padding: 0;
+    }
+
+    .delete-button:active {
+      transform: scale(0.85);
     }
 
     /* ==================================
@@ -232,30 +267,8 @@
     .restore-action { background: #999999; color: #111; }
 
     /* ==================================
-       編集モード・削除ボタン
+       編集UI
        ================================== */
-
-    .delete-button {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
-      border-radius: 50%;
-      background: #444;
-      color: #eee;
-      font-size: 14px;
-      cursor: pointer;
-      z-index: 5;
-    }
-
-    .delete-button:active {
-      transform: scale(0.9);
-    }
 
     .edit-header {
       display: none;
@@ -524,7 +537,6 @@
     html[data-theme="light"] .bottom-actions { background: rgba(255,255,255,.96) !important; border-color: #ddd !important; }
     html[data-theme="light"] .sort-action { background-color: #ff9500 !important; color: #fff !important; border: none !important; }
     html[data-theme="light"] .theme-toggle { background: #fff !important; color: #222 !important; border-color: #d2d2d2 !important; }
-    html[data-theme="light"] .delete-button { background: #e7e7e7 !important; color: #444 !important; }
     html[data-theme="light"] .empty, html[data-theme="light"] .loading { color: #555 !important; }
 
     html[data-theme="dark"] { color-scheme: dark; }
@@ -822,6 +834,14 @@
       }
     }
 
+    function confirmDelete(item) {
+      if (confirm(`「${item.name}」を削除しますか？`)) {
+        favorites = favorites.filter(favorite => favorite !== item);
+        saveFavorites();
+        displayFavorites(currentSearchKeyword);
+      }
+    }
+
     function displayFavorites(searchKeyword = currentSearchKeyword) {
       currentSearchKeyword = searchKeyword || "";
       const container = document.getElementById("favorites");
@@ -846,7 +866,40 @@
 
         if (!editMode) {
           tile.style.cursor = "pointer";
-          tile.addEventListener("click", function() {
+
+          // 長押し判定用変数
+          let pressTimer = null;
+          let isLongPress = false;
+
+          const startPress = () => {
+            isLongPress = false;
+            pressTimer = setTimeout(() => {
+              isLongPress = true;
+              confirmDelete(item);
+            }, 600); // 0.6秒長押しで削除ダイアログ表示
+          };
+
+          const cancelPress = () => {
+            if (pressTimer) {
+              clearTimeout(pressTimer);
+              pressTimer = null;
+            }
+          };
+
+          tile.addEventListener("touchstart", startPress, { passive: true });
+          tile.addEventListener("touchend", cancelPress);
+          tile.addEventListener("touchmove", cancelPress);
+          tile.addEventListener("mousedown", startPress);
+          tile.addEventListener("mouseup", cancelPress);
+          tile.addEventListener("mouseleave", cancelPress);
+
+          tile.addEventListener("click", function(e) {
+            if (isLongPress) {
+              e.preventDefault();
+              e.stopPropagation();
+              return;
+            }
+
             item.lastClicked = Date.now();
             item.clickCount = (item.clickCount || 0) + 1;
             saveFavorites();
@@ -868,10 +921,12 @@
         tile.appendChild(icon);
         tile.appendChild(name);
 
+        // 編集モード（右上✕ボタン表示）
         if (editMode) {
           const deleteButton = document.createElement("button");
           deleteButton.className = "delete-button";
           deleteButton.textContent = "×";
+          deleteButton.ariaLabel = `${item.name}を削除`;
           deleteButton.addEventListener("click", function(event) {
             event.stopPropagation();
             confirmDelete(item);
@@ -1053,14 +1108,6 @@
       currentSearchKeyword = this.value || "";
       displayFavorites(currentSearchKeyword);
     });
-
-    function confirmDelete(item) {
-      if (confirm("「" + item.name + "」を削除しますか？")) {
-        favorites = favorites.filter(favorite => favorite !== item);
-        saveFavorites();
-        displayFavorites(editSearchInput.value);
-      }
-    }
 
     /* バックアップ */
     const backupDialog = document.getElementById("backupDialog");
