@@ -1155,32 +1155,39 @@
         transform: translateY(-50%);
       }
     }
-    /* ===== PC：列数が多い画面でもアイコンが隣のタイルへはみ出さないように固定 ===== */
+    /* ===== PC：列数が多い画面でもアイコンが絶対に隣のタイルへはみ出さない ===== */
     @media (min-width: 700px) {
       .tile {
         box-sizing: border-box;
         min-width: 0;
+        max-width: 100%;
         overflow: hidden;
       }
-      .icon {
-        width: min(70px, 70%);
-        height: auto;
-        aspect-ratio: 1 / 1;
-        flex: 0 1 auto;
-        min-width: 0;
-        max-width: 100%;
-        box-sizing: border-box;
+      .tile .icon {
+        /* タイル幅から左右20pxを引いた範囲に必ず収める */
+        width: min(70px, calc(100% - 20px)) !important;
+        height: min(70px, calc(100% - 20px)) !important;
+        min-width: 0 !important;
+        max-width: calc(100% - 20px) !important;
+        max-height: calc(100% - 20px) !important;
+        flex: 0 1 auto !important;
+        box-sizing: border-box !important;
+        overflow: hidden;
       }
-      .icon img {
+      .tile .icon img {
         display: block;
-        width: 100%;
-        height: 100%;
-        max-width: 100%;
-        max-height: 100%;
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
         object-fit: contain;
         box-sizing: border-box;
       }
-      .name {
+      .tile .name {
+        display: block;
+        width: 100%;
         min-width: 0;
         max-width: 100%;
         overflow: hidden;
